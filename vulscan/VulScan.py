@@ -244,7 +244,7 @@ def init():
             plugin_info['count'] = 0
             na_plugin.insert(plugin_info)
         for plugin_name in json_plugin:
-            json_text = open(sys.path[0] + '/vuldb' + plugin_name, 'r').read()
+            json_text = open(sys.path[0] + '/vuldb/' + plugin_name, 'r').read()
             plugin_info = json.loads(json_text)
             plugin_info['add_time'] = time_
             plugin_info['filename'] = plugin_name

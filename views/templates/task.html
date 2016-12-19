@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block css %}
+    <link href="static/buss/css/task.css" rel="stylesheet" type="text/css"/>
+    <link href="static/plugin/sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block webinfo %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="btn-group pull-right m-t-15">
+                    <a type="button" class="btn btn-tag dropdown-toggle waves-effect waves-light"
+                       href="/downloadxls" style="color: white">下载
+                    </a>
+                </div>
+                <div style="margin-top: 15px;margin-bottom: 15px">
+                    <span style="font-weight: bold;font-size: 20px">任务总数:{{ item.count() }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for i in item %}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card-box project-box" style="min-height: 126px">
+                        <h4 class="m-t-0 m-b-5" style="height: 25px">
+                            <a href="/taskdetail?taskid={{ i['_id'] }}" target="_blank"
+                               style="color:white">{{ i['title'] }}</a>
+                            <div style="position: absolute;right: 20px;top: 20px;color:#999999">
+                                {% if i['plan'] == 0 %}
+                                    {% if i['status']== 0 %}
+                                        <i class="zmdi zmdi-hourglass-outline" title="未执行"></i>
+                                    {% elif i['status']== 1 %}
+                                        <i class="zmdi zmdi-hourglass-alt" title="正在执行"></i>
+                                    {% elif i['status']== 2 %}
+                                        <a href="javascript:void(0)" title="已完成，可复测" class="recheck"><i
+                                                class="zmdi zmdi-hourglass"></i></a>
+                                    {% else %}
+                                        <i class="zmdi zmdi-alert-triangle"></i>
+                                    {% endif %}
+                                {% else %}
+                                    {% if i['isupdate'] == 1 %}
+                                        <i class="zmdi zmdi-refresh" title="循环任务"></i>
+                                    {% endif %}
+                                    <i class="zmdi zmdi-calendar-check" title="循环周期">{{ i['plan'] }}</i>
+                                    <i class="zmdi zmdi-chart-donut" title="已循环次数">{{ i['status'] }}</i>
+                                {% endif %}
+                                <a data-toggle="collapse" data-parent="#accordion1" href="#bg-primary{{ loop.index0 }}">
+                                    <i class="zmdi zmdi-plus tag" style="color:#337ab7"></i></a>
+                                <a href="javascript:void(0);"><i class="zmdi zmdi-close" id="{{ i['_id'] }}"></i></a>
+                            </div>
+                        </h4>
+
+                        <div style="line-height: 2">
+                            <p class="label label-type font-13">{{ i['plugin'] }}</p>
+                            <p class="label label-server font-13">{{ i['condition'] }}</p>
+                            <p class="label label-time font-13">{{ i['time'].strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="bg-primary{{ loop.index0 }}" class="panel-collapse collapse" style="margin-top: 20px">
+                            {% for ips in i['target'] %}
+                                <div class="label label-ips"
+                                     style="padding-bottom: 1px">{{ ips[0] }}:{{ ips[1] }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div><!-- end col-->
+            {% endfor %}
+        </div>
+        {% if item.count()>60 %}
+            <div class="row" style="position: absolute;top: 100%;left: 50%;margin: -80px 0 0 -212px;">
+                <ul class="pagination pagination-split">
+                    <li>
+                        <a href="javascript:prePage()"><i class="fa fa-angle-left"></i>前一页</a>
+                    </li>
+                    {% if item.count() % 60 ==0 %}
+                        {% for i in range(1,item.count()//60 + 1) %}
+                            <li>
+                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(1,(item.count()//60) + 2) %}
+                            <li>
+                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    <li>
+                        <a href="javascript:nextPage()">后一页<i class="fa fa-angle-right"></i></a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="static/plugin/sweetalert/sweetalert.min.js"></script>
+    <script src="static/buss/js/task.js"></script>
+{% endblock %}

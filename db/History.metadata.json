@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"xunfeng_bak.History"},{"v":1,"key":{"del_time":1.0},"name":"del_time_1","ns":"xunfeng_bak.History"},{"v":1,"key":{"ip":1.0,"port":1.0},"name":"ip_1_port_1","ns":"xunfeng_bak.History"}]}

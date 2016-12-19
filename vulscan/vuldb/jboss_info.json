@@ -1,0 +1,18 @@
+{
+    "info" : "信息泄露",
+    "name" : "Jboss信息泄露",
+    "level" : "低危",
+    "type" : "信息泄露",
+    "author" : "wolf@YSRC",
+    "url": "",
+	"keyword" : "tag:jboss",
+	"source" : 1,
+    "plugin" : {
+        "url" : "/status?full=true",
+        "tag" : "存在信息泄露漏洞",
+        "analyzing" : "keyword",
+        "analyzingdata" : "Max processing time",
+        "data" : "",
+        "method" : "GET"
+    }
+}

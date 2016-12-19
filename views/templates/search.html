@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="static/images/favicon.ico">
+    <title>巡风</title>
+    <link href="static/plugin/tip-twitter/tip-twitter.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/core.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/components.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/icons.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/pages.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/menu.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/responsive.css" rel="stylesheet" type="text/css"/>
+    <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    <script src="static/js/modernizr.min.js"></script>
+    <link href="static/buss/css/search.css" rel="stylesheet" type="text/css"/>
+</head>
+<body class="account-pages2">
+<header id="topnav">
+    <div class="topbar-main">
+        <div class="container">
+            <div class="topbar-left">
+                <a href="/filter" class="logo"><span>巡风</span></a>
+            </div>
+            <div class="menu-extras">
+                <ul class="nav navbar-nav navbar-right pull-right">
+                    <li>
+                        <a href="/loginout">退出</a>
+                    </li>
+                </ul>
+                <div class="menu-item">
+                    <a class="navbar-toggle">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar-custom">
+        <div class="container">
+            <div id="navigation">
+                <ul class="navigation-menu">
+                    <li class="has-submenu">
+                        <a href="/filter"><i class="zmdi zmdi-view-dashboard"></i> <span> 搜索 </span> </a>
+                        <ul class="submenu">
+                            <li><a href="/filter">条件筛选</a></li>
+                            <li><a href="/">自定义</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/task"><i class="zmdi zmdi-view-dashboard"></i> <span> 任务 </span> </a>
+                    </li>
+                    <li>
+                        <a href="/plugin"><i class="zmdi zmdi-view-dashboard"></i> <span> 插件 </span> </a>
+                    </li>
+                    <li>
+                        <a href="/analysis"><i class="zmdi zmdi-view-dashboard"></i> <span> 统计 </span> </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="/config?config=nascan"><i class="zmdi zmdi-view-dashboard"></i> <span> 配置 </span> </a>
+                        <ul class="submenu">
+                            <li><a href="/config?config=nascan">爬虫引擎</a></li>
+                            <li><a href="/config?config=vulscan">扫描引擎</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="clearfix"></div>
+                <div class="wrapper-page searchbar" style="margin: 14% auto">
+                    <div class="m-t-40 card-box">
+                        <div class="text-center">
+                            <a href="#" class="logo"><span>巡风</span></a>
+                        </div>
+                        <div class="panel-body">
+                            <form method="get" action="/" role="form" class="text-center">
+                                <div class="form-group">
+                                    <input type="text" class="form-control"
+                                           placeholder="Example:  ip: 192.168.1.1; port: 22"
+                                           style="color: #797979;" id="filter" name="q">
+
+                                    <button type="submit"
+                                            class="btn btn-inverse btn-rounded w-md waves-effect waves-light m-b-5"
+                                            style="margin-top: 20px">搜索
+                                    </button>
+                                    <i class="zmdi zmdi-help-outline zmdi-hc-2x" style="position: relative"
+                                       id="tips"></i>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/detect.js"></script>
+<script src="static/js/fastclick.js"></script>
+<script src="static/js/jquery.slimscroll.js"></script>
+<script src="static/js/jquery.blockUI.js"></script>
+<script src="static/js/waves.js"></script>
+<script src="static/js/wow.min.js"></script>
+<script src="static/js/jquery.nicescroll.js"></script>
+<script src="static/js/jquery.scrollTo.min.js"></script>
+<script src="static/plugin/jquery.poshytip.min.js"></script>
+<script>
+    $('#tips').poshytip({
+        className: 'tip-twitter',
+        showTimeout: 1,
+        alignTo: 'target',
+        alignX: 'center',
+        alignY: 'bottom',
+        offsetX: -100,
+        offsetY: 30,
+        allowTipHover: false,
+        fade: false,
+        slide: false,
+        content: "<p>查询方法：</p> \
+                        <p>1.按端口： port:端口号 eg. port : 22</p>\
+                        <p>2.按banner： banner:banner内容关键词 eg. banner : ftp</p>\
+                        <p>3.按ip(支持c段，b段模糊查询)： ip:ip地址  eg. ip : 192.168.1.1／ip : 192.168.1.</p>\
+                        <p>4.按服务名： server:服务名  eg. server : iis</p>\
+                        <p>5.按标题： title:标题内容关键词 eg. title : xxx管理系统</p>\
+                        <p>6.按服务类型标签： tag:服务类型 eg. tag : apache</p>\
+                        <p>7.按主机名： hostname:主机名 eg. hostname : server001</p>\
+                        <p>8.全局模糊： all:查询内容  eg. all : tongcheng</p>\
+                        <p>9.多条件： 条件1:内容1;条件2:内容2  eg. ip:192.168.1.1;port:22</p>",
+    });
+</script>
+<script src="static/js/jquery.core.js"></script>
+<script src="static/js/jquery.app.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+.zmdi-help-outline:before {
+    position: absolute;
+    top: -10px;
+    left: 0px;
+}
+
+.card-box {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.logo span {
+    color: white !important;
+}
+
+.tip-twitter {
+    max-width: 375px;
+}
+
+#filter {
+    background-color: rgba(0, 0, 0, 0.6)
+}
+
+.btn-inverse {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.btn-inverse:hover {
+    background-color: rgba(45, 45, 45, 0.6) !important;
+}
+
+.zmdi-help-outline {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.topbar-main {
+    background-color: black !important;
+}
+
+.navbar-custom {
+    background-color: rgba(0, 0, 0, 0.26) !important;
+}
+
+.submenu {
+    border-color: rgba(0, 0, 0, 0.26) !important;
+    background-color: rgba(0, 0, 0, 0.26) !important;
+}

@@ -1,0 +1,18 @@
+{
+    "name" : "Axis2信息泄露",
+    "info" : "HappyAxis.jsp 页面存在系统敏感信息。",
+    "level" : "低危",
+    "type" : "信息泄露",
+    "author" : "wolf@YSRC",
+    "url": "",
+	"keyword" : "tag:axis2",
+	"source" : 1,
+    "plugin" : {
+        "url" : "/axis2/axis2-web/HappyAxis.jsp",
+        "tag" : "敏感信息泄露",
+        "analyzing" : "keyword",
+        "analyzingdata" : "Axis2 Happiness Page",
+        "data" : "",
+        "method" : "GET"
+    }
+}

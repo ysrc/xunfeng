@@ -1,0 +1,18 @@
+{
+    "name" : "ElasticSearch未授权访问",
+	"info" : "未授权访问导致数据信息泄露，部分版本或插件存在漏洞，严重可导致服务器被入侵。",
+	"level": "高危",
+    "type" : "未授权访问",
+	"author": "wolf@YSRC",
+	"url": "",
+	"keyword" : "server:elasticsearch",
+	"source" : 1,
+    "plugin" : {
+        "url" : "/_cat",
+        "tag" : "未授权访问",
+        "analyzing" : "keyword",
+        "analyzingdata" : "/_cat/master",
+        "data" : "",
+        "method" : "GET"
+    }
+}

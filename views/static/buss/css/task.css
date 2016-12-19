@@ -1,0 +1,27 @@
+.portlet-body p {
+    word-wrap: break-word;
+}
+
+.tag {
+    color: #999999;
+}
+
+.label-type {
+    background-color: rgba(48, 208, 149, 0.6);
+}
+
+.label-server {
+    background-color: rgba(141, 83, 185, 0.6);
+}
+
+.label-time {
+    background-color: rgba(57, 208, 232, 0.6);
+}
+
+.label-ips {
+    background-color: rgba(100, 100, 100, 0.6);
+}
+
+.btn-tag {
+    background-color: rgba(34, 133, 204, 0.6) !important;
+}

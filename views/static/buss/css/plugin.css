@@ -1,0 +1,91 @@
+.portlet-body p {
+    word-wrap: break-word;
+}
+
+#uploadjson div div input {
+    margin-bottom: 15px;
+}
+
+#uploadjson div div textarea {
+    margin-bottom: 15px;
+}
+
+#uploadjson div div select {
+    margin-bottom: 15px;
+}
+
+.btn-tag {
+    background-color: rgba(34, 133, 204, 0.6) !important;
+    color: white;
+}
+
+.tag-danger {
+    background-color: rgba(183, 21, 21, 0.6);
+    float: right;
+    margin: 5px 10px 0 0
+}
+
+.tag-high {
+    background-color: rgba(230, 108, 61, 0.6);
+    float: right;
+    margin: 5px 10px 0 0
+}
+
+.tag-middle {
+    background-color: rgba(220, 175, 49, 0.6);
+    float: right;
+    margin: 5px 10px 0 0
+}
+
+.tag-low {
+    background-color: rgba(147, 48, 179, 0.6);
+    float: right;
+    margin: 5px 10px 0 0
+}
+
+.tag-tip {
+    background-color: rgba(57, 154, 64, 0.6);
+    float: right;
+    margin: 5px 10px 0 0
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(135, 135, 135, 0.6) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(135, 135, 135, 0.6) !important;
+}
+
+.modal-title {
+    color: rgba(149, 149, 150, 0.6)
+}
+
+.portlet-body p span {
+    color: rgba(255, 255, 255, 0.9)
+}
+
+.portlet-body p i {
+    color: rgba(255, 255, 255, 0.9)
+}
+
+.dropify-wrapper {
+    background-color: rgba(57, 76, 87, 0.6) !important;
+    border: 0 !important;
+}
+
+.dropify-preview {
+    background-color: rgba(57, 76, 87, 0.6) !important;
+}
+
+select option {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+select {
+    color: #999999 !important;
+}
+
+.jsoninfo .form-control {
+    margin-bottom: 15px;
+}

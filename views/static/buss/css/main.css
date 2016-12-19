@@ -1,0 +1,51 @@
+.text-muted {
+    word-wrap: break-word;
+}
+
+.text-name {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.text-time {
+    color: rgba(57, 208, 177, 0.9);
+}
+
+.btn-tag {
+    background-color: rgba(34, 133, 204, 0.6) !important;
+}
+
+select {
+    color: #797979 !important;
+}
+
+.modal-body hr {
+    border-top: 1px solid rgba(135, 135, 135, 0.6) !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(135, 135, 135, 0.6) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(135, 135, 135, 0.6) !important;
+}
+
+.modal-title {
+    color: rgba(149, 149, 150, 0.6)
+}
+
+select option {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.tag-right {
+    margin-right: 26px;
+}
+
+#select-all{
+    position: absolute;
+    top: 51%;
+    left: 48%;
+    width: 20px;
+    height: 20px;
+}

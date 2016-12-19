@@ -1,0 +1,54 @@
+.portlet-body p {
+    word-wrap: break-word;
+}
+
+.label-type {
+    background-color: rgba(48, 208, 149, 0.6);
+}
+
+.label-server {
+    background-color: rgba(141, 83, 185, 0.6);
+}
+
+.label-time {
+    background-color: rgba(57, 208, 232, 0.6);
+}
+
+.btn-tag {
+    background-color: rgba(34, 133, 204, 0.6) !important;
+}
+
+.tag-danger {
+    background-color: rgba(183, 21, 21, 0.6);
+}
+
+.tag-high {
+    background-color: rgba(230, 108, 61, 0.6);
+}
+
+.tag-middle {
+    background-color: rgba(220, 175, 49, 0.6);
+}
+
+.tag-low {
+    background-color: rgba(147, 48, 179, 0.6);
+}
+
+.tag-tip {
+    background-color: rgba(57, 154, 64, 0.6);
+}
+
+.dropdown-menu {
+    background-color: rgb(47, 62, 71) !important;
+}
+
+.tag {
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.taglink {
+    color: white;
+}

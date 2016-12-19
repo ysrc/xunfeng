@@ -1,0 +1,246 @@
+{% extends "layout.html" %}
+{% block css %}
+    <link href="static/buss/css/plugin.css" rel="stylesheet" type="text/css"/>
+    <link href="static/plugin/sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/dropify.min.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block webinfo %}
+    <div class="container">
+        <div class="row" style="margin-bottom: 20px">
+            <div class="col-sm-12">
+                <div class="btn-group pull-right m-t-15">
+                    <button type="button" class="btn btn-tag dropdown-toggle waves-effect waves-light"
+                            data-toggle="modal" data-target="#con-close-modal">新增插件
+                    </button>
+                </div>
+                <div style="margin-top: 15px">
+                    <span style="font-weight: bold;">插件数:{{ count }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for i in cursor %}
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="portlet">
+                        <div class="portlet-heading portlet-default">
+                            <div class="label font-13 btn-tag"
+                                 style="float:right;margin:5px 12px 0 0 ">{{ i['count'] }}</div>
+                            {% if i['level'] == '紧急' %}
+                                <div class="label font-13 tag-danger">紧急</div>
+                            {% elif i['level'] == '高危' %}
+                                <div class="label font-13 tag-high">高危</div>
+                            {% elif i['level'] == '中危' %}
+                                <div class="label font-13 tag-middle">中危</div>
+                            {% elif i['level'] == '低危' %}
+                                <div class="label font-13 tag-low">低危</div>
+                            {% elif i['level'] == '风险' %}
+                                <div class="label font-13 tag-tip">风险</div>
+                            {% endif %}
+
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#bg-primary{{ loop.index0 }}">
+                                <h3 class="portlet-title">{{ i['name'] }}
+								{% if i['source'] == 1 %}
+                                    <i class="zmdi zmdi-shield-check" title="官方插件"></i>
+                                {% endif %}
+								</h3>
+                            </a>
+                            <a href="javascript:void(0);" style="position: absolute;right: 20px;top:17px"><i
+                                    class="zmdi zmdi-close" id="{{ i['_id'] }}"></i></a>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div id="bg-primary{{ loop.index0 }}" class="panel-collapse collapse" style="line-height: 2">
+                            <div class="portlet-body">
+                                <p>
+                                    <i class="zmdi zmdi-hc-lg zmdi-info-outline" style="padding-right: 20px;"></i>
+                                    <span>{{ i['info'] }}</span>
+                                </p>
+                                <p>
+                                    <i class="zmdi zmdi-hc-lg zmdi-local-offer" style="padding-right: 20px;"></i>
+                                    <span><a href="/?q={{ i['keyword'] }}" target="_blank">{{ i['keyword'] }}</a></span>
+                                </p>
+                                <p>
+                                    <i class="zmdi zmdi-hc-lg zmdi-collection-text" style="padding-right: 20px;"></i>
+                                    <span>{{ i['type'] }}</span>
+                                </p>
+                                <p>
+                                    <i class="zmdi zmdi-hc-lg zmdi-calendar" style="padding-right: 20px;"></i>
+                                    <span>{{ i['add_time'].strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                                </p>
+                                <p>
+                                    <i class="zmdi zmdi-hc-lg zmdi-pin-account" style="padding-right: 20px;"></i>
+                                    <span>{{ i['author'] }}</span>
+                                </p>
+                                <p>
+                                    <i class="zmdi zmdi-hc-lg zmdi-link" style="padding-right: 20px;"></i>
+                                    <span><a href="{{ i['url'] }}" target="_blank">{{ i['url'] }}</a></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">新增插件</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group no-margin">
+                                    <label for="field-type" class="control-label">插件格式</label>
+                                    <select class="form-control" id="field-type">
+                                        <option></option>
+                                        <option>json</option>
+                                        <option>script</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row uploadjson" style="display: none;">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="field-name" class="control-label">插件名称</label>
+                                    <input type="text" class="form-control" id="field-name" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group no-margin">
+                                    <label for="field-risk" class="control-label">危害等级</label>
+                                    <select class="form-control" id="field-risk">
+                                        <option></option>
+                                        <option value="紧急">紧急</option>
+                                        <option value="高危">高危</option>
+                                        <option value="中危">中危</option>
+                                        <option value="低危">低危</option>
+                                        <option value="风险">风险</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="field-info" class="control-label">查询条件</label>
+                                    <input type="text" class="form-control" id="field-condition" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row uploadjson" style="display: none;">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="field-info" class="control-label">插件说明</label>
+                                    <input type="text" class="form-control" id="field-info" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row uploadjson" style="display: none;">
+                            <div class="col-md-4">
+                                <div class="form-group no-margin">
+                                    <label for="field-author" class="control-label">插件作者</label>
+                                    <input type="text" class="form-control" id="field-author" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group no-margin">
+                                    <label for="field-vultype" class="control-label">插件类型</label>
+                                    <select class="form-control" id="field-vultype">
+                                        <option></option>
+                                        {% for i in vultype %}
+                                            <option>{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="field-new-vultype" class="control-label">新增类型</label>
+                                    <input type="text" class="form-control" id="field-new-vultype"
+                                           placeholder="若无合适类型在此新增">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row uploadfile" style="display: none">
+                            <div class="col-md-12">
+                                <div class="form-group no-margin">
+                                    <label for="field-upload" class="control-label" data-max-file-size="1M">插件上传</label>
+                                    <input type="file" class="dropify" id="field-upload" name="file"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row uploadjson" style="display: none;">
+                            <div class="col-md-12">
+                                <div class="form-group no-margin jsoninfo">
+                                    <label for="field-json" class="control-label">插件内容</label>
+                                    <input type="text" class="form-control" id="field-url"
+                                           placeholder="方法+空格+Url eg:GET /xxxxxx.xx">
+                                    <textarea class="form-control" rows="2" id="field-data"
+                                              placeholder="Post数据"></textarea>
+                                    <div class="row">
+                                        <div class="col-md-3" style="padding-left: 9px">
+                                            <select class="form-control" id="field-analyzing">
+                                                <option>-判断类型-</option>
+                                                <option value="keyword">关键词</option>
+                                                <option value="regex">正则</option>
+                                                <option value="md5">MD5</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-9" style="padding-right: 9px">
+                                            <input type="text" class="form-control" id="field-analyzingdata"
+                                                   placeholder="判断依据">
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" id="field-tag" placeholder="检测结果说明">
+                                    <input type="text" class="form-control" id="field-pluginurl" placeholder="插件说明链接">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal" id="close">关闭
+                        </button>
+                        <button type="button" class="btn btn-info waves-effect waves-light" id="add">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal -->
+        {% if count>60 %}
+            <div class="row" style="position: absolute;top: 100%;left: 50%;margin: -80px 0 0 -212px;">
+                <ul class="pagination pagination-split">
+                    <li>
+                        <a href="javascript:prePage()"><i class="fa fa-angle-left"></i>前一页</a>
+                    </li>
+                    {% if count % 60 ==0 %}
+                        {% for i in range(1,count//60 + 1) %}
+                            <li>
+                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(1,(count//60) + 2) %}
+                            <li>
+                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    <li>
+                        <a href="javascript:nextPage()">后一页<i class="fa fa-angle-right"></i></a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="static/plugin/sweetalert/sweetalert.min.js"></script>
+    <script src="static/js/dropify.min.js"></script>
+    <script src="static/js/ajaxfileupload.js"></script>
+    <script src="static/buss/js/plugin.js"></script>
+{% endblock %}

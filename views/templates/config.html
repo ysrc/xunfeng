@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+{% block css %}
+    <link href="static/plugin/sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>
+    <link href="static/plugin/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
+    <link href="static/plugin/tip-twitter/tip-twitter.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .zmdi-help-outline {
+            margin-left: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block webinfo %}
+    <div class="container">
+        <div class="col-md-12">
+            <div class="row">
+                {% for i in values %}
+                    {% if i['show'] =="list" %}
+                        <div class="col-lg-6 col-md-6">
+                            <div class="card-box">
+                                {% if i['type'] == 'Port_list' %}
+                                    {% if i['value'].split('|')[0] == '0' %}
+                                        <h4>
+                                            {{ i['info'] }}
+                                            <i class="zmdi zmdi-help-outline zmdi-hc-1x" title="{{ i['help'] }}"></i>
+                                            <span style="float: right">存活探测(ICMP)<input type="checkbox"
+                                                                                        data-plugin="switchery"
+                                                                                        data-size="small"
+                                                                                        data-color="#3bafda"
+                                                                                        id="icmptag"/></span>
+                                        </h4>
+                                    {% else %}
+                                        <h4>
+                                            {{ i['info'] }}
+                                            <i class="zmdi zmdi-help-outline zmdi-hc-1x" title="{{ i['help'] }}"></i>
+                                            <span style="float: right">存活探测(ICMP)<input type="checkbox"
+                                                                                        data-plugin="switchery" checked
+                                                                                        data-size="small"
+                                                                                        data-color="#3bafda"
+                                                                                        id="icmptag"/></span>
+                                        </h4>
+                                    {% endif %}
+                                    <textarea class="form-control"
+                                              name={{ i['type'] }}>{{ i['value'].split('|')[1] }}</textarea>
+                                {% else %}
+                                    <h4>
+                                        {{ i['info'] }}
+                                        <i class="zmdi zmdi-help-outline zmdi-hc-1x" title="{{ i['help'] }}"></i>
+                                    </h4>
+                                    <textarea class="form-control" name={{ i['type'] }}>{{ i['value'] }}</textarea>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <button type="button"
+                                                    class="btn btn-block btn-md btn-custom waves-effect waves-light update"
+                                                    style="margin-top: 20px" inputname={{ i['type'] }}>更新
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-lg-6 col-md-6">
+                            <div class="card-box">
+                                {% if i['type'] == 'Masscan' %}
+                                    {% if i['value'].split('|')[0] == '0' %}
+                                        <h4>
+                                            {{ i['info'] }}
+                                            <i class="zmdi zmdi-help-outline zmdi-hc-1x" title="{{ i['help'] }}"></i>
+                                            <span style="float: right"><input type="checkbox" data-plugin="switchery"
+                                                                              data-size="small" data-color="#3bafda"
+                                                                              id="mastag"/></span>
+                                        </h4>
+                                    {% else %}
+                                        <h4>
+                                            {{ i['info'] }}
+                                            <i class="zmdi zmdi-help-outline zmdi-hc-1x" title="{{ i['help'] }}"></i>
+                                            <span style="float: right"><input type="checkbox" checked
+                                                                              data-plugin="switchery" data-size="small"
+                                                                              data-color="#3bafda" id="mastag"/></span>
+                                        </h4>
+                                    {% endif %}
+                                    <div class="col-md-12">
+                                        <div class="col-md-6"><input type="text" class="form-control"
+                                                                     value="{{ i['value'].split('|')[2] }}"
+                                                                     name={{ i['type'] }} placeholder="路径"/></div>
+                                        <div class="col-md-6"><input type="text" class="form-control"
+                                                                     value="{{ i['value'].split('|')[1] }}" id="speed"
+                                                                     placeholder="速率"/></div>
+                                    </div>
+                                {% else %}
+                                    <h4>
+                                        {{ i['info'] }}
+                                        <i class="zmdi zmdi-help-outline zmdi-hc-1x" title="{{ i['help'] }}"></i>
+                                    </h4>
+                                    <input type="text" class="form-control" value="{{ i['value'] }}"
+                                           name="{{ i['type'] }}"/>
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <button type="button"
+                                                    class="btn btn-block btn-md btn-custom waves-effect waves-light update"
+                                                    style="margin-top: 20px" inputname={{ i['type'] }}>更新
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="static/plugin/sweetalert/sweetalert.min.js"></script>
+    <script src="static/plugin/switchery/switchery.min.js"></script>
+    <script src="static/plugin/jquery.poshytip.min.js"></script>
+    <script src="static/buss/js/config.js"></script>
+{% endblock %}

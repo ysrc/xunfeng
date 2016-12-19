@@ -36,15 +36,14 @@
 
 **安装python依赖库：**
 
-	需先安装pip
-	wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
+	需先安装pip，建议使用豆瓣的pip源，否则可能会因为超时导致出错。	
+        wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
 	python get-pip.py
 	
 	已经有pip需更新到最新版本
 	pip install -U pip
 	
 	pip install pymongo Flask xlwt paramiko
-	速度太慢可使用国内源：http://blog.csdn.net/huayucong/article/details/50239579
 ### Linux 部署流程 ###
  
 **启动服务：**
@@ -55,7 +54,8 @@
 **导入数据：**  
 
 	./mongorestore -h 127.0.0.1 --port 65521 -d xunfeng db
-**增加认证：**  
+	# 2.x版本 MongoDB 这一步会报错，因为不支持全文索引，所以得用 MongoDB 3.x版本，
+**增加认证：**  
 
 	./mongo --port 65521
 	use xunfeng

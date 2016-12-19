@@ -151,7 +151,7 @@ $(document).ready(function () {
         if (getQueryString('q') == null) {//自定义搜索
             $('.wrapper .container').append("<div style='font-size:22px;' id='tips'>请添加扫描目标！</div>")
         } else {//搜索无结果
-            $('.wrapper .container').append("<div style='font-size:22px;' is='tips'>无符合该条件的结果！</div>")
+            $('.wrapper .container').append("<div style='font-size:22px;' id='tips'>无符合该条件的结果！</div>")
         }
     }
 });

@@ -16,6 +16,7 @@
 **基础环境需求：**  
 
 [![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg)](https://www.mongodb.com/download-center?jmp=nav)  
+运行与安装过程需要在管理员权限下进行
 
 	官网国内下载较慢，我们提供了镜像地址
 
@@ -35,9 +36,11 @@
 
 **安装python依赖库：**
 
-	如果没有pip，需要先安装pip
-	pip install pymongo && pip install Flask && pip install xlwt && pip install paramiko
-
+	需先安装pip
+	wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
+	python get-pip.py
+	pip install pymongo Flask xlwt paramiko
+	速度太慢可使用国内源：http://topmanopensource.iteye.com/blog/2004853
 ### Linux 部署流程 ###
  
 **启动服务：**

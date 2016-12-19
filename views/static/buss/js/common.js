@@ -62,6 +62,32 @@ function turnTo(page) {
     }
 }
 
+function getplugininfo(e) {
+    var that = $(e.target).parents('a');
+    var unicode = $(that).attr('unicode');
+    var name = $(that).children('.user-desc').children('.name').text();
+    var desc = $(that).children('.user-desc').children('.desc').text();
+    var author = $(that).children('.user-desc').children('.author').attr('title');
+    swal({
+            title: "插件安装确认",
+            text: "插件名：" + name + "\n描述：" + desc + "\n作者：" + author,
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        },
+        function () {
+            $.get('/installplugin', {unicode: unicode}, function (e) {
+                if (e == "success") {
+                    justCheck();
+                    swal("安装成功");
+                } else {
+                    swal("安装失败，一定是姿势不对");
+                }
+            });
+        });
+}
+
 
 function firstpull() {
     $.get('/pullupdate', function () {
@@ -97,6 +123,9 @@ function justCheck() {
 
 
 $(document).ready(function () {
+    $(".list-group").delegate("a", "click", function (e) {
+        getplugininfo(e)
+    });
     if (document.cookie == '') {
         firstpull();
     } else {
@@ -117,34 +146,10 @@ $(document).ready(function () {
                                 <span class='author' title='" + item['author'] + "'>author：" + item['author'] + "</span>\
                                 <span class='time'>" + item['time'] + "</span>\
                             </div></a></li>")
-                })
+                });
             }
         }
     }
-    $('.user-list-item').click(function () {
-        var unicode = $(this).attr('unicode');
-        var name = $(this).children('.user-desc').children('.name').text();
-        var desc = $(this).children('.user-desc').children('.desc').text();
-        var author = $(this).children('.user-desc').children('.author').attr('title');
-        swal({
-                title: "插件安装确认",
-                text: "插件名：" + name + "\n描述：" + desc + "\n作者：" + author,
-                type: "info",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true
-            },
-            function () {
-                $.get('/installplugin', {unicode: unicode}, function (e) {
-                    if (e == "success") {
-                        justCheck();
-                        swal("安装成功");
-                    } else {
-                        swal("安装失败，一定是姿势不对");
-                    }
-                });
-            });
-    });
 
 
     page = parseInt(getQueryString('page') == null ? 1 : getQueryString('page'));

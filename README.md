@@ -40,7 +40,7 @@
 	wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
 	python get-pip.py
 	pip install pymongo Flask xlwt paramiko
-	速度太慢可使用国内源：http://topmanopensource.iteye.com/blog/2004853
+	速度太慢可使用国内源：http://blog.csdn.net/huayucong/article/details/50239579
 ### Linux 部署流程 ###
  
 **启动服务：**

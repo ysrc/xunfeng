@@ -37,7 +37,7 @@
 **安装python依赖库：**
 
 	需先安装pip，建议使用豆瓣的pip源，否则可能会因为超时导致出错。	
-        wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
+	wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
 	python get-pip.py
 	
 	已经有pip需更新到最新版本

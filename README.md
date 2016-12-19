@@ -61,6 +61,7 @@
 	use xunfeng
 	db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 	exit
+	# 请将pwd换为你设定的密码。	
 **停止服务：**  
 
 	kill -9 $(pidof mongod)

@@ -39,8 +39,10 @@
 	需先安装pip
 	wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
 	python get-pip.py
+	
 	已经有pip需更新到最新版本
 	pip install -U pip
+	
 	pip install pymongo Flask xlwt paramiko
 	速度太慢可使用国内源：http://blog.csdn.net/huayucong/article/details/50239579
 ### Linux 部署流程 ###
@@ -245,6 +247,5 @@ HTTP：触发，http://ip/add/randomstr ，验证， http://ip/check/randomstr �
 	│          
 	└─vulscan
 	    │  VulScan.py  # 漏洞检测引擎
-	    │  wxsend.log  # 微信通知发送记录
 	    │  
 	    └─vuldb # 漏洞库目录

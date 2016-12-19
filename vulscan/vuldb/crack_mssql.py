@@ -8,7 +8,7 @@ def get_plugin_info():
         "info": "导致数据库敏感信息泄露，严重可导致服务器直接被入侵。",
         "level": "高危",
         "type": "弱口令",
-        "author": "wolf@YSRC",
+        "author": "hos@YSRC",
         "url": "",
         "keyword": "server:mssql",
         "source": 1

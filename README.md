@@ -78,8 +78,8 @@
 **启动服务：**  
   	
 	mongod.exe --port 65521 --dbpath DBData
-	# DBData为数据库指定存在目录
-**导入数据：**  
+	# DBData为数据库指定存在目录。
+**导入数据：**  
 
 	mongorestore.exe -h 127.0.0.1 --port 65521 -d xunfeng db
 **增加认证：**  
@@ -88,7 +88,8 @@
 	use xunfeng
 	db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 	exit
-**停止服务：**  
+	# 请将pwd换为你设定的密码。
+**停止服务：**  
 
 	Ctrl + c 关闭mongodb服务
 **启动服务：**  

@@ -1,4 +1,4 @@
-# 巡风 [![License](https://img.shields.io/aur/license/yaourt.svg)]()
+# 巡风 [![License](https://img.shields.io/aur/license/yaourt.svg)](https://github.com/ysrc/xunfeng/blob/master/LICENSE)
 
 ----------
 
@@ -68,8 +68,8 @@
 	source ~/.bash\_profile
 **启动服务：**  
 
-	根据实际情况修改Conifg.py和run.sh文件
-	sh run.sh 启动服务。
+	根据实际情况修改Conifg.py和Run.sh文件
+	sh Run.sh 启动服务。
 
 ### Windows 部署流程 ###
 
@@ -91,8 +91,8 @@
 	Ctrl + c 关闭mongodb服务
 **启动服务：**  
 
-	根据实际情况修改Conifg.py和run.bat文件。
-	运行run.bat 启动服务。
+	根据实际情况修改Conifg.py和Run.bat文件。
+	运行Run.bat 启动服务。
 
 ## 配置指南 ##
 - 在配置-爬虫引擎-网络资产探测列表 设置内网IP段**（必须配置，否则无法正常使用）**。

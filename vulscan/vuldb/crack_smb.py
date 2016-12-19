@@ -39,6 +39,7 @@ def check(ip,port,timeout):
     socket.setdefaulttimeout(timeout)
     user_list = ['administrator']
     hostname = ip2hostname(ip)
+    PASSWORD_DIC.insert(0,'anonymous')
     if not hostname:return
     for user in user_list:
         for pass_ in PASSWORD_DIC:
@@ -46,7 +47,7 @@ def check(ip,port,timeout):
                 pass_ = str(pass_.replace('{user}', user))
                 conn = SMBConnection(user,pass_,'xunfeng',hostname)
                 if conn.connect(ip) == True:
-                    if pass_ == '':return u"存在匿名共享，请查看是否存在敏感文件。"
+                    if pass_ == 'anonymous':return u"存在匿名共享，请查看是否存在敏感文件。"
                     return u"存在弱口令，用户名：%s 密码：%s"%(user,pass_)
             except Exception,e:
                 if "Errno 10061" in str(e) or "timed out" in str(e): return

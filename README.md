@@ -218,8 +218,7 @@ HTTP：触发，http://ip/add/randomstr ，验证， http://ip/check/randomstr �
 	│      
 	├─db  # 初始数据库结构
 	│      
-	├─masscan  # 内置编译好的Masscan程序，若无法使用请自行编译安装
-	│          
+	├─masscan  # 内置编译好的Masscan程序（CentOS win64适用），需要chmod+x给执行权限（root），若无法使用请自行编译安装。。	
 	├─nascan
 	│  │  NAScan.py # 网络资产信息抓取引擎
 	│  │  

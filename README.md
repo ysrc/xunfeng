@@ -20,10 +20,11 @@
 
 	# 官网国内下载较慢，我们提供了镜像地址
 
-	https://sec.ly.com/mirror/python-2.7.12.msi
-	https://sec.ly.com/mirror/python-2.7.12.amd64.msi
-	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz
+	https://sec.ly.com/mirror/python-2.7.13.msi
+	https://sec.ly.com/mirror/python-2.7.13.amd64.msi
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz
+	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz
+	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1404-3.4.0.tgz
 	https://sec.ly.com/mirror/mongodb-win32-x86_64-2008plus-ssl-3.4.0-signed.msi
 
 **安装相关依赖：**
@@ -253,3 +254,7 @@ HTTP：触发，http://ip/add/randomstr ，验证， http://ip/check/randomstr �
 	    │  VulScan.py  # 漏洞检测引擎
 	    │  
 	    └─vuldb # 漏洞库目录
+
+扫描下方二维码关注YSRC公众号，回复自己的微信号+巡风，会有人拉你进巡风的微信讨论群。
+
+![](http://mmbiz.qpic.cn/mmbiz/PAV8ewtdsKpkeG9VRYNhC76iacVSe3ichYiajictdF2Q34PQo7iaPV15jjGiaAev6SqpeK5maDvtAYUtqXEYUib4ljM3A/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)

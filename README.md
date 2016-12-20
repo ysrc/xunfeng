@@ -18,8 +18,7 @@
 [![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg)](https://www.mongodb.com/download-center?jmp=nav)  
 运行与安装过程需要在管理员权限下进行
 
-	# 官网国内下载较慢，我们提供了镜像地址
-
+	# 官网国内下载较慢，我们提供了镜像地址，根据自几的系统下载对应的
 	https://sec.ly.com/mirror/python-2.7.13.msi
 	https://sec.ly.com/mirror/python-2.7.13.amd64.msi
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz

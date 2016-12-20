@@ -18,7 +18,7 @@
 [![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg)](https://www.mongodb.com/download-center?jmp=nav)  
 运行与安装过程需要在管理员权限下进行
 
-	官网国内下载较慢，我们提供了镜像地址
+	# 官网国内下载较慢，我们提供了镜像地址
 
 	https://sec.ly.com/mirror/python-2.7.12.msi
 	https://sec.ly.com/mirror/python-2.7.12.amd64.msi
@@ -36,11 +36,11 @@
 
 **安装python依赖库：**
 
-	需先安装pip，建议使用豆瓣的pip源，否则可能会因为超时导致出错。	
+	# 需先安装pip，建议使用豆瓣的pip源，否则可能会因为超时导致出错。	
 	wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
 	python get-pip.py
 	
-	已经有pip需更新到最新版本
+	# 已经有pip需更新到最新版本
 	pip install -U pip
 	
 	pip install pymongo Flask xlwt paramiko
@@ -54,7 +54,8 @@
 **导入数据：**  
 
 	./mongorestore -h 127.0.0.1 --port 65521 -d xunfeng db
-	# 2.x版本 MongoDB 这一步会报错，因为不支持全文索引，所以得用 MongoDB 3.x版本，
+	# db为初始数据库结构文件夹路径
+	# 低版本不支持全文索引，需使用MongoDB 3.x版本
 **增加认证：**  
 
 	./mongo --port 65521
@@ -71,7 +72,7 @@
 	source ~/.bash\_profile
 **启动服务：**  
 
-	根据实际情况修改Conifg.py和Run.sh文件
+	# 根据实际情况修改Conifg.py和Run.sh文件
 	sh Run.sh 启动服务。
 
 ### Windows 部署流程 ###
@@ -83,6 +84,8 @@
 **导入数据：**  
 
 	mongorestore.exe -h 127.0.0.1 --port 65521 -d xunfeng db
+	# db为初始数据库结构文件夹路径
+	# 低版本不支持全文索引，需使用MongoDB 3.x版本
 **增加认证：**  
 
 	./mongo --port 65521
@@ -95,7 +98,7 @@
 	Ctrl + c 关闭mongodb服务
 **启动服务：**  
 
-	根据实际情况修改Conifg.py和Run.bat文件。
+	# 根据实际情况修改Conifg.py和Run.bat文件。
 	运行Run.bat 启动服务。
 
 ## 配置指南 ##
@@ -113,7 +116,7 @@
 ![](https://sec-pic-ly.b0.upaiyun.com/img/161216/A3F3B2BF2D62EECA9C6638F89915012034B6AC48.png)
 
 **Python脚本**  
-插件标准非常简洁，只需通过 **get\_plugin\_info**方法定义插件信息，**check**函数检测漏洞即可。  
+插件标准非常简洁，只需通过 **get\_plugin\_info** 方法定义插件信息，**check**函数检测漏洞即可。  
   
 	# coding:utf-8
     import ftplib
@@ -218,7 +221,7 @@ HTTP：触发，http://ip/add/randomstr ，验证， http://ip/check/randomstr �
 	│      
 	├─db  # 初始数据库结构
 	│      
-	├─masscan  # 内置编译好的Masscan程序（CentOS win64适用），需要chmod+x给执行权限（root），若无法使用请自行编译安装。。	
+	├─masscan  # 内置编译好的Masscan程序（CentOS win64适用），需要chmod+x给执行权限（root），若无法使用请自行编译安装。	
 	├─nascan
 	│  │  NAScan.py # 网络资产信息抓取引擎
 	│  │  

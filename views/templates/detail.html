@@ -22,7 +22,7 @@
 
                 </div>
                 <div style="margin-top: 15px">
-                    <span style="font-weight: bold;font-size: 20px">{{ plugin_name }} 数量:{{ count }}</span>
+                    <span style="font-weight: bold;font-size: 20px;color:white">{{ plugin_name }} 数量:{{ count }}</span>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
                     <div class="portlet" style="min-height: 125px;">
                         <div class="portlet-heading portlet-default">
                             <a href="http://{{ i['ip'] }}:{{ i['port'] }}" target="_blank">
-                                <h3 class="portlet-title">{{ i['ip'] }}:{{ i['port'] }}</h3>
+                                <h3 class="portlet-title" style="color:#358ace !important;">{{ i['ip'] }}:{{ i['port'] }}</h3>
                             </a>
                             {% if i['hostname'] %}
                                 <p class="label label-server" style="line-height: 30px;">{{ i['hostname'] }}</p>
@@ -62,9 +62,8 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="portlet-body" style="line-height: 2;padding-top: 0">
-                            <p class="label label-type"><b>描述:</b> {{ i['info'] }}</p>
-                            <p class="label label-time"><b>时间:</b> {{ i['time'].strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                        <div class="portlet-body">
+                            <p>{{ i['info'] }}</p>
                         </div>
                     </div>
                 </div>

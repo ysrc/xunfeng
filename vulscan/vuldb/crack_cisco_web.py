@@ -25,11 +25,18 @@ def get_plugin_info():
 def check(ip,port,timeout):
     error_i=0
     user_list=['admin','cisco','root']
-    #PASSWORD_DIC=['','admin','cisco','root']
+    PASSWORD_DIC=['','admin','cisco','root']
     if port == 443:
         url = "https://" + ip + ":" + str(port)
     else:
         url = "http://" + ip + ":" + str(port)
+    try:
+        urllib2.urlopen(url, timeout=timeout)
+        return
+    except urllib2.HTTPError,e:
+        if e.code != 401:return
+    except:
+        return
     for user in user_list:
         for pass_ in PASSWORD_DIC:
             try:

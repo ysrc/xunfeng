@@ -222,28 +222,31 @@ def get_config():
 
 
 def init():
-    try:
-        if na_plugin.find().count() >= 1: return
-        script_plugin = []
-        json_plugin = []
-        file_list = os.listdir(sys.path[0] + '/vuldb')
-        time_ = datetime.datetime.now()
-        for filename in file_list:
-            try:
-                if filename.split('.')[1] == 'py':
-                    script_plugin.append(filename.split('.')[0])
-                if filename.split('.')[1] == 'json':
-                    json_plugin.append(filename)
-            except:
-                pass
-        for plugin_name in script_plugin:
+    if na_plugin.find().count() >= 1: return
+    script_plugin = []
+    json_plugin = []
+    file_list = os.listdir(sys.path[0] + '/vuldb')
+    time_ = datetime.datetime.now()
+    for filename in file_list:
+        try:
+            if filename.split('.')[1] == 'py':
+                script_plugin.append(filename.split('.')[0])
+            if filename.split('.')[1] == 'json':
+                json_plugin.append(filename)
+        except:
+            pass
+    for plugin_name in script_plugin:
+        try:
             res_tmp = __import__(plugin_name)
             plugin_info = res_tmp.get_plugin_info()
             plugin_info['add_time'] = time_
             plugin_info['filename'] = plugin_name
             plugin_info['count'] = 0
             na_plugin.insert(plugin_info)
-        for plugin_name in json_plugin:
+        except:
+            pass
+    for plugin_name in json_plugin:
+        try:
             json_text = open(sys.path[0] + '/vuldb/' + plugin_name, 'r').read()
             plugin_info = json.loads(json_text)
             plugin_info['add_time'] = time_
@@ -251,8 +254,8 @@ def init():
             plugin_info['count'] = 0
             del plugin_info['plugin']
             na_plugin.insert(plugin_info)
-    except:
-        pass
+        except:
+            pass
 
 
 if __name__ == '__main__':

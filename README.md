@@ -62,10 +62,10 @@
 	use xunfeng
 	db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 	exit
-	# 请将pwd换为你设定的密码。	
+	# 请将 your password 换为你设定的密码。	
 **停止服务：**  
 
-	kill -9 $(pidof mongod)
+	kill -9 $(pid of mongod)
 **修改时区：**  
 
 	echo TZ\='Asia/Shanghai'\; export TZ >> ~/.bash\_profile
@@ -92,7 +92,7 @@
 	use xunfeng
 	db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 	exit
-	# 请将pwd换为你设定的密码。
+	# 请将 your password 换为你设定的密码。
 **停止服务：**  
 
 	Ctrl + c 关闭mongodb服务

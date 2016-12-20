@@ -203,9 +203,11 @@ HTTP：触发，http://ip/add/randomstr ，验证， http://ip/check/randomstr �
 	    check = urllib2.urlopen("http://%s/%s"%(server_ip,rand_str)).read()
 	    if 'YES' in check:
 	        return u"未授权访问"
-## 流程演示 ##
+## 流程演示视频 ##
 
-[![](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/intro.png)](http://player.youku.com/embed/XMTg2NTcyNjE2NA==)
+[![](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/intro.png)](https://sec-pic-ly.b0.upaiyun.com/xunfeng/xunfeng.mp4)
+
+	#演示数据为填充数据
 
 ## 文件结构 ##
    

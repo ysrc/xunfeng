@@ -112,9 +112,6 @@ function justCheck() {
             $.each(data, function (i, item) {
                 $('.user-list').append("<li class='list-group-item'>\
                             <a href='javascript:void(0)' class='user-list-item' unicode='" + item['unicode'] + "'>\
-                                <div class='icon bg-info'>\
-                                    <i class='zmdi zmdi-account'></i>\
-                                </div>\
                                 <div class='user-desc'>\
                                     <span class='name' title='" + item['name'] + "'>" + item['name'] + "</span>\
                                     <span class='desc' title='" + item['info'] + "'>" + item['info'] + "</span>\
@@ -144,9 +141,6 @@ $(document).ready(function () {
                 $.each(json, function (i, item) {
                     $('.user-list').append("<li class='list-group-item'>\
                         <a href='javascript:void(0)' class='user-list-item' unicode='" + item['unicode'] + "'>\
-                            <div class='icon bg-info'>\
-                                <i class='zmdi zmdi-account'></i>\
-                            </div>\
                             <div class='user-desc'>\
                                 <span class='name' title='" + item['name'] + "'>" + item['name'] + "</span>\
                                 <span class='desc' title='" + item['info'] + "'>" + item['info'] + "</span>\

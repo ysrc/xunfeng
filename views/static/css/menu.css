@@ -646,7 +646,7 @@ File: Menu
   font-size: 16px;
 }
 .user-list .user-list-item .user-desc {
-  margin-left: 40px;
+/*  margin-left: 40px;*/
 }
 .user-list .user-list-item .user-desc span.name {
   color: #435966;

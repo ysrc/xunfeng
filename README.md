@@ -18,7 +18,7 @@
 [![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg)](https://www.mongodb.com/download-center?jmp=nav)  
 运行与安装过程需要在管理员权限下进行
 
-	# 官网国内下载较慢，我们提供了镜像地址，根据自几的系统下载对应的
+	# 官网国内下载较慢，我们提供了镜像地址，根据自己的系统下载对应的
 	https://sec.ly.com/mirror/python-2.7.13.msi
 	https://sec.ly.com/mirror/python-2.7.13.amd64.msi
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz
@@ -28,10 +28,10 @@
 
 **安装相关依赖：**
 
-	CentOS
+	# CentOS
 	yum install gcc libffi-devel python-devel openssl-devel libpcap-devel
 
-	Ubuntu/Debian
+	# Ubuntu/Debian
 	sudo apt-get update && sudo apt-get install gcc libssl-dev libffi-dev python-dev libpcap-dev
 
 **安装python依赖库：**
@@ -113,7 +113,7 @@
 **JSON标示符**
 
 例子  
-![](https://sec-pic-ly.b0.upaiyun.com/img/161216/A3F3B2BF2D62EECA9C6638F89915012034B6AC48.png)
+![](https://sec-pic-ly.b0.upaiyun.com/img/161220/261479B35BD86E479D6E40DAA990E700749CA50E.png)
 
 **Python脚本**  
 插件标准非常简洁，只需通过 **get\_plugin\_info** 方法定义插件信息，**check**函数检测漏洞即可。  

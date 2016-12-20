@@ -361,13 +361,18 @@ def Analysis():
     for i in cur:
         trend.append(
             {'time': i['date'], 'add': i['info']['add'], 'update': i['info']['update'], 'delete': i['info']['delete']})
-    vulbeat = Mongo.coll['Heartbeat'].find({'name': 'load'}).next()
-    scanbeat = Mongo.coll['Heartbeat'].find({'name': 'heartbeat'}).next()
-    taskpercent = vulbeat['value'] * 100
-    taskalive = (datetime.now() - vulbeat['up_time']).seconds
-    scanalive = (datetime.now() - scanbeat['up_time']).seconds
-    taskalive = True if taskalive < 120 else False
-    scanalive = True if scanalive < 120 else False
+    vulbeat = Mongo.coll['Heartbeat'].find_one({'name': 'load'})
+    scanbeat = Mongo.coll['Heartbeat'].find_one({'name': 'heartbeat'})
+    if vulbeat == None or scanbeat == None:
+        taskpercent = 0
+        taskalive = False
+        scanalive = False
+    else:
+        taskpercent = vulbeat['value'] * 100
+        taskalive = (datetime.now() - vulbeat['up_time']).seconds
+        scanalive = (datetime.now() - scanbeat['up_time']).seconds
+        taskalive = True if taskalive < 120 else False
+        scanalive = True if scanalive < 120 else False
     server_type = Mongo.coll['Info'].aggregate(
         [{'$group': {'_id': '$server', 'count': {'$sum': 1}}}, {'$sort': {'count': -1}}])
     web_type = Mongo.coll['Info'].aggregate([{'$match': {'server': 'web'}}, {'$unwind': '$webinfo.tag'},
@@ -385,14 +390,16 @@ def Config():
     val = []
     table = request.args.get('config', '')
     if table in ("vulscan", "nascan"):
-        dict = Mongo.coll['Config'].find_one({'type': table})["config"]
-        for _ in dict:
-            if _.find('_') > 0:
-                item_type = "list"
-            else:
-                item_type = "word"
-            val.append({"show": item_type, "type": _, "info": dict[_]["info"], "help": dict[_]["help"],
-                        "value": dict[_]["value"]})
+        dict = Mongo.coll['Config'].find_one({'type': table})
+        if dict and 'config' in dict:
+            dict = dict['config']
+            for _ in dict:
+                if _.find('_') > 0:
+                    item_type = "list"
+                else:
+                    item_type = "word"
+                val.append({"show": item_type, "type": _, "info": dict[_]["info"], "help": dict[_]["help"],
+                            "value": dict[_]["value"]})
     val = sorted(val, key=lambda x: x["show"], reverse=True)
     return render_template('config.html', values=val)
 

@@ -27,7 +27,7 @@
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1404-3.4.0.tgz
 	https://sec.ly.com/mirror/mongodb-win32-x86_64-2008plus-ssl-3.4.0-signed.msi
-
+        https://sec.ly.com/mirror/mongodb-osx-ssl-x86_64-3.4.1.tgz
 **安装相关依赖：**
 
 	# CentOS
@@ -57,7 +57,7 @@
 
 	./mongorestore -h 127.0.0.1 --port 65521 -d xunfeng db
 	# db为初始数据库结构文件夹路径
-	# 低版本不支持全文索引，需使用MongoDB 3.x版本
+	# 低版本不支持全文索引，需使用高于 MongoDB 3.2版本
 **增加认证：**  
 
 	./mongo --port 65521
@@ -87,7 +87,7 @@
 
 	mongorestore.exe -h 127.0.0.1 --port 65521 -d xunfeng db
 	# db为初始数据库结构文件夹路径
-	# 低版本不支持全文索引，需使用MongoDB 3.x版本
+	# 低版本不支持全文索引，需使用高于 MongoDB 3.2版本
 **增加认证：**  
 
 	./mongo --port 65521

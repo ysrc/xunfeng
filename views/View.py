@@ -487,7 +487,7 @@ def installplugin():
     json_string = {'add_time': datetime.now(), 'count': 0, 'source': 1}
     file_name = secure_filename(item['location'].split('/')[-1])
     if os.path.exists(file_path + file_name):
-        file_name = file_name + '_' + datetime.now().strftime("%Y%m%d-%H%M%S")
+        file_name = file_name.split('.')[0] + '_' + datetime.now().strftime("%Y%m%d%H%M%S")+'.'+file_name.split('.')[-1]
     urlretrieve(item['location'], file_path + file_name)
     if os.path.exists(file_path + file_name):
         try:

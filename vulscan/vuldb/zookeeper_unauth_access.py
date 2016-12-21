@@ -4,7 +4,7 @@ import socket
 
 def get_plugin_info():
     plugin_info = {
-        "name": "Zookeeper Unauthorized access",
+        "name": "Zookeeper未授权访问",
         "info": "Zookeeper Unauthorized access",
         "level": "中危",
         "type": "未授权访问",

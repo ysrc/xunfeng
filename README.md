@@ -65,7 +65,7 @@
 	# 请将 your password 换为你设定的密码。	
 **停止服务：**  
 
-	kill -9 $(pid of mongod)
+	kill -9 $(pidof mongod)
 **修改时区：**  
 
 	echo TZ\='Asia/Shanghai'\; export TZ >> ~/.bash\_profile

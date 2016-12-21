@@ -53,7 +53,6 @@ def auth(host, port, username, password, timeout):
 
 def check(ip, port, timeout):
     user_list = ['postgres', 'admin']
-    PASSWORD_DIC = ['123456']
     for user in user_list:
         for pass_ in PASSWORD_DIC:
             try:

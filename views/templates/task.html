@@ -70,23 +70,23 @@
             <div class="row" style="position: absolute;top: 100%;left: 50%;margin: -80px 0 0 -212px;">
                 <ul class="pagination pagination-split">
                     <li>
-                        <a href="javascript:prePage()"><i class="fa fa-angle-left"></i>前一页</a>
+                        <a href="javascript:taskprePage()"><i class="fa fa-angle-left"></i>前一页</a>
                     </li>
                     {% if item.count() % 60 ==0 %}
                         {% for i in range(1,item.count()//60 + 1) %}
                             <li>
-                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                                <a href="javascript:taskturnTo({{ i }})">{{ i }}</a>
                             </li>
                         {% endfor %}
                     {% else %}
                         {% for i in range(1,(item.count()//60) + 2) %}
                             <li>
-                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                                <a href="javascript:taskturnTo({{ i }})">{{ i }}</a>
                             </li>
                         {% endfor %}
                     {% endif %}
                     <li>
-                        <a href="javascript:nextPage()">后一页<i class="fa fa-angle-right"></i></a>
+                        <a href="javascript:tasknextPage()">后一页<i class="fa fa-angle-right"></i></a>
                     </li>
                 </ul>
             </div>

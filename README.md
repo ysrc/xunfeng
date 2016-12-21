@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e35ddbc29af540f3ae9b12cb225e58a3)](https://www.codacy.com/app/nthazwy/xunfeng?utm_source=github.com&utm_medium=referral&utm_content=ysrc/xunfeng&utm_campaign=badger)
 # 巡风 [![License](https://img.shields.io/aur/license/yaourt.svg)](https://github.com/ysrc/xunfeng/blob/master/LICENSE)
 
 ----------

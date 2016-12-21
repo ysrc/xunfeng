@@ -11,6 +11,8 @@
 
 漏洞检测引擎会根据用户指定的**任务规则**进行定期或者一次性的漏洞检测，其支持2种插件类型、标示符与脚本，均可通过web控制台进行添加。
 
+如果你不是从公众号看过来的，可以[看下](http://mp.weixin.qq.com/s/sFDY8vzonIW2gAcw0CCkzQ)，说了一些部署的注意点。
+
 ## 安装指南 ##
 
 **基础环境需求：**  
@@ -127,6 +129,8 @@ mongodb | scan | scanlol66
 巡风物理路径 | /opt/xunfeng | -
 MASSCAN 路径| /opt/xunfeng/masscan/linux_64/masscan | -
 mongodb 端口 | 65521| -
+
+	# 记得修改默认密码，感谢热心网友 Medicean 提供的Docker镜像 :)
 
 ## 配置指南 ##
 - 在配置-爬虫引擎-网络资产探测列表 设置内网IP段**（必须配置，否则无法正常使用）**。

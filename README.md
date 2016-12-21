@@ -101,8 +101,8 @@
 **启动服务：**  
 
 	# 根据实际情况修改Conifg.py和Run.bat文件。
-	运行Run.bat 启动服务。
-
+	运行Run.bat 启动服务。要用MASSCAN的话需要安装WinPcap
+	
 ## Docker 布署 ##
 
 #### 使用 Dockerfile 布署####

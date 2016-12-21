@@ -36,7 +36,7 @@ def Main():
         return render_template('main.html', item=cursor, plugin=plugin, itemcount=cursor.count(),
                                plugin_type=plugin_type)
     else:  # 自定义，无任何结果，用户手工添加
-        return render_template('main.html', item=[], plugin=plugin, itemcount=0, plugin_type=[])
+        return render_template('main.html', item=[], plugin=plugin, itemcount=0, plugin_type=plugin_type)
 
 
 # 获取插件信息异步

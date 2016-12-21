@@ -39,7 +39,7 @@ def check(host,port,timeout):
             except urllib2.URLError,e:
                 error_i+=1
                 if error_i >= 3:
-                    return 'NO'
+                    return
                 continue
             if int(res_code) == 404:
                 break
@@ -65,7 +65,7 @@ def check(host,port,timeout):
             except urllib2.URLError,e:
                 error_i+=1
                 if error_i >= 3:
-                    return 'NO'
+                    return
                 continue
             if int(res_code) == 404:
                 break

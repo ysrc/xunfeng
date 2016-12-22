@@ -105,20 +105,34 @@
 	
 ## Docker 布署 ##
 
-#### 使用 Dockerfile 布署####
-Dockerfile 源文件请前往[这里](https://github.com/Medicean/VulApps/tree/master/tools/xunfeng)查看
+#### 使用 Dockerfile 布署 ####
+
+在 xunfeng 目录下，执行：
+
+```
+$ docker build --tag=xunfeng .
+```
 
 #### 直接获取 Docker hub 镜像 (推荐)####
 
-	拉取镜像到本地
-	$ docker pull medicean/vulapps:tools_xunfeng
+拉取镜像到本地
+
+```
+$ docker pull medicean/xunfeng
+```
+
 > 如果获取速度慢，推荐使用 [中科大 Docker Mirrors](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)加速
 
-	启动环境
-	$ docker run -d -p 8000:80 medicean/vulapps:tools_xunfeng
+启动环境
+
+```
+$ docker run -d -p 8000:80 -v /opt/data:/data medicean/xunfeng:latest
+```
  > `-p 8000:80` 前面的 8000 代表物理机的端口，可随意指定。 
+ >
+ > `-v /opt/data:/data` 把物理机的 `/opt/data` 挂载到 Docker 的 `/data` 指定此参数后，mongodb的数据会保存到物理机的 `/opt/data` 目录下
  
-	访问: `http://127.0.0.1:8000/` 正常访问则代表安装成功
+访问: `http://127.0.0.1:8000/` 正常访问则代表安装成功
 
 **Docker 镜像信息**
 

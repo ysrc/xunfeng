@@ -282,7 +282,7 @@ def AddPlugin():
             if fname.split('.')[-1] == 'py':
                 path = file_path + fname
                 if os.path.exists(file_path + fname):
-                    fname = fname.split('.')[0] + '_' + datetime.now().strftime("%Y%m%d%H%M%S") + '.py'
+                    fname = fname.split('.')[0] + '_' + datetime.now().second + '.py'
                     path = file_path + fname
                 f.save(path)
                 if os.path.exists(path):
@@ -316,7 +316,7 @@ def AddPlugin():
                          'keyword': keyword, 'source': 0}
                 query['plugin'] = {'method': methodurl.split(' ', 1)[0], 'url': methodurl.split(' ', 1)[1],
                                    'analyzing': analyzing, 'analyzingdata': analyzingdata, 'data': pdata, 'tag': tag}
-                file_name = secure_filename(name) + '_' + datetime.now().strftime("%Y%m%d%H%M%S") + ".json"
+                file_name = secure_filename(name) + '_' + datetime.now().second + ".json"
                 with open(file_path + file_name, 'wb') as wt:
                     wt.writelines(json.dumps(query))
                 query.pop('plugin')
@@ -408,7 +408,7 @@ def Config():
 @app.route('/updateconfig', methods=['get', 'post'])
 @logincheck
 def UpdateConfig():
-    name = request.form.get('name', '')
+    name = request.form.get('name', 'default')
     value = request.form.get('value', '')
     conftype = request.form.get('conftype', '')
     if name and value and conftype:
@@ -487,7 +487,10 @@ def installplugin():
     json_string = {'add_time': datetime.now(), 'count': 0, 'source': 1}
     file_name = secure_filename(item['location'].split('/')[-1])
     if os.path.exists(file_path + file_name):
-        file_name = file_name.split('.')[0] + '_' + datetime.now().strftime("%Y%m%d%H%M%S")+'.'+file_name.split('.')[-1]
+        db_record = Mongo.coll['Plugin'].find_one({'filename': file_name.split('.')[0]})
+        if not db_record or not db_record['source'] == 1:
+            file_name = file_name.split('.')[0] + '_' + datetime.now().second+ '.' + \
+                        file_name.split('.')[-1]
     urlretrieve(item['location'], file_path + file_name)
     if os.path.exists(file_path + file_name):
         try:

@@ -113,12 +113,12 @@
 ### 直接获取 Docker hub 镜像 (推荐)###
 
 	# 拉取镜像到本地
-	$ docker pull medicean/xunfeng
+	$ docker pull ysrc/xunfeng
 
 > 如果获取速度慢，推荐使用 [中科大 Docker Mirrors](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)加速
 
 	# 启动环境
-	$ docker run -d -p 8000:80 -v /opt/data:/data medicean/xunfeng:latest
+	$ docker run -d -p 8000:80 -v /opt/data:/data ysrc/xunfeng:latest
  > `-p 8000:80` 前面的 8000 代表物理机的端口，可随意指定。 
  >
  > `-v /opt/data:/data` 把物理机的 `/opt/data` 挂载到 Docker 的 `/data` 指定此参数后，mongodb的数据会保存到物理机的 `/opt/data` 目录下
@@ -135,7 +135,7 @@ mongodb | scan | scanlol66
 MASSCAN 路径| /opt/xunfeng/masscan/linux_64/masscan | -
 mongodb 端口 | 65521| -
 
-	# 记得修改默认密码，感谢热心网友 Medicean 提供的Docker镜像 :)
+	# 记得修改默认密码，感谢热心网友 Medicean 提供的帮助 :)
 
 ## 配置指南 ##
 - 在配置-爬虫引擎-网络资产探测列表 设置内网IP段**（必须配置，否则无法正常使用）**。

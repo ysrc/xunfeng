@@ -4,9 +4,11 @@ import Queue
 import threading
 import scan
 import icmp
+import cidr
 
 AC_PORT_LIST = {}
 MASSCAN_AC = 0
+
 
 class ThreadNum(threading.Thread):
     def __init__(self, queue):
@@ -26,13 +28,14 @@ class ThreadNum(threading.Thread):
                 _s.config_ini = self.config_ini  # 提供配置信息
                 _s.statistics = self.statistics  # 提供统计信息
                 _s.run()
-            except Exception,e:
+            except Exception, e:
                 print e
             finally:
                 self.queue.task_done()
 
+
 class start:
-    def __init__(self,config):#默认配置
+    def __init__(self, config):  # 默认配置
         self.config_ini = config
         self.queue = Queue.Queue()
         self.thread = int(self.config_ini['Thread'])
@@ -44,6 +47,8 @@ class start:
         global AC_PORT_LIST
         all_ip_list = []
         for ip in self.scan_list:
+            if "/" in ip: ip = cidr.CIDR(ip)
+            if not ip:continue
             ip_list = self.get_ip_list(ip)
             if self.mode == 1:
                 self.masscan_path = self.config_ini['Masscan'].split('|')[2]

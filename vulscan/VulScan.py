@@ -29,7 +29,7 @@ THREAD_COUNT = 50
 TIMEOUT = 10
 PLUGIN_DB = {}
 TASK_DATE_DIC = {}
-
+WHITE_LIST = []
 
 class vulscan():
     def __init__(self, task_id, task_netloc, task_plugin):
@@ -135,9 +135,10 @@ class vulscan():
                          "task_date": TASK_DATE_DIC[str(self.task_id)]}
                 na_result.insert(w_vul)
                 na_plugin.update({"name": self.task_plugin}, {"$inc": {'count': 1}})
-                #self.wx_send(w_vul)  # 自行定义漏洞提醒
+                # self.wx_send(w_vul)  # 自行定义漏洞提醒
             except Exception, e:
                 pass
+
     def log(self, info):
         lock.acquire()
         try:
@@ -145,14 +146,6 @@ class vulscan():
             print "[%s] %s" % (time_str, info)
         except:
             pass
-        try:
-            if "WeChatSend" in info:
-                log_file = open("wxsend.log", "a")
-                log_info = ",".join([self.jobid, self.task_netloc[0], self.hostname]) + "\r\n" + self.vul + "\r\n\r\n"
-                log_file.write(log_info.encode('utf-8'))
-                log_file.close()
-        except Exception, e:
-            print e
         lock.release()
 
 
@@ -200,7 +193,7 @@ def monitor():
         if load > 1: load = 1
         if load < 0: load = 0
         na_heart.update({"name": "load"}, {"$set": {"value": load, "up_time": datetime.datetime.now()}})
-        PASSWORD_DIC, THREAD_COUNT, TIMEOUT = get_config()
+        PASSWORD_DIC, THREAD_COUNT, TIMEOUT, WHITE_LIST = get_config()
         if load > 0:
             time.sleep(8)
         else:
@@ -213,10 +206,12 @@ def get_config():
         pass_row = config_info['config']['Password_dic']
         thread_row = config_info['config']['Thread']
         timeout_row = config_info['config']['Timeout']
+        white_row = config_info['config']['White_list']
         password_dic = pass_row['value'].split('\n')
         thread_count = int(thread_row['value'])
         timeout = int(timeout_row['value'])
-        return password_dic, thread_count, timeout
+        white_list = white_row['value'].split('\n')
+        return password_dic, thread_count, timeout, white_list
     except Exception, e:
         print e
 
@@ -260,18 +255,18 @@ def init():
 
 if __name__ == '__main__':
     init()
-    PASSWORD_DIC, THREAD_COUNT, TIMEOUT = get_config()
+    PASSWORD_DIC, THREAD_COUNT, TIMEOUT, WHITE_LIST = get_config()
     thread.start_new_thread(monitor, ())
     while True:
         task_id, task_plan, task_target, task_plugin = queue_get()
         if task_id == '':
             time.sleep(10)
             continue
-        PLUGIN_DB = {} # 清理插件缓存
+        PLUGIN_DB = {}  # 清理插件缓存
         for task_netloc in task_target:
-            # print task_netloc
             while True:
                 if int(thread._count()) < THREAD_COUNT:
+                    if task_netloc[0] in WHITE_LIST: break
                     thread.start_new_thread(vulscan, (task_id, task_netloc, task_plugin))
                     break
                 else:

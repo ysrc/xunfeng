@@ -1,9 +1,11 @@
 FROM ubuntu:14.04
 MAINTAINER Medici.Yan@Gmail.com
+ENV LC_ALL C.UTF-8
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# 换源，根据实际情况
+# apt and pip mirrors
+
 # RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list \
 #     && mkdir -p ~/.pip \
 #     && echo "[global]" > ~/.pip/pip.conf \

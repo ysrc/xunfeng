@@ -182,7 +182,7 @@ def update_target(query):
 
 
 def monitor():
-    global PASSWORD_DIC, THREAD_COUNT, TIMEOUT
+    global PASSWORD_DIC, THREAD_COUNT, TIMEOUT, WHITE_LIST
     while True:
         queue_count = na_task.find({"status": 0, "plan": 0}).count()
         if queue_count:

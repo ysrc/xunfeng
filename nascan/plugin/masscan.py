@@ -23,7 +23,7 @@ def run(ip_list,path,rate):
                 if ip in open_list:
                     open_list[ip].append(port)
                 else:
-                    open_list[ip] = []
+                    open_list[ip] = [port]
             except:pass
         return open_list
     except:

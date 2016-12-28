@@ -450,23 +450,24 @@ def UpdateConfig():
 @anticsrf
 def PullUpdate():
     rsp = 'err'
-    now = datetime.now()
-    f = urlopen('https://sec-pic-ly.b0.upaiyun.com/xunfeng/list.json?time=' + str(now))
+    f = urlopen('https://sec.ly.com/xunfeng/getlist')
     j = f.read().strip()
     if j:
         try:
             remotelist = json.loads(j)
-            remotelist.sort(lambda x, y: cmp(x['unicode'], y['unicode']), reverse=True)
-            locallastest = Mongo.coll['Update'].find().sort('unicode', -1)
-            local = None
-            if locallastest.count() != 0:
-                local = locallastest.next()
-            for remote in remotelist:
-                if local is None or remote['unicode'] != local['unicode']:
-                    remote['isInstall'] = 0
-                    Mongo.coll['Update'].insert(remote)
-                else:
-                    break
+            plugin = Mongo.coll['Plugin'].find({'source': 1})
+            for p in plugin:
+                for remote in remotelist:
+                    if p['name'] == remote['name'] and remote['coverage'] == 0:
+                        remotelist.remove(remote)
+            locallist = Mongo.coll['Update'].aggregate([{'$project': {'_id': 0, 'unicode': 1}}])
+            local = []
+            for i in locallist:
+                local.append(i['unicode'])
+            ret = [i for i in remotelist if i['unicode'] not in local]
+            for i in ret:
+                i['isInstall'] = 0
+                Mongo.coll['Update'].insert(i)
             rsp = 'true'
         except:
             pass
@@ -499,9 +500,12 @@ def installplugin():
     if os.path.exists(file_path + file_name):
         db_record = Mongo.coll['Plugin'].find_one({'filename': file_name.split('.')[0]})
         if not db_record or not db_record['source'] == 1:
-            file_name = file_name.split('.')[0] + '_' + str(datetime.now().second)+ '.' + \
+            file_name = file_name.split('.')[0] + '_' + str(datetime.now().second) + '.' + \
                         file_name.split('.')[-1]
-    urlretrieve(item['location'], file_path + file_name)
+    if item['location'].find('/') == -1:
+        urlretrieve('https://sec.ly.com/xunfeng/getplugin?name=' + item['location'], file_path + file_name)
+    else:
+        urlretrieve(item['location'], file_path + file_name)  # 兼容旧的插件源
     if os.path.exists(file_path + file_name):
         try:
             if file_name.split('.')[-1] == 'py':

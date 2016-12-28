@@ -21,15 +21,15 @@
         <div class="row">
             {% for i in item %}
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card-box project-box" style="min-height: 126px">
-                        <h4 class="m-t-0 m-b-5" style="height: 25px">
-                            <a href="/taskdetail?taskid={{ i['_id'] }}" target="_blank"
+                    <div class="card-box project-box" style="min-height: 154px">
+                        <h4 class="m-t-0 m-b-5" style="height: 25px;width:66%;white-space: nowrap">
+                            <a href="/taskdetail?taskid={{ i['_id'] }}" target="_blank" title="{{ i['title'] }}"
                                style="color:white">{{ i['title'] }}</a>
                             <div style="position: absolute;right: 20px;top: 20px;color:#999999">
                                 {% if i['plan'] == 0 %}
                                     {% if i['status']== 0 %}
                                         <i class="zmdi zmdi-hourglass-outline" title="未执行"></i>
-                                    {% elif i['status']== 1 %}
+                                    {% elif i['stƒatus']== 1 %}
                                         <i class="zmdi zmdi-hourglass-alt" title="正在执行"></i>
                                     {% elif i['status']== 2 %}
                                         <a href="javascript:void(0)" title="已完成，可复测" class="recheck"><i

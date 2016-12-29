@@ -1,0 +1,18 @@
+{
+"info": "Docker Remote API未授权访问可导致代码泄露，严重可导致服务器被入侵控制。",
+"source": 1,
+"name": "Docker Remote API未授权访问",
+"keyword": "port:2375",
+"level": "高危",
+"url": "http://www.tuicool.com/articles/3Yv2iiY",
+"author": "wolf@YSRC",
+"type": "未授权访问",
+"plugin": {
+"url": "/containers/json",
+"tag": "Remote API 未授权访问",
+"analyzing": "keyword",
+"analyzingdata": "HostConfig",
+"data": "",
+"method": "GET"
+}
+}

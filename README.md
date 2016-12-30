@@ -25,10 +25,10 @@
 	# 官网国内下载较慢，我们提供了镜像地址，根据自己的系统下载对应的
 	https://sec.ly.com/mirror/python-2.7.13.msi
 	https://sec.ly.com/mirror/python-2.7.13.amd64.msi
-	https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz
-	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz
-	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1404-3.4.0.tgz
-	https://sec.ly.com/mirror/mongodb-win32-x86_64-2008plus-ssl-3.4.0-signed.msi
+	https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.1.tgz
+	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1604-3.4.1.tgz
+	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1404-3.4.1.tgz
+	https://sec.ly.com/mirror/mongodb-win32-x86_64-2008plus-ssl-3.4.1-signed.msi
 	https://sec.ly.com/mirror/mongodb-osx-ssl-x86_64-3.4.1.tgz
 **安装相关依赖：**
 

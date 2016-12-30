@@ -60,16 +60,36 @@ $('.recheck').click(function () {
 });
 
 
-function nextPage() {
+function tasknextPage() {
     page = parseInt(getQueryString('page') == null ? 1 : getQueryString('page')) + 1;
-    location.href = '/task?page=' + page;
+    if (page > $('.pagination-split').children().length - 2) {
+        alert('已到达末页');
+    } else {
+        oripage = page - 1;
+        if (getQueryString('page') == null) {
+            location.href = location.href + "?page=" + page.toString();
+        } else {
+            location.href = location.href.replace("?page=" + oripage.toString(), "?page=" + page.toString());
+        }
+    }
 }
-function prePage() {
+function taskprePage() {
     page = parseInt(getQueryString('page') == null ? 1 : getQueryString('page')) - 1;
     if (page > 0) {
         location.href = '/task?page=' + page;
     }
     else {
         alert('已到达首页');
+    }
+}
+
+function taskturnTo(page) {
+    curPage = getQueryString('page');
+    if (curPage != null) {
+        url = location.href.replace("?page=" + getQueryString('page'), "?page=" + page);
+        location.href = url
+    } else {
+        url = location.href + "?page=" + page;
+        location.href = url
     }
 }

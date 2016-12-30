@@ -89,3 +89,14 @@ select {
 .jsoninfo .form-control {
     margin-bottom: 15px;
 }
+
+.portlet .portlet-heading a{
+    padding:0 !important;
+}
+
+.portlet-title{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    float: none !important;
+}

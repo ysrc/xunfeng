@@ -44,16 +44,16 @@
                             <p class="text-muted">
                                 {% if taskalive %}
                                     <span>扫描引擎<i class="zmdi zmdi-favorite"
-                                                 style="margin-left:10px;margin-right: 50px"></i></span>
+                                                 style="margin-left:10px;margin-right: 50px" title="线程存活"></i></span>
                                 {% else %}
                                     <span>扫描引擎<i class="zmdi zmdi-close-circle"
-                                                 style="margin-left:10px;margin-right: 50px"></i></span>
+                                                 style="margin-left:10px;margin-right: 50px" title="线程中止"></i></span>
                                 {% endif %}
                                 {% if scanalive %}
-                                    <span style="margin-left: -35px">爬虫引擎<i class="zmdi zmdi-favorite"
+                                    <span style="margin-left: -42px" title="线程存活">爬虫引擎<i class="zmdi zmdi-favorite"
                                                  style="margin-left:10px"></i></span>
                                 {% else %}
-                                    <span style="margin-left: -35px">爬虫引擎<i class="zmdi zmdi-close-circle"
+                                    <span style="margin-left: -42px" title="线程中止">爬虫引擎<i class="zmdi zmdi-close-circle"
                                                  style="margin-left:10px"></i></span>
                                 {% endif %}
                             </p>
@@ -193,7 +193,8 @@
                             resize: true, //defaulted to true
                             gridLineColor: '#2f3e47',
                             gridTextColor: '#98a6ad',
-                            barColors: lineColors
+                            barColors: lineColors,
+                            xLabelAngle:45
                         });
                     },
                     Dashboard1.prototype.init = function () {
@@ -210,7 +211,7 @@
                         this.createLineChart('morris-line-example', $data, 'time', ['add', 'update', 'delete'], ['新增', '更新', '删除'], ['0.9'], ['#ffffff'], ['#999999'], ['#10c469', '#188ae2', '#964b95']);
                         var $donutData =
                                 [{% for i in vultype %}
-                                    {value:{{ i['count'] }}, label: '　 　{{i['vul_info.vul_type']}}　 　'},
+                                    {value:{{ i['count'] }}, label: '{{i['vul_info.vul_type']}}'},
                                 {% endfor %}];
                         var $stckedData = [
                             {% for i in server_type %}

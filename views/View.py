@@ -9,6 +9,7 @@ from bson.objectid import ObjectId
 from flask import request, render_template, redirect, url_for, session, make_response
 from lib.CreateExcel import *
 from lib.Login import logincheck
+from lib.AntiCSRF import anticsrf
 from lib.QueryLogic import querylogic
 from werkzeug.utils import secure_filename
 from . import app, Mongo, page_size, file_path
@@ -36,7 +37,7 @@ def Main():
         return render_template('main.html', item=cursor, plugin=plugin, itemcount=cursor.count(),
                                plugin_type=plugin_type)
     else:  # 自定义，无任何结果，用户手工添加
-        return render_template('main.html', item=[], plugin=plugin, itemcount=0, plugin_type=[])
+        return render_template('main.html', item=[], plugin=plugin, itemcount=0, plugin_type=plugin_type)
 
 
 # 获取插件信息异步
@@ -65,6 +66,7 @@ def Getplugin():
 # 新增任务异步
 @app.route('/addtask', methods=['get', 'post'])
 @logincheck
+@anticsrf
 def Addtask():
     title = request.form.get('title', '')
     plugin = request.form.get('plugin', '')
@@ -112,6 +114,7 @@ def Task():
 # 复测任务异步
 @app.route('/taskrecheck')
 @logincheck
+@anticsrf
 def Recheck():
     tid = request.args.get('taskid', '')
     task = Mongo.coll['Task'].find_one({'_id': ObjectId(tid)})
@@ -181,6 +184,7 @@ def TaskDetail():
 # 删除任务异步
 @app.route('/deletetask', methods=['get', 'post'])
 @logincheck
+@anticsrf
 def DeleteTask():
     oid = request.form.get('oid', '')
     if oid:
@@ -195,6 +199,7 @@ def DeleteTask():
 # 下载excel报表异步
 @app.route('/downloadxls', methods=['get', 'post'])
 @logincheck
+@anticsrf
 def DownloadXls():
     tid = request.args.get('taskid', '')
     taskdate = request.args.get('taskdate', '')
@@ -273,67 +278,68 @@ def Plugin():
 # 新增插件异步
 @app.route('/addplugin', methods=['get', 'post'])
 @logincheck
+@anticsrf
 def AddPlugin():
     result = 'fail'
-    if request.referrer and request.referrer.replace('http://', '').split('/')[0] == request.host:
-        f = request.files['file']
-        if f:
-            fname = secure_filename(f.filename)
-            if fname.split('.')[-1] == 'py':
+    f = request.files['file']
+    if f:
+        fname = secure_filename(f.filename)
+        if fname.split('.')[-1] == 'py':
+            path = file_path + fname
+            if os.path.exists(file_path + fname):
+                fname = fname.split('.')[0] + '_' + str(datetime.now().second) + '.py'
                 path = file_path + fname
-                if os.path.exists(file_path + fname):
-                    fname = fname.split('.')[0] + '_' + datetime.now().strftime("%Y%m%d%H%M%S") + '.py'
-                    path = file_path + fname
-                f.save(path)
-                if os.path.exists(path):
-                    file_name = fname.split('.')[0]
-                    module = __import__(file_name)
-                    mark_json = module.get_plugin_info()
-                    mark_json['filename'] = file_name
-                    mark_json['add_time'] = datetime.now()
-                    mark_json['count'] = 0
-                    if 'source' not in mark_json:
-                        mark_json['source'] = 0
-                    insert_result = Mongo.coll['Plugin'].insert(mark_json)
-                    if insert_result:
-                        result = 'success'
-
-        else:
-            name = request.form.get('name', '')
-            info = request.form.get('info', '')
-            author = request.form.get('author', '')
-            level = request.form.get('level', '')
-            type = request.form.get('vultype', '')
-            keyword = request.form.get('keyword', '')
-            pluginurl = request.form.get('pluginurl', '')
-            methodurl = request.form.get('methodurl', '')
-            pdata = request.form.get('pdata', '')
-            analyzing = request.form.get('analyzing', '')
-            analyzingdata = request.form.get('analyzingdata', '')
-            tag = request.form.get('tag', '')
-            try:
-                query = {'name': name, 'info': info, 'level': level, 'type': type, 'author': author, 'url': pluginurl,
-                         'keyword': keyword, 'source': 0}
-                query['plugin'] = {'method': methodurl.split(' ', 1)[0], 'url': methodurl.split(' ', 1)[1],
-                                   'analyzing': analyzing, 'analyzingdata': analyzingdata, 'data': pdata, 'tag': tag}
-                file_name = secure_filename(name) + '_' + datetime.now().strftime("%Y%m%d%H%M%S") + ".json"
-                with open(file_path + file_name, 'wb') as wt:
-                    wt.writelines(json.dumps(query))
-                query.pop('plugin')
-                query['add_time'] = datetime.now()
-                query['count'] = 0
-                query['filename'] = file_name
-                insert_result = Mongo.coll['Plugin'].insert(query)
+            f.save(path)
+            if os.path.exists(path):
+                file_name = fname.split('.')[0]
+                module = __import__(file_name)
+                mark_json = module.get_plugin_info()
+                mark_json['filename'] = file_name
+                mark_json['add_time'] = datetime.now()
+                mark_json['count'] = 0
+                if 'source' not in mark_json:
+                    mark_json['source'] = 0
+                insert_result = Mongo.coll['Plugin'].insert(mark_json)
                 if insert_result:
                     result = 'success'
-            except:
-                pass
+
+    else:
+        name = request.form.get('name', '')
+        info = request.form.get('info', '')
+        author = request.form.get('author', '')
+        level = request.form.get('level', '')
+        type = request.form.get('vultype', '')
+        keyword = request.form.get('keyword', '')
+        pluginurl = request.form.get('pluginurl', '')
+        methodurl = request.form.get('methodurl', '')
+        pdata = request.form.get('pdata', '')
+        analyzing = request.form.get('analyzing', '')
+        analyzingdata = request.form.get('analyzingdata', '')
+        tag = request.form.get('tag', '')
+        try:
+            query = {'name': name, 'info': info, 'level': level, 'type': type, 'author': author, 'url': pluginurl,
+                     'keyword': keyword, 'source': 0}
+            query['plugin'] = {'method': methodurl.split(' ', 1)[0], 'url': methodurl.split(' ', 1)[1],
+                               'analyzing': analyzing, 'analyzingdata': analyzingdata, 'data': pdata, 'tag': tag}
+            file_name = secure_filename(name) + '_' + str(datetime.now().second) + ".json"
+            with open(file_path + file_name, 'wb') as wt:
+                wt.writelines(json.dumps(query))
+            query.pop('plugin')
+            query['add_time'] = datetime.now()
+            query['count'] = 0
+            query['filename'] = file_name
+            insert_result = Mongo.coll['Plugin'].insert(query)
+            if insert_result:
+                result = 'success'
+        except:
+            pass
     return result
 
 
 # 删除插件异步
 @app.route('/deleteplugin', methods=['get', 'post'])
 @logincheck
+@anticsrf
 def DeletePlugin():
     oid = request.form.get('oid', '')
     if oid:
@@ -407,8 +413,10 @@ def Config():
 # 配置更新异步
 @app.route('/updateconfig', methods=['get', 'post'])
 @logincheck
+@anticsrf
 def UpdateConfig():
-    name = request.form.get('name', '')
+    rsp = 'fail'
+    name = request.form.get('name', 'default')
     value = request.form.get('value', '')
     conftype = request.form.get('conftype', '')
     if name and value and conftype:
@@ -432,33 +440,34 @@ def UpdateConfig():
                 value = '0|' + path
         result = Mongo.coll['Config'].update({"type": conftype}, {'$set': {'config.' + name + '.value': value}})
         if result:
-            return 'success'
-    else:
-        return 'fail'
+            rsp = 'success'
+    return rsp
 
 
 # 拉取线上最新插件异步
 @app.route('/pullupdate')
 @logincheck
+@anticsrf
 def PullUpdate():
     rsp = 'err'
-    now = datetime.now()
-    f = urlopen('https://sec-pic-ly.b0.upaiyun.com/xunfeng/list.json?time=' + str(now))
+    f = urlopen('https://sec.ly.com/xunfeng/getlist')
     j = f.read().strip()
     if j:
         try:
             remotelist = json.loads(j)
-            remotelist.sort(lambda x, y: cmp(x['unicode'], y['unicode']), reverse=True)
-            locallastest = Mongo.coll['Update'].find().sort('unicode', -1)
-            local = None
-            if locallastest.count() != 0:
-                local = locallastest.next()
-            for remote in remotelist:
-                if local is None or remote['unicode'] != local['unicode']:
-                    remote['isInstall'] = 0
-                    Mongo.coll['Update'].insert(remote)
-                else:
-                    break
+            plugin = Mongo.coll['Plugin'].find({'source': 1})
+            for p in plugin:
+                for remote in remotelist:
+                    if p['name'] == remote['name'] and remote['coverage'] == 0:
+                        remotelist.remove(remote)
+            locallist = Mongo.coll['Update'].aggregate([{'$project': {'_id': 0, 'unicode': 1}}])
+            local = []
+            for i in locallist:
+                local.append(i['unicode'])
+            ret = [i for i in remotelist if i['unicode'] not in local]
+            for i in ret:
+                i['isInstall'] = 0
+                Mongo.coll['Update'].insert(i)
             rsp = 'true'
         except:
             pass
@@ -468,6 +477,7 @@ def PullUpdate():
 # 检查本地已知的线上插件列表异步
 @app.route('/checkupdate')
 @logincheck
+@anticsrf
 def CheckUpdate():
     json = []
     notinstall = Mongo.coll['Update'].find({'isInstall': 0}).sort('unicode', -1)
@@ -480,6 +490,7 @@ def CheckUpdate():
 # 安装／下载插件异步
 @app.route('/installplugin')
 @logincheck
+@anticsrf
 def installplugin():
     rsp = 'fail'
     unicode = request.args.get('unicode', '')
@@ -487,8 +498,14 @@ def installplugin():
     json_string = {'add_time': datetime.now(), 'count': 0, 'source': 1}
     file_name = secure_filename(item['location'].split('/')[-1])
     if os.path.exists(file_path + file_name):
-        file_name = file_name + '_' + datetime.now().strftime("%Y%m%d-%H%M%S")
-    urlretrieve(item['location'], file_path + file_name)
+        db_record = Mongo.coll['Plugin'].find_one({'filename': file_name.split('.')[0]})
+        if not db_record or not db_record['source'] == 1:
+            file_name = file_name.split('.')[0] + '_' + str(datetime.now().second) + '.' + \
+                        file_name.split('.')[-1]
+    if item['location'].find('/') == -1:
+        urlretrieve('https://sec.ly.com/xunfeng/getplugin?name=' + item['location'], file_path + file_name)
+    else:
+        urlretrieve(item['location'], file_path + file_name)  # 兼容旧的插件源
     if os.path.exists(file_path + file_name):
         try:
             if file_name.split('.')[-1] == 'py':

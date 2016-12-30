@@ -14,16 +14,16 @@
                     </a>
                 </div>
                 <div style="margin-top: 15px;margin-bottom: 15px">
-                    <span style="font-weight: bold;font-size: 20px">任务总数:{{ item.count() }}</span>
+                    <span style="font-weight: bold;font-size: 20px;color:white">任务总数:{{ item.count() }}</span>
                 </div>
             </div>
         </div>
         <div class="row">
             {% for i in item %}
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card-box project-box" style="min-height: 126px">
-                        <h4 class="m-t-0 m-b-5" style="height: 25px">
-                            <a href="/taskdetail?taskid={{ i['_id'] }}" target="_blank"
+                    <div class="card-box project-box" style="min-height: 154px">
+                        <h4 class="m-t-0 m-b-5" style="height: 25px;width:66%;white-space: nowrap">
+                            <a href="/taskdetail?taskid={{ i['_id'] }}" target="_blank" title="{{ i['title'] }}"
                                style="color:white">{{ i['title'] }}</a>
                             <div style="position: absolute;right: 20px;top: 20px;color:#999999">
                                 {% if i['plan'] == 0 %}
@@ -70,23 +70,23 @@
             <div class="row" style="position: absolute;top: 100%;left: 50%;margin: -80px 0 0 -212px;">
                 <ul class="pagination pagination-split">
                     <li>
-                        <a href="javascript:prePage()"><i class="fa fa-angle-left"></i>前一页</a>
+                        <a href="javascript:taskprePage()"><i class="fa fa-angle-left"></i>前一页</a>
                     </li>
                     {% if item.count() % 60 ==0 %}
                         {% for i in range(1,item.count()//60 + 1) %}
                             <li>
-                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                                <a href="javascript:taskturnTo({{ i }})">{{ i }}</a>
                             </li>
                         {% endfor %}
                     {% else %}
                         {% for i in range(1,(item.count()//60) + 2) %}
                             <li>
-                                <a href="javascript:turnTo({{ i }})">{{ i }}</a>
+                                <a href="javascript:taskturnTo({{ i }})">{{ i }}</a>
                             </li>
                         {% endfor %}
                     {% endif %}
                     <li>
-                        <a href="javascript:nextPage()">后一页<i class="fa fa-angle-right"></i></a>
+                        <a href="javascript:tasknextPage()">后一页<i class="fa fa-angle-right"></i></a>
                     </li>
                 </ul>
             </div>

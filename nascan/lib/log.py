@@ -1,6 +1,9 @@
 # coding:utf-8
 import threading
 import time
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 mutex = threading.Lock()
 def write(scan_type, host, port, info):
     mutex.acquire()

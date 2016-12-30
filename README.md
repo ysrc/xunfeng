@@ -11,27 +11,31 @@
 
 漏洞检测引擎会根据用户指定的**任务规则**进行定期或者一次性的漏洞检测，其支持2种插件类型、标示符与脚本，均可通过web控制台进行添加。
 
+如果你不是从公众号看过来的，可以[看下](http://mp.weixin.qq.com/s/sFDY8vzonIW2gAcw0CCkzQ)，说了一些部署的注意点。
+
 ## 安装指南 ##
 
 **基础环境需求：**  
 
-[![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg)](https://www.mongodb.com/download-center?jmp=nav)  
+[![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg?a=1)](https://www.mongodb.com/download-center?jmp=nav)  
+因为Github较慢，我们提供了一个国内的镜像源 https://code.aliyun.com/ysrc/xunfeng.git
+
 运行与安装过程需要在管理员权限下进行
 
-	# 官网国内下载较慢，我们提供了镜像地址，根据自几的系统下载对应的
+	# 官网国内下载较慢，我们提供了镜像地址，根据自己的系统下载对应的
 	https://sec.ly.com/mirror/python-2.7.13.msi
 	https://sec.ly.com/mirror/python-2.7.13.amd64.msi
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz
 	https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1404-3.4.0.tgz
 	https://sec.ly.com/mirror/mongodb-win32-x86_64-2008plus-ssl-3.4.0-signed.msi
-
+	https://sec.ly.com/mirror/mongodb-osx-ssl-x86_64-3.4.1.tgz
 **安装相关依赖：**
 
-	CentOS
+	# CentOS
 	yum install gcc libffi-devel python-devel openssl-devel libpcap-devel
 
-	Ubuntu/Debian
+	# Ubuntu/Debian
 	sudo apt-get update && sudo apt-get install gcc libssl-dev libffi-dev python-dev libpcap-dev
 
 **安装python依赖库：**
@@ -55,14 +59,14 @@
 
 	./mongorestore -h 127.0.0.1 --port 65521 -d xunfeng db
 	# db为初始数据库结构文件夹路径
-	# 低版本不支持全文索引，需使用MongoDB 3.x版本
+	# 低版本不支持全文索引，需使用高于 MongoDB 3.2版本
 **增加认证：**  
 
 	./mongo --port 65521
 	use xunfeng
 	db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 	exit
-	# 请将pwd换为你设定的密码。	
+	# 请将 your password 换为你设定的密码。	
 **停止服务：**  
 
 	kill -9 $(pidof mongod)
@@ -85,21 +89,55 @@
 
 	mongorestore.exe -h 127.0.0.1 --port 65521 -d xunfeng db
 	# db为初始数据库结构文件夹路径
-	# 低版本不支持全文索引，需使用MongoDB 3.x版本
+	# 低版本不支持全文索引，需使用高于 MongoDB 3.2版本
 **增加认证：**  
 
 	./mongo --port 65521
 	use xunfeng
 	db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 	exit
-	# 请将pwd换为你设定的密码。
+	# 请将 your password 换为你设定的密码。
 **停止服务：**  
 
 	Ctrl + c 关闭mongodb服务
 **启动服务：**  
 
 	# 根据实际情况修改Conifg.py和Run.bat文件。
-	运行Run.bat 启动服务。
+	运行Run.bat 启动服务。要用MASSCAN的话需要安装WinPcap
+	
+## Docker 布署 ##
+
+### 使用 Dockerfile 布署 ###
+
+	# 在 xunfeng 目录下，执行：
+	$ docker build --tag=xunfeng .
+
+### 直接获取 Docker hub 镜像 (推荐)###
+
+	# 拉取镜像到本地
+	$ docker pull ysrc/xunfeng
+
+> 如果获取速度慢，推荐使用 [中科大 Docker Mirrors](https://lug.ustc.edu.cn/wiki/mirrors/help/docker)加速
+
+	# 启动环境
+	$ docker run -d -p 8000:80 -v /opt/data:/data ysrc/xunfeng:latest
+ > `-p 8000:80` 前面的 8000 代表物理机的端口，可随意指定。 
+ >
+ > `-v /opt/data:/data` 把物理机的 `/opt/data` 挂载到 Docker 的 `/data` 指定此参数后，mongodb的数据会保存到物理机的 `/opt/data` 目录下
+ 
+	访问: `http://127.0.0.1:8000/` 正常访问则代表安装成功
+
+**Docker 镜像信息**
+
+类型 | 用户名 | 密码
+:-:|:-:|:-:
+ 管理员 | admin | xunfeng321
+mongodb | scan | scanlol66
+巡风物理路径 | /opt/xunfeng | -
+MASSCAN 路径| /opt/xunfeng/masscan/linux_64/masscan | -
+mongodb 端口 | 65521| -
+
+	# 记得修改默认密码，感谢热心网友 Medicean 提供的帮助 :)
 
 ## 配置指南 ##
 - 在配置-爬虫引擎-网络资产探测列表 设置内网IP段**（必须配置，否则无法正常使用）**。
@@ -113,7 +151,7 @@
 **JSON标示符**
 
 例子  
-![](https://sec-pic-ly.b0.upaiyun.com/img/161216/A3F3B2BF2D62EECA9C6638F89915012034B6AC48.png)
+![](https://sec-pic-ly.b0.upaiyun.com/img/161220/261479B35BD86E479D6E40DAA990E700749CA50E.png)
 
 **Python脚本**  
 插件标准非常简洁，只需通过 **get\_plugin\_info** 方法定义插件信息，**check**函数检测漏洞即可。  
@@ -203,9 +241,11 @@ HTTP：触发，http://ip/add/randomstr ，验证， http://ip/check/randomstr �
 	    check = urllib2.urlopen("http://%s/%s"%(server_ip,rand_str)).read()
 	    if 'YES' in check:
 	        return u"未授权访问"
-## 流程演示 ##
+## 流程演示视频 ##
 
-[![](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/intro.png)](http://player.youku.com/embed/XMTg2NTcyNjE2NA==)
+[![](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/intro.png)](https://sec-pic-ly.b0.upaiyun.com/xunfeng/xunfeng.mp4)
+
+	#演示数据为填充数据
 
 ## 文件结构 ##
    

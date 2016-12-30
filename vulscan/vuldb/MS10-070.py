@@ -4,7 +4,7 @@ import urllib2
 
 def get_plugin_info():
     plugin_info = {
-        "name": "ASP.NET Padding Oracle信息泄露",
+        "name": ".NET Padding Oracle信息泄露",
         "info": "攻击者通过此漏洞最终可以达到任意文件读取的效果。",
         "level": "高危",
         "type": "任意文件读取",

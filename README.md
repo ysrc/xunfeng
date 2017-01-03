@@ -187,7 +187,7 @@ mongodb 端口 | 65521| -
 此外系统内嵌了辅助验证功能:  
 
 
-> DNS：触发，nslookup randomstr IP，验证， http://ip/randomstr ，返回YES即存在。  
+> DNS：触发，nslookup randomstr IP，验证， http://ip:8088/randomstr ，返回YES即存在。  
 HTTP：触发，http://ip:8088/add/randomstr ，验证， http://ip:8088/check/randomstr ，返回YES即存在。  
 
 使用例子:

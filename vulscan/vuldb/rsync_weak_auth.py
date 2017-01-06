@@ -93,7 +93,6 @@ class RsyncWeakCheck(object):
                 if path_name and not path_name.startswith('@RSYNCD: '):
                     yield path_name.split('\t')[0].strip()
 
-
     def weak_passwd_check(self, path_name='', username='', passwd=''):
         ver_string = self._rsync_init()
         if self._get_ver_num(ver_string=ver_string) < 30:

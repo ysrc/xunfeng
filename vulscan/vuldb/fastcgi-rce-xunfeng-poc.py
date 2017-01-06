@@ -78,8 +78,8 @@ def get_plugin_info():
         "name":"fastcgi任意文件读取及远程任意代码执行",
         "info":"可以通过fast-cgi获取文件或任意代码执行",
         "level":"高危",
-        "type":"远程命令执行",
-        "author":"ysrc@nearg1e",
+        "type":"命令执行",
+        "author":"nearg1e@YSRC",
         "source":1,
         "url":"http://www.cnblogs.com/LittleHann/p/4561462.html",
         "keyword":"port:9000"

@@ -114,7 +114,7 @@ def exploit(host, port):
     for filepath in phpfile_list:
         res = fast_cgi_rce(host, port, php_filepath=filepath)
         if res:
-            return (True, '存在任意代码执行漏洞,php文件路径：' + filepath)
+            return (True, u'存在任意代码执行漏洞,php文件路径：' + filepath)
     return False
 
 def verify(host, port):

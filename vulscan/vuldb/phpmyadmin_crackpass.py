@@ -1,7 +1,7 @@
 # coding=utf-8
 import urllib2
 import re
-
+import cookielib
 
 def get_plugin_info():
     plugin_info = {
@@ -37,6 +37,9 @@ def check(ip, port, timeout):
     for user in user_list:
         for password in PASSWORD_DIC:
             try:
+                cj = cookielib.CookieJar()
+                opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+                urllib2.install_opener(opener)
                 res_html = urllib2.urlopen(url, timeout=timeout).read()
                 token = re.search('name="token" value="(.*?)" \/>', res_html)
                 token_hash = urllib2.quote(token.group(1))

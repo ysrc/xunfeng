@@ -38,5 +38,5 @@ def check(ip, port, timeout):
         res_html = urllib2.urlopen(url, timeout=timeout).read(1024)
         if 'xxscan0' in res_html:
             return u"存在任意文件上传漏洞，" + url
-    except Exception, e:
-        print e
+    except:
+        pass

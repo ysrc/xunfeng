@@ -70,7 +70,6 @@ def check(ip, port, timeout):
                 auth_data = get_auth_data(user, pass_, scramble, plugin)
                 sock.send(auth_data)
                 result = sock.recv(1024)
-                print result
                 if result == "\x07\x00\x00\x02\x00\x00\x00\x02\x00\x00\x00":
                     return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)
             except Exception, e:

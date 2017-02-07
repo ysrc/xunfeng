@@ -44,7 +44,10 @@ def get_scramble(packet):
 def get_auth_data(user, password, scramble, plugin):
     user_hex = binascii.b2a_hex(user)
     pass_hex = binascii.b2a_hex(get_hash(password, scramble))
-    data = "85a23f0000000040080000000000000000000000000000000000000000000000" + user_hex + "0014" + pass_hex
+    if not password:
+        data = "85a23f0000000040080000000000000000000000000000000000000000000000" + user_hex + "0000"
+    else:
+        data = "85a23f0000000040080000000000000000000000000000000000000000000000" + user_hex + "0014" + pass_hex
     if plugin: data += binascii.b2a_hex(
         plugin) + "0055035f6f73076f737831302e380c5f636c69656e745f6e616d65086c69626d7973716c045f7069640539323330360f5f636c69656e745f76657273696f6e06352e362e3231095f706c6174666f726d067838365f3634"
     len_hex = hex(len(data) / 2).replace("0x", "")
@@ -67,6 +70,7 @@ def check(ip, port, timeout):
                 auth_data = get_auth_data(user, pass_, scramble, plugin)
                 sock.send(auth_data)
                 result = sock.recv(1024)
+                print result
                 if result == "\x07\x00\x00\x02\x00\x00\x00\x02\x00\x00\x00":
                     return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)
             except Exception, e:

@@ -43,9 +43,14 @@ function nextPage() {
     } else {
         oripage = page - 1;
         if (getQueryString('page') == null) {
-            location.href = location.href + "&page=" + page.toString();
+			if(location.search.length>7){
+				location.href = location.href + "&page=" + page.toString();
+			}
+            else{
+				location.href = location.href + "?page=" + page.toString();
+			}
         } else {
-            location.href = location.href.replace("&page=" + oripage.toString(), "&page=" + page.toString());
+            location.href = location.href.replace("page=" + oripage.toString(), "page=" + page.toString());
         }
     }
 }
@@ -53,7 +58,7 @@ function prePage() {
     page = parseInt(getQueryString('page') == null ? 1 : getQueryString('page')) - 1;
     if (page > 0) {
         oripage = page + 1;
-        location.href = location.href.replace("&page=" + oripage.toString(), "&page=" + page.toString());
+        location.href = location.href.replace("page=" + oripage.toString(), "page=" + page.toString());
     } else {
         alert('已到达首页');
     }
@@ -64,7 +69,12 @@ function turnTo(page) {
         url = location.href.replace("&page=" + getQueryString('page'), "&page=" + page);
         location.href = url
     } else {
-        url = location.href + "&page=" + page;
+			if(location.search.length>7){
+				url = location.href + "&page=" + page;
+			}
+            else{
+				url = location.href + "?page=" + page;
+			}
         location.href = url
     }
 }

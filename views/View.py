@@ -502,6 +502,8 @@ def installplugin():
         if not db_record or not db_record['source'] == 1:
             file_name = file_name.split('.')[0] + '_' + str(datetime.now().second) + '.' + \
                         file_name.split('.')[-1]
+        else:
+            db_record = Mongo.coll['Plugin'].delete_one({'filename': file_name.split('.')[0]})
     if item['location'].find('/') == -1:
         urlretrieve('https://sec.ly.com/xunfeng/getplugin?name=' + item['location'], file_path + file_name)
     else:

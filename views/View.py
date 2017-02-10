@@ -270,7 +270,7 @@ def DownloadXls():
 @app.route('/plugin')
 @logincheck
 def Plugin():
-    page = int(request.form.get('page', '1'))
+    page = int(request.args.get('page', '1'))
     cursor = Mongo.coll['Plugin'].find().limit(page_size).skip((page - 1) * page_size)
     return render_template('plugin.html', cursor=cursor, vultype=cursor.distinct('type'), count=cursor.count())
 

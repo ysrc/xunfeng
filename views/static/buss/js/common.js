@@ -66,7 +66,7 @@ function prePage() {
 function turnTo(page) {
     curPage = getQueryString('page');
     if (curPage != null) {
-        url = location.href.replace("&page=" + getQueryString('page'), "&page=" + page);
+        url = location.href.replace("page=" + getQueryString('page'), "page=" + page);
         location.href = url
     } else {
 			if(location.search.length>7){

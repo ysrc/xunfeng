@@ -38,18 +38,24 @@
 	# Ubuntu/Debian
 	sudo apt-get update && sudo apt-get install gcc libssl-dev libffi-dev python-dev libpcap-dev
 
+	# Mac OSX
+	brew install mongodb openssl
+
 **安装python依赖库：**
 
-	# 需先安装pip，建议使用豆瓣的pip源，否则可能会因为超时导致出错。	
+	# 需先安装pip，建议使用豆瓣的pip源，否则可能会因为超时导致出错。
 	wget https://sec.ly.com/mirror/get-pip.py --no-check-certificate
 	python get-pip.py
-	
+
 	# 已经有pip需更新到最新版本
 	pip install -U pip
-	
-	pip install pymongo Flask xlwt paramiko
+
+	pip install virtualenv
+	virtualenv xfvenv
+	source xfvenv/bin/activate
+	pip install -r requirements.txt
 ### Linux 部署流程 ###
- 
+
 **启动服务：**
 
 	nohup ./mongod --port 65521 --dbpath DBData &
@@ -66,7 +72,7 @@
 	use xunfeng
 	db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 	exit
-	# 请将 your password 换为你设定的密码。	
+	# 请将 your password 换为你设定的密码。
 **停止服务：**  
 
 	kill -9 $(pidof mongod)
@@ -82,7 +88,7 @@
 ### Windows 部署流程 ###
 
 **启动服务：**  
-  	
+
 	mongod.exe --port 65521 --dbpath DBData
 	# DBData为数据库指定存在目录。
 **导入数据：**  
@@ -104,7 +110,7 @@
 
 	# 根据实际情况修改Conifg.py和Run.bat文件。
 	运行Run.bat 启动服务。要用MASSCAN的话需要安装WinPcap
-	
+
 ## Docker 布署 ##
 
 ### 使用 Dockerfile 布署 ###
@@ -121,10 +127,10 @@
 
 	# 启动环境
 	$ docker run -d -p 8000:80 -v /opt/data:/data ysrc/xunfeng:latest
- > `-p 8000:80` 前面的 8000 代表物理机的端口，可随意指定。 
+ > `-p 8000:80` 前面的 8000 代表物理机的端口，可随意指定。
  >
  > `-v /opt/data:/data` 把物理机的 `/opt/data` 挂载到 Docker 的 `/data` 指定此参数后，mongodb的数据会保存到物理机的 `/opt/data` 目录下
- 
+
 	访问: `http://127.0.0.1:8000/` 正常访问则代表安装成功
 
 **Docker 镜像信息**
@@ -147,7 +153,7 @@ mongodb 端口 | 65521| -
 
 ## 插件编写 ##
 漏洞插件支持2种类型，标示符与python脚本，可以通过官方推送渠道安装或者自行添加。
-  
+
 **JSON标示符**
 
 例子  
@@ -155,12 +161,12 @@ mongodb 端口 | 65521| -
 
 **Python脚本**  
 插件标准非常简洁，只需通过 **get\_plugin\_info** 方法定义插件信息，**check**函数检测漏洞即可。  
-  
+
 	# coding:utf-8
     import ftplib
     def get_plugin_info():  # 插件描述信息
     	plugin_info = {
-    		"name": "FTP弱口令", 
+    		"name": "FTP弱口令",
     		"info": "导致敏感信息泄露，严重情况可导致服务器被入侵控制。",
     		"level": "高危",
     		"type": "弱口令",
@@ -197,7 +203,7 @@ HTTP：触发，http://ip:8088/add/randomstr ，验证， http://ip:8088/check/r
 	import socket
 	def get_plugin_info():  # 插件描述信息
     	plugin_info = {
-    		"name": "CouchDB未授权访问", 
+    		"name": "CouchDB未授权访问",
     		"info": "导致敏感信息泄露，攻击者可通过控制面板执行系统命令，导致服务器被入侵。",
     		"level": "高危",
     		"type": "未授权访问",
@@ -248,7 +254,7 @@ HTTP：触发，http://ip:8088/add/randomstr ，验证， http://ip:8088/check/r
 	#演示数据为填充数据
 
 ## 文件结构 ##
-   
+
 
 	│  Config.py  # 配置文件
 	│  README.md  # 说明文档
@@ -261,7 +267,7 @@ HTTP：触发，http://ip:8088/add/randomstr ，验证， http://ip:8088/check/r
 	│      
 	├─db  # 初始数据库结构
 	│      
-	├─masscan  # 内置编译好的Masscan程序（CentOS win64适用），需要chmod+x给执行权限（root），若无法使用请自行编译安装。	
+	├─masscan  # 内置编译好的Masscan程序（CentOS win64适用），需要chmod+x给执行权限（root），若无法使用请自行编译安装。
 	├─nascan
 	│  │  NAScan.py # 网络资产信息抓取引擎
 	│  │  
@@ -294,6 +300,8 @@ HTTP：触发，http://ip:8088/add/randomstr ，验证， http://ip:8088/check/r
 	    │  
 	    └─vuldb # 漏洞库目录
 
+## License ##
+  GNU
 扫描下方二维码关注YSRC公众号，回复自己的微信号+巡风，会有人拉你进巡风的微信讨论群。
 
 ![](http://mmbiz.qpic.cn/mmbiz/PAV8ewtdsKpkeG9VRYNhC76iacVSe3ichYiajictdF2Q34PQo7iaPV15jjGiaAev6SqpeK5maDvtAYUtqXEYUib4ljM3A/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)

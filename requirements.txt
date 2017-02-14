@@ -1,0 +1,7 @@
+pymongo
+Flask
+xlwt
+paramiko
+#gunicorn
+#gevent
+#supervisor

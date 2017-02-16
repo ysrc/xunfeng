@@ -3,7 +3,7 @@
 import json
 import os
 from datetime import datetime
-from urllib import unquote, urlopen, urlretrieve, quote
+from urllib import unquote, urlopen, urlretrieve, quote, urlencode
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from flask import request, render_template, redirect, url_for, session, make_response
@@ -13,6 +13,8 @@ from lib.AntiCSRF import anticsrf
 from lib.QueryLogic import querylogic
 from werkzeug.utils import secure_filename
 from . import app, Mongo, page_size, file_path
+import urllib2
+
 
 
 # 搜索页
@@ -282,6 +284,8 @@ def Plugin():
 def AddPlugin():
     result = 'fail'
     f = request.files['file']
+    isupload = request.form.get('isupload', 'false')
+    file_name = ''
     if f:
         fname = secure_filename(f.filename)
         if fname.split('.')[-1] == 'py':
@@ -302,6 +306,7 @@ def AddPlugin():
                 insert_result = Mongo.coll['Plugin'].insert(mark_json)
                 if insert_result:
                     result = 'success'
+                    file_name = file_name +'.py'
 
     else:
         name = request.form.get('name', '')
@@ -333,6 +338,16 @@ def AddPlugin():
                 result = 'success'
         except:
             pass
+    if isupload == 'true' and result == 'success':
+        code_tuple = open(file_path+file_name).read()
+        code = ''
+        for _ in code_tuple:
+            code += _
+        params = {'code': code}
+        req = urllib2.Request('https://sec.ly.com/xunfeng/pluginupload')
+        req.add_header('Content-Type','application/x-www-form-urlencoded')
+        rsp = urllib2.urlopen(req,urlencode(params))
+        print 'upload result:' + rsp.read()
     return result
 
 

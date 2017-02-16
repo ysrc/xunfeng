@@ -39,6 +39,7 @@ $('#add').click(function () {
     pluginurl = $('#field-pluginurl').val();
     path = $('#field-upload').val();
     filename = path.substring(path.lastIndexOf('\\')).split('.')[0];
+    isupload = $('#field-isupload').val();
     $.ajaxFileUpload({
         url: "/addplugin",
         secureuri: false,
@@ -56,7 +57,8 @@ $('#add').click(function () {
             analyzingdata: analyzingdata,
             tag: tag,
             keyword: condition,
-            pluginurl: pluginurl
+            pluginurl: pluginurl,
+            isupload: isupload
         },
         dataType: "json",
         fileElementId: "field-upload",

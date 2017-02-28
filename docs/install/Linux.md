@@ -43,7 +43,7 @@ $ pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-ho
 
 ### 3、安装数据库
 
-由于 `MongoDB 3.2` 的版本不支持全文索引，所以系统中的 `MongoDB` 必须大于 `3.2` 版本
+由于低版本不支持全文索引，需使用 `MongoDB 3.x` 版本
 
 **CentOS**
 

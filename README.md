@@ -36,7 +36,7 @@
 
 **Python脚本**
 
-插件标准非常简洁，只需通过 `get\_plugin\_info` 方法定义插件信息，`check`函数检测漏洞即可。
+插件标准非常简洁，只需通过 `get_plugin_info` 方法定义插件信息，`check`函数检测漏洞即可。
 
 ```python
 # coding:utf-8

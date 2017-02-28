@@ -19,6 +19,7 @@
 * [Windows 安装指南](./docs/install/Windows.md)
 * [OSX 安装指南](./docs/install/OSX.md)
 * [Linux 安装指南](./docs/install/Linux.md)
+* [Docker 安装指南](./docs/install/Docker.md)
 
 
 ## 配置指南

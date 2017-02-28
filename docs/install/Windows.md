@@ -31,6 +31,8 @@ $ pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-ho
 
 ### 1. 启动数据库
 
+`DBData`为指定的数据库保存路径
+
 ```
 > mongod.exe --port 65521 --dbpath DBData
 ```
@@ -47,10 +49,10 @@ $ mongo
 
 ### 2. 导入数据库
 
-进入 `db` 文件夹, 执行如下命令:
+`db` 文件夹位于xunfeng代码目录中:
 
 ```
-$ mongorestore.exe -h 127.0.0.1 --port 65521 -d xunfeng db .
+$ mongorestore.exe -h 127.0.0.1 --port 65521 -d xunfeng db 
 ```
 
 ### 3. 修改配置

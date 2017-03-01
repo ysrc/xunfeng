@@ -11,9 +11,11 @@ import re
 import uuid
 import os
 
+from xunfeng.core.Config import ProductionConfig
+
 sys.path.append(sys.path[0] + '/vuldb')
 sys.path.append(sys.path[0] + "/../")
-from Config import ProductionConfig
+
 
 db_conn = pymongo.MongoClient(ProductionConfig.DB, ProductionConfig.PORT)
 na_db = getattr(db_conn, ProductionConfig.DBNAME)
@@ -30,6 +32,7 @@ TIMEOUT = 10
 PLUGIN_DB = {}
 TASK_DATE_DIC = {}
 WHITE_LIST = []
+
 
 class vulscan():
     def __init__(self, task_id, task_netloc, task_plugin):
@@ -255,7 +258,11 @@ def init():
             pass
 
 
-if __name__ == '__main__':
+def main():
+    """
+    漏洞检测引擎
+    :return:
+    """
     init()
     PASSWORD_DIC, THREAD_COUNT, TIMEOUT, WHITE_LIST = get_config()
     thread.start_new_thread(monitor, ())
@@ -274,3 +281,7 @@ if __name__ == '__main__':
                 else:
                     time.sleep(2)
         if task_plan == 0: na_task.update({"_id": task_id}, {"$set": {"status": 2}})
+
+
+if __name__ == '__main__':
+    main()

@@ -1,3 +1,15 @@
+# coding: utf-8
+
+import os
+
+# FIXME Windows下中文路径可能会出现问题
+ROOT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+IS_DEBUG = True
+
+PAGE_SIZE = 60
+
+
 class Config(object):
     ACCOUNT = 'admin'
     PASSWORD = 'xunfeng321'

@@ -1,9 +1,17 @@
 # coding:utf-8
 # author:wolf@YSRC
+
 import thread
+
 from lib.common import *
 from lib.start import *
-if __name__ == "__main__":
+
+
+def main():
+    """
+    网络资产信息抓取引擎
+    :return:
+    """
     try:
         CONFIG_INI = get_config()  # 读取配置
         log.write('info', None, 0, u'获取配置成功')
@@ -32,3 +40,7 @@ if __name__ == "__main__":
             time.sleep(60)
     except Exception, e:
         print e
+
+
+if __name__ == "__main__":
+    main()

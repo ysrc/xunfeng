@@ -88,7 +88,7 @@ _Ubuntu 14.04_
 $ echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
 ```
 
-**下载源码包进行安装**
+**或者下载二进制文件直接运行**
 
 * https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz
 * https://sec.ly.com/mirror/mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz

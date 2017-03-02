@@ -101,7 +101,7 @@ class start:
                 for ip_num in range(ip_start, ip_end + 1):
                     ip_list_tmp.append(numtoip(ip_num))
             else:
-                print '-h wrong format'
+                print 'IP format error'
         else:
             ip_split = ip.split('.')
             net = len(ip_split)
@@ -117,7 +117,7 @@ class start:
             elif net == 4:
                 ip_list_tmp.append(ip)
             else:
-                print "-h wrong format"
+                print "IP format error"
         return ip_list_tmp
 
     def get_ac_ip(self, ip_list):

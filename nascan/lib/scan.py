@@ -174,6 +174,7 @@ class scan:
                          "\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x00\x00\x21\x00\x01"
             dport = 137
             _s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            _s.settimeout(3)
             _s.sendto(query_data, (ip, dport))
             x = _s.recvfrom(1024)
             tmp = x[0][57:]

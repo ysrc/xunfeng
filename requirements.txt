@@ -1,0 +1,7 @@
+six>=1.6.0
+Flask
+pymongo
+xlwt
+paramiko
+packaging
+appdirs

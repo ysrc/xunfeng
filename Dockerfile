@@ -18,10 +18,6 @@ RUN set -x \
     && apt-get update \
     && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip
 
-RUN set -x \
-    && pip install Flask pymongo xlwt paramiko \
-    && ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1 
-
 # install mongodb
 
 ENV MONGODB_TGZ https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz
@@ -36,6 +32,11 @@ ENV PATH /opt/mongodb/bin:$PATH
 # install xunfeng
 RUN mkdir -p /opt/xunfeng
 COPY . /opt/xunfeng
+
+RUN set -x \
+    && pip install -r /opt/xunfeng/requirements.txt \
+    && ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1
+
 RUN set -x \
     && chmod a+x /opt/xunfeng/masscan/linux_64/masscan \
     && chmod a+x /opt/xunfeng/dockerconf/start.sh

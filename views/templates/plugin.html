@@ -92,13 +92,24 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group no-margin">
                                     <label for="field-type" class="control-label">插件格式</label>
                                     <select class="form-control" id="field-type">
                                         <option></option>
                                         <option>json</option>
                                         <option>script</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group no-margin">
+                                    <label for="field-isupload" class="control-label">是否上传该插件
+                                    <i class="zmdi zmdi-help-outline zmdi-hc-1x" title="如果选择上传，您编写的插件将上传至官方服务器，经过审核后我们会将其推送给安装巡风的其他用户(记得将插件功能描述清楚，然后留下你的大名)"></i>
+                                    </label>
+                                    <select class="form-control" id="field-isupload">
+                                        <option value="true">是</option>
+                                        <option value="false">否</option>
                                     </select>
                                 </div>
                             </div>

@@ -128,13 +128,15 @@ class vulscan():
             try:
                 time_ = datetime.datetime.now()
                 self.log(str(self.task_netloc) + " " + self.result_info)
+                v_count = na_result.find(
+                    {"ip": self.task_netloc[0], "port": self.task_netloc[1], "info": self.result_info}).count()
+                if not v_count: na_plugin.update({"name": self.task_plugin}, {"$inc": {'count': 1}})
                 vulinfo = {"vul_name": self.plugin_info['name'], "vul_level": self.plugin_info['level'],
                            "vul_type": self.plugin_info['type']}
                 w_vul = {"task_id": self.task_id, "ip": self.task_netloc[0], "port": self.task_netloc[1],
                          "vul_info": vulinfo, "info": self.result_info, "time": time_,
                          "task_date": TASK_DATE_DIC[str(self.task_id)]}
                 na_result.insert(w_vul)
-                na_plugin.update({"name": self.task_plugin}, {"$inc": {'count': 1}})
                 # self.wx_send(w_vul)  # 自行定义漏洞提醒
             except Exception, e:
                 pass

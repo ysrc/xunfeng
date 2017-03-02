@@ -117,6 +117,7 @@ $ netstat -antlp | grep 27017
 
 ```bash
 $ mongo
+> use xunfeng
 > db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 > exit
 ```

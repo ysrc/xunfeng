@@ -1,0 +1,18 @@
+{
+    "name": ".svn代码泄露",
+    "info": "未授权访问导致代码泄露",
+    "level": "高危",
+    "type": "信息泄露",
+    "author": "0xbug",
+    "url": "https://www.rapid7.com/db/vulnerabilities/spider-svn-entries-disclosure",
+    "keyword": "tag:svn_disclosure",
+    "source": 1,
+    "plugin": {
+        "url": "/.svn/all-wcprops",
+        "tag": "信息泄露",
+        "analyzing": "keyword",
+        "analyzingdata": "svn:wc:ra_dav:version-url",
+        "data": "",
+        "method": "GET"
+    }
+}

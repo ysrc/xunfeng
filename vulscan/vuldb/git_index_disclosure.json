@@ -5,7 +5,7 @@
     "type": "信息泄露",
     "author": "0xbug",
     "url": "https://github.com/git/git/blob/master/Documentation/technical/index-format.txt",
-    "keyword": "tag:git_disclosure",
+    "keyword": "server:web",
     "source": 1,
     "plugin": {
         "url": "/.git/config",

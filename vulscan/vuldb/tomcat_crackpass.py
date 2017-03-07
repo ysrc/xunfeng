@@ -20,7 +20,7 @@ def get_plugin_info():
 
 def check(ip, port, timeout):
     error_i = 0
-    flag_list = ['Application Manager', 'Welcome']
+    flag_list = ['/manager/html/reload', 'Tomcat Web Application Manager']
     user_list = ['admin', 'manager', 'tomcat', 'apache', 'root']
     for user in user_list:
         for pass_ in PASSWORD_DIC:

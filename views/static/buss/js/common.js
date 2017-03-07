@@ -117,7 +117,7 @@ function justCheck() {
         if (data.length > 0) {
             delAllCookie();
             $('.user-list').html("");
-            setCookie('plugins', encodeURI(JSON.stringify(data)), 2);
+            setCookie('plugins', encodeURI(JSON.stringify(data)), 1);
             $('.noti-dot').css('display', 'block');
             $.each(data, function (i, item) {
                 $('.user-list').append("<li class='list-group-item'>\
@@ -130,7 +130,7 @@ function justCheck() {
                                 </div></a></li>")
             });
         } else {
-            setCookie('plugins', '', 2);
+            setCookie('plugins', '', 1);
         }
     })
 }

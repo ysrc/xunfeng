@@ -16,7 +16,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN set -x \
     && apt-get update \
-    && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip
+    && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git
+
+#install 
+git clone https://github.com/robertdavidgraham/masscan
+cd masscan
+make
 
 # install mongodb
 

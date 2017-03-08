@@ -46,7 +46,7 @@ $ sudo mongod --port 65521 --dbpath /opt/xunfeng/log/db &
 ### 2. mongodb 添加认证
 
 ```
-$ mongo
+$ mongo 127.0.0.1:65521/xunfeng
 > db.createUser({user:'scan',pwd:'your password',roles:[{role:'dbOwner',db:'xunfeng'}]})
 > exit
 ```

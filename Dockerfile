@@ -18,10 +18,6 @@ RUN set -x \
     && apt-get update \
     && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git
 
-#install 
-git clone https://github.com/robertdavidgraham/masscan
-cd masscan
-make
 
 # install mongodb
 

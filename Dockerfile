@@ -16,7 +16,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN set -x \
     && apt-get update \
-    && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git iptraf
+    && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git iptraf vim
 
 
 ENV TERM xterm

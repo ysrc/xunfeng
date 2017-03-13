@@ -14,6 +14,7 @@
 ## 安装指南
 
 [![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg?a=1)](https://www.mongodb.com/download-center?jmp=nav)
+
 国内镜像 https://code.aliyun.com/ysrc/xunfeng.git
 
 * [Windows 安装指南](./docs/install/Windows.md)

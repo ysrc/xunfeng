@@ -14,6 +14,7 @@ from lib.QueryLogic import querylogic
 from werkzeug.utils import secure_filename
 from . import app, Mongo, page_size, file_path
 import urllib2
+import copy
 
 
 
@@ -470,7 +471,7 @@ def PullUpdate():
     if j:
         try:
             remotelist = json.loads(j)
-            remotelist_temp = remotelist
+            remotelist_temp = copy.deepcopy(remotelist)
             plugin = Mongo.coll['Plugin'].find({'source': 1})
             for p in plugin:
                 for remote in remotelist_temp:

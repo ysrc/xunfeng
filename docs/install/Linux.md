@@ -48,23 +48,25 @@ $ pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-ho
 **CentOS**
 
 ```
-$ vi /etc/yum.repos.d/10gen.repo
+$ vi /etc/yum.repos.d/mongodb-org-3.2.repo
 
 ```
 
 编辑 `yum` 源, 输入如下内容:
 
 ```
-[10gen] 
-name=10gen Repository 
-baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64 
+[mongodb-org-3.2]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.2/x86_64/
 gpgcheck=0
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc
 ```
 
 保存并退出, 执行如下命令:
 
 ```bash
-$ yum info mongo-10gen-server && yum install mongo-10gen-server
+$ sudo yum install -y mongodb-org
 ```
 
 **Ubuntu/Debian**

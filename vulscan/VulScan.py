@@ -264,7 +264,9 @@ if __name__ == '__main__':
         if task_id == '':
             time.sleep(10)
             continue
-        PLUGIN_DB = {}  # 清理插件缓存
+        if PLUGIN_DB:
+            del sys.modules[PLUGIN_DB.keys()[0]] # 清理插件缓存
+            PLUGIN_DB.clear()
         for task_netloc in task_target:
             while True:
                 if int(thread._count()) < THREAD_COUNT:

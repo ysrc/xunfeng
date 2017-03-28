@@ -24,7 +24,6 @@ def check(ip, port, timeout):
         flag = "GET / HTTP/1.1\r\nReferer:%s\r\n\r\n" % (chr(0) * 15)
         s.send(flag)
         data = s.recv(512)
-        print data
         s.close()
         if 'state=HEADER_VALUE' in data and '400' in data:
             return u"jetty 共享缓存区远程泄露漏洞"

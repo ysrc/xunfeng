@@ -1,7 +1,6 @@
 # coding=utf-8
 import socket
 import time
-import urllib2
 
 
 def get_plugin_info():
@@ -23,11 +22,11 @@ def check(ip, port, timeout):
         socket.setdefaulttimeout(timeout)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ip, port))
-        pay="OPTIONS / HTTP/1.0\r\n\r\n"
+        pay = "OPTIONS / HTTP/1.0\r\n\r\n"
         s.send(pay) 
         data = s.recv(2048)
         s.close()
-        if "PROPFIND" in data:
+        if "PROPFIND" in data and "Microsoft-IIS/6.0" in data :
             return u"可能存在IIS WebDav 远程代码执行漏洞"
     except:
         pass

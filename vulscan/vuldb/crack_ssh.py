@@ -25,6 +25,7 @@ def check(ip, port, timeout):
             pass_ = str(pass_.replace('{user}', user))
             try:
                 ssh.connect(ip, port, user, pass_, timeout=timeout)
+                ssh.exec_command('whoami')
                 ssh.close()
                 if pass_ == '': pass_ = "null"
                 return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)

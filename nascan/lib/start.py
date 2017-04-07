@@ -17,6 +17,7 @@ class ThreadNum(threading.Thread):
 
     def run(self):
         while True:
+            if self.queue.empty(): break
             try:
                 task_host = self.queue.get(block=False)
                 if self.mode:

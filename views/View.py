@@ -375,11 +375,7 @@ def Analysis():
     ip = len(Mongo.coll['Info'].distinct('ip'))
     record = Mongo.coll['Info'].find().count()
     task = Mongo.coll['Task'].find().count()
-    vulcount = Mongo.coll['Plugin'].group([], {"count":{"$ne":0}}, {'count': 0},'function(doc,prev){prev.count = prev.count + doc.count}')
-    if vulcount:
-        vul = int(vulcount[0]['count'])
-    else:
-        vul = 0
+    vul = int(Mongo.coll['Plugin'].group([], {}, {'count': 0},'function(doc,prev){prev.count = prev.count + doc.count}')[0]['count'])
     plugin = Mongo.coll['Plugin'].find().count()
     vultype = Mongo.coll['Plugin'].group(['type'], {"count":{"$ne":0}}, {'count': 0},'function(doc,prev){prev.count = prev.count + doc.count}')
     cur = Mongo.coll['Statistics'].find().sort('date', -1).limit(30)

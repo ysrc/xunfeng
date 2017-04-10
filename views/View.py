@@ -377,7 +377,7 @@ def Analysis():
     task = Mongo.coll['Task'].find().count()
     vul = Mongo.coll['Result'].find().count()
     plugin = Mongo.coll['Plugin'].find().count()
-    vultype = Mongo.coll['Result'].group(['vul_info.vul_type'], {}, {'count': 0}, 'function(o,p){p.count++}')
+    vultype = Mongo.coll['Plugin'].group(['type'], {"count":{"$ne":0}}, {'count': 0},'function(doc,prev){prev.num = prev.num + doc.count}')
     cur = Mongo.coll['Statistics'].find().sort('date', -1).limit(30)
     trend = []
     for i in cur:

@@ -211,7 +211,7 @@
                         this.createLineChart('morris-line-example', $data, 'time', ['add', 'update', 'delete'], ['新增', '更新', '删除'], ['0.9'], ['#ffffff'], ['#999999'], ['#10c469', '#188ae2', '#964b95']);
                         var $donutData =
                                 [{% for i in vultype %}
-                                    {value:{{ i['count'] }}, label: '{{i['vul_info.vul_type']}}'},
+                                    {value:{{ i['count'] }}, label: '{{i['type']}}'},
                                 {% endfor %}];
                         var $stckedData = [
                             {% for i in server_type %}

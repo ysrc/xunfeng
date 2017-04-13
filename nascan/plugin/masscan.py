@@ -10,7 +10,7 @@ def run(ip_list,path,rate):
         rate = str(rate).translate(None, ';|&')
         if not os.path.exists(path):return
         os.system("%s -p1-65535 -iL target.log -oL tmp.log --randomize-hosts --rate=%s"%(path,rate))
-        result_file = open("tmp.log", 'r')
+        result_file = open('tmp.log', 'r')
         result_json = result_file.readlines()
         result_file.close()
         del result_json[0]
@@ -25,6 +25,8 @@ def run(ip_list,path,rate):
                 else:
                     open_list[ip] = [port]
             except:pass
+        os.remove('target.log')
+        os.remove('tmp.log')
         return open_list
     except:
         pass

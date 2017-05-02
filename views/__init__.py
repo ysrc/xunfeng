@@ -6,7 +6,7 @@ from views.lib import Conn
 import os
 
 app = Flask(__name__)
-app.secret_key = "\xe8\xf7\xb9\xae\xfb\x87\xea4<5\xe7\x97D\xf4\x88)Q\xbd\xe1j'\x83\x13\xc7"
+app.secret_key = os.environ.get('SECRET_KEY') or os.urandom(64)
 app.config.from_object(ProductionConfig)
 Mongo = Conn.MongoDB(app.config.get('DB'), app.config.get('PORT'), app.config.get('DBNAME'),
                      app.config.get('DBUSERNAME'), app.config.get('DBPASSWORD'))

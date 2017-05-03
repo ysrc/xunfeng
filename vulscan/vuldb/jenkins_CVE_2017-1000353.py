@@ -59,6 +59,6 @@ def check(ip, port, timeout):
         req = urllib2.Request("http://%s:8088/check/%s" % (dnsserver, ramdmum));
         reqopen = urllib2.urlopen(req)
         if 'YES' in reqopen.read():
-            return '存在Jenkins反序列化漏洞（CVE-2015-8103）'
+            return '存在Jenkins反序列化漏洞（CVE-2017-1000353）'
     except:
         pass

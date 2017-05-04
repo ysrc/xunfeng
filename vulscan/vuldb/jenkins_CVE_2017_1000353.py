@@ -47,7 +47,7 @@ def check(ip, port, timeout):
         urllib2.socket.setdefaulttimeout(timeout)
         dnsserver = get_ver_ip(ip)
         ramdmum = random_str(6 + 15 - len(dnsserver))
-        URL = ("http://%s:%d/cli" % (ip, port))
+        URL = str("http://%s:%d/cli" % (ip, port))
         t = threading.Thread(target=download, args=(URL, session))
         t.start()
         time.sleep(1)

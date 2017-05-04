@@ -1,4 +1,4 @@
-# encoding:utf-8
+# coding:utf-8
 import socket
 import uuid
 import random
@@ -9,7 +9,7 @@ import threading
 def get_plugin_info():
     plugin_info = {
         "name": "Jenkins-CLI反序列化代码执行(CVE-2017-1000353)",
-        "info": "Jenkins-CLI反序列化代码执行,CVE-2017-1000353",
+        "info": "Jenkins-CLI反序列化代码执行,CVE-2017-1000353,攻击者通过此漏洞可以直接获取系统权限，导致服务器被入侵控制。",
         "level": "紧急",
         "type": "代码执行",
         "author": "d33.n99@gmail.com",
@@ -58,7 +58,7 @@ def check(ip, port, timeout):
         time.sleep(5)
         req = urllib2.Request("http://%s:8088/check/%s" % (dnsserver, ramdmum));
         reqopen = urllib2.urlopen(req)
-        if 'YES' in reqopen.read():
-            return '存在Jenkins反序列化漏洞（CVE-2017-1000353）'
+        if "YES" in reqopen.read():
+            return u"存在Jenkins反序列化漏洞(CVE-2017-1000353)"
     except:
         pass

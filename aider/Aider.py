@@ -15,14 +15,18 @@ def web_server():
             html = "NO"
             if len(route_list) == 3:
                 if route_list[1] == 'add':
-                    url_history.append(route_list[2])
+                    if route_list[2] not in url_history:
+                        url_history.append(route_list[2])
                 elif route_list[1] == 'check':
                     if route_list[2] in url_history:
+                        url_history.remove(route_list[2])
                         html = 'YES'
             else:
                 query_str = route_list[1]
                 for query_raw in query_history:
-                    if query_str in query_raw:html = "YES"
+                    if query_str in query_raw:
+                        query_history.remove(query_raw)
+                        html = "YES"
             print datetime.datetime.now().strftime('%m-%d %H:%M:%S') + " " + str(addr[0]) +' web query: ' + path
             raw = "HTTP/1.0 200 OK\r\nContent-Type: application/json; charset=utf-8\r\nContent-Length: %d\r\nConnection: close\r\n\r\n%s" %(len(html),html)
             conn.send(raw)
@@ -37,9 +41,8 @@ if __name__=="__main__":
         try:
             time.sleep(1)
             recv,addr = dns.recvfrom(1024)
-            query_history.append(recv)
+            if recv not in query_history:query_history.append(recv)
             print datetime.datetime.now().strftime('%m-%d %H:%M:%S') + " " +str(addr[0]) +' Dns Query: ' + recv
         except Exception,e:
             print e
-            query_history = []
             continue

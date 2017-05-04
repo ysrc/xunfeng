@@ -56,7 +56,7 @@ class vulscan():
                 setattr(plugin_res, "PASSWORD_DIC", PASSWORD_DIC)  # 给插件声明密码字典
                 PLUGIN_DB[plugin_filename] = plugin_res
             try:
-                self.result_info = PLUGIN_DB[plugin_filename].check(self.task_netloc[0], int(self.task_netloc[1]),
+                self.result_info = PLUGIN_DB[plugin_filename].check(str(self.task_netloc[0]), int(self.task_netloc[1]),
                                                                     TIMEOUT)
             except:
                 pass

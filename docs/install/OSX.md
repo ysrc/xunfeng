@@ -7,7 +7,7 @@
 使用 homebrew 在 Mac OSX 中进行软件的安装与管理, 执行如下命令安装 brew 工具:
 
 ```
-$ ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
 安装系统依赖:
@@ -26,7 +26,7 @@ $ pip install -U pip
 使用`pip`安装 python 依赖库, 这里使用了豆瓣的 pypi 源。
 
 ```
-$ pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com
+$ pip install -r requirements.txt -i https://pypi.doubanio.com/simple/
 ```
 
 ### 3、安装数据库

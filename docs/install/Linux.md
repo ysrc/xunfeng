@@ -38,7 +38,7 @@ $ pip install -U pip
 使用`pip`安装 python 依赖库, 这里使用了豆瓣的 pypi 源。
 
 ```
-$ pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com
+$ pip install -r requirements.txt -i https://pypi.doubanio.com/simple/
 ```
 
 ### 3、安装数据库

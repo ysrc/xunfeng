@@ -43,7 +43,7 @@ $ pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-ho
 
 ### 3、安装数据库
 
-由于低版本不支持全文索引，需使用 `MongoDB 3.x` 版本
+由于低版本不支持全文索引，MongoDB版本需要 ≥ 3.2。
 
 **CentOS**
 
@@ -101,13 +101,13 @@ $ echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse
 ### 1. 启动数据库
 
 ```
-$ service mongodb restart
+$ service mongod restart
 ```
 
 或者
 
 ```
-$ sudo /etc/init.d/mongodb restart
+$ sudo /etc/init.d/mongod restart
 ```
 
 执行如下命令查看 `mongodb` 是否成功启动:

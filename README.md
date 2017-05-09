@@ -98,9 +98,9 @@ def get_plugin_info():  # 插件描述信息
             "keyword": "server:couchdb",  # 推荐搜索关键字
     }
 
-def get_ver_ip():
+def get_ver_ip(ip):
     csock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    csock.connect(('8.8.8.8', 80))
+    csock.connect((ip, 80))
     (addr, port) = csock.getsockname()
     csock.close()
     return addr
@@ -133,7 +133,7 @@ def check(ip,port,timeout):
         urllib2.urlopen(req_exec)
     except:
         pass
-    check = urllib2.urlopen("http://%s/%s"%(server_ip,rand_str)).read()
+    check = urllib2.urlopen("http://%s:8088/%s"%(server_ip,rand_str)).read()
     if 'YES' in check:
         return u"未授权访问"
 ```

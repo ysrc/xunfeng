@@ -515,7 +515,10 @@ def installplugin():
     json_string = {'add_time': datetime.now(), 'count': 0, 'source': 1}
     file_name = secure_filename(item['location'].split('/')[-1])
     if os.path.exists(file_path + file_name):
-        db_record = Mongo.coll['Plugin'].find_one({'filename': file_name.split('.')[0]})
+        if ".py" in file_name:
+            db_record = Mongo.coll['Plugin'].find_one({'filename': file_name.split('.')[0]})
+        else:
+            db_record = Mongo.coll['Plugin'].find_one({'filename': file_name})
         if not db_record or not db_record['source'] == 1:
             file_name = file_name.split('.')[0] + '_' + str(datetime.now().second) + '.' + \
                         file_name.split('.')[-1]

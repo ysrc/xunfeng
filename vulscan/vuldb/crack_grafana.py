@@ -5,7 +5,7 @@ import urllib2
 def get_plugin_info():
 	plugin_info = {
 		"name": "grafana 弱口令",
-		"info": "Administrator Access to grafana  with default credentials",
+		"info": "对grafana控制台进行弱口令检测",
 		"level": "高危",
 		"type": "弱口令",
 		"author": "hos@YSRC",

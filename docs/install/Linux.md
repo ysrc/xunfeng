@@ -156,7 +156,7 @@ class ProductionConfig(Config):
 ```
 ### 4. 运行系统
 
-根据实际情况修改 `Conifg.py` 和 `Run.sh` 文件后, 执行:
+根据实际情况修改(端口和目录需对应好) `Conifg.py` 和 `Run.sh` 文件后, 执行:
 
 ```
 $ sh Run.sh

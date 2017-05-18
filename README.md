@@ -68,8 +68,8 @@ def check(ip, port, timeout): # 漏洞检测代码
                 ftp.timeout = timeout
                 ftp.connect(ip, port)
                 ftp.login(user, pass_)
-                if pass_ == '': pass_ = "null"
-                if user == 'ftp' and pass_ == 'ftp: return u"可匿名登录"
+                if pass_ == '': pass_ = 'null'
+                if user == 'ftp' and pass_ == 'ftp': return u"可匿名登录"
                 return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)  # 成功返回结果，内容显示在扫描结果页面。
             except:
                 pass

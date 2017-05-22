@@ -5,3 +5,4 @@ xlwt
 paramiko
 packaging
 appdirs
+gunicorn

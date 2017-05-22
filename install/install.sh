@@ -113,7 +113,7 @@ do_install(){
                 fi
             }
             apt_get_update
-            $sh_c 'apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git whiptail'
+            $sh_c 'apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git whiptail supervisor'
             $sh_c 'pip install -U pip'
             ;;
 
@@ -125,17 +125,17 @@ do_install(){
             if [ "$lsb_dist" = "fedora" ] && [ "$dist_version" -ge "22" ]; then
                 (
                     set -x
-                    $sh_c 'sleep 3; dnf -y -q install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail'
+                    $sh_c 'sleep 3; dnf -y -q install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail supervisor'
                 )
             elif [ "$lsb_dist" = "photon" ]; then
                 (
                     set -x
-                    $sh_c 'sleep 3; tdnf -y install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail'
+                    $sh_c 'sleep 3; tdnf -y install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail supervisor'
                 )
             else
                 (
                     set -x
-                    $sh_c 'sleep 3; yum -y -q install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail'
+                    $sh_c 'sleep 3; yum -y -q install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail supervisor'
                 )
             fi
             ;;
@@ -166,5 +166,7 @@ do_install(){
     $sh_c 'cp /opt/xunfeng/install/files/xunfeng /etc/init.d/xunfeng'
     $sh_c 'chmod +x /etc/init.d/xunfeng'
     $sh_c 'cp /opt/xunfeng/install/files/xunfeng.conf /etc/xunfeng.conf'
+    $sh_c 'chmod +x /opt/xunfeng/install/config.sh'
+    $sh_c '/bin/bash /opt/xunfeng/install/config.sh'
 }
 do_install

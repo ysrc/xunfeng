@@ -12,7 +12,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-. /lib/lsb/init-functions
+# . /lib/lsb/init-functions
 
 DAEMON_USER="root"
 DAEMON_GROUP="root"

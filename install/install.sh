@@ -19,6 +19,17 @@ command_exists() {
     command -v "$@" > /dev/null 2>&1
 }
 
+install_start_stop_daemon() {
+    cd /usr/local/src
+    if [ ! -f /usr/local/src/dpkg_1.17.10.tar.xz ]; then
+        wget http://ftp.de.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.10.tar.xz
+    fi
+    tar xf dpkg_1.17.10.tar.xz && cd dpkg-1.17.10/
+    ./configure
+    make || echo "[!] Don't worry, just build for start-stop-daemon"
+    cp utils/start-stop-daemon /usr/sbin/
+    rm -rf /usr/local/src/dpkg-1.17.10/
+}
 do_install(){
     architecture=$(uname -m)
     case $architecture in
@@ -27,19 +38,18 @@ do_install(){
             ;;
         # unofficially supported without available repositories
         armv6l|armv7l|aarch64|arm64|ppc64le|s390x)
-            # cat 1>&2 <<-EOF
-            # Error: This install script does not support $architecture, because no
-            # $architecture package exists in repositories.
-
-            # EOF
+            cat 1>&2 <<-EOF
+            Error: This install script does not support $architecture, because no
+            $architecture package exists in repositories.
+EOF
             exit 1
             ;;
         # not supported
         *)
-            # cat >&2 <<-EOF
-            # Error: $architecture is not a recognized platform.
-            # EOF
-            # exit 1
+            cat >&2 <<-EOF
+            Error: $architecture is not a recognized platform.
+EOF
+            exit 1
             ;;
     esac
 
@@ -51,10 +61,10 @@ do_install(){
         elif command_exists su; then
             sh_c='su -c'
         else
-            # cat >&2 <<-'EOF'
-            # Error: this installer needs the ability to run commands as root.
-            # We are unable to find either "sudo" or "su" available to make this happen.
-            # EOF
+            cat >&2 <<-'EOF'
+            Error: this installer needs the ability to run commands as root.
+            We are unable to find either "sudo" or "su" available to make this happen.
+EOF
             exit 1
         fi
     fi
@@ -118,8 +128,11 @@ do_install(){
                 fi
             }
             apt_get_update
-            $sh_c 'apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git whiptail supervisor'
+            $sh_c 'apt-get install -y curl wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git whiptail supervisor'
             $sh_c 'pip install -U pip'
+            if [ ! -f /usr/lib/x86_64-linux-gnu/libpcap.so.1 ]; then
+                $sh_c 'ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1'
+            fi
             ;;
 
         fedora|centos|redhat|oraclelinux|photon)
@@ -130,18 +143,22 @@ do_install(){
             if [ "$lsb_dist" = "fedora" ] && [ "$dist_version" -ge "22" ]; then
                 (
                     set -x
-                    $sh_c 'sleep 3; dnf -y -q install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail supervisor'
+                    $sh_c 'sleep 3; dnf -y install curl wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
                 )
             elif [ "$lsb_dist" = "photon" ]; then
                 (
                     set -x
-                    $sh_c 'sleep 3; tdnf -y install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail supervisor'
+                    $sh_c 'sleep 3; tdnf -y install curl  wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
                 )
             else
                 (
                     set -x
-                    $sh_c 'sleep 3; yum -y -q install gcc git libffi-devel python-devel openssl-devel libpcap-devel whiptail supervisor'
+                    $sh_c 'sleep 3; yum -y install epel-release curl wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
+                    $sh_c 'yum -y install python-pip'
                 )
+            fi
+            if ! command_exists start-stop-daemon; then
+                install_start_stop_daemon
             fi
             ;;
     esac
@@ -162,11 +179,6 @@ do_install(){
     
     # install requirements
     $sh_c 'pip install -r /opt/xunfeng/requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com'
-    
-    if [ ! -f /usr/lib/x86_64-linux-gnu/libpcap.so.1 ]; then
-        $sh_c 'ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1'
-    fi
-
     $sh_c 'chmod a+x /opt/xunfeng/masscan/linux_64/masscan'
     $sh_c 'cp /opt/xunfeng/install/files/xunfeng /etc/init.d/xunfeng'
     $sh_c 'chmod +x /etc/init.d/xunfeng'

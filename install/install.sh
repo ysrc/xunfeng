@@ -28,6 +28,7 @@ install_start_stop_daemon() {
     ./configure
     make || echo "[!] Don't worry, just build for start-stop-daemon"
     cp utils/start-stop-daemon /usr/sbin/
+    cd -
     rm -rf /usr/local/src/dpkg-1.17.10/
 }
 do_install(){

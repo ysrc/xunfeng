@@ -22,7 +22,7 @@ command_exists() {
 install_start_stop_daemon() {
     cd /usr/local/src
     if [ ! -f /usr/local/src/dpkg_1.17.10.tar.xz ]; then
-        wget http://ftp.de.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.10.tar.xz
+        wget https://sec.ly.com/mirror/dpkg_1.17.10.tar.xz
     fi
     tar xf dpkg_1.17.10.tar.xz && cd dpkg-1.17.10/
     ./configure

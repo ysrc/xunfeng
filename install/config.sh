@@ -95,9 +95,9 @@ initdb() {
     start-stop-daemon --start --background --quiet --pidfile $XUNFENG_PID_PATH/xunfeng_db.pid --make-pidfile --chdir $XUNFENG_DB_PATH/bin/ --chuid $DAEMON_USER --exec xunfeng_db -- $INITDB_ARGS
 
     while [[ ! -f "/var/run/xunfeng/xunfeng_db.pid" ]]; do
-        sleep 1
+        sleep 5
     done
-
+    $XUNFENG_DB_PATH/bin/mongorestore -h 127.0.0.1 --port 65521 -d xunfeng ${XUNFENG_PATH}/db/
     cat > /tmp/xunfeng_auth_tmp <<-EOF
     use xunfeng
     db.createUser({user:'${XUNFENG_DB_USERNAME}',pwd:'${XUNFENG_DB_PASS}',roles:[{role:'dbOwner',db:'xunfeng'}]})
@@ -107,7 +107,6 @@ EOF
     $XUNFENG_DB_PATH/bin/mongo 127.0.0.1:65521/xunfeng < /tmp/xunfeng_auth_tmp
     rm -f /tmp/xunfeng_auth_tmp
 
-    $XUNFENG_DB_PATH/bin/mongorestore -h 127.0.0.1 --port 65521 -d xunfeng ${XUNFENG_PATH}/db/
     dbpid=$(cat ${XUNFENG_PID_PATH}/xunfeng_db.pid)
     kill -9 ${dbpid} && rm -f ${XUNFENG_PID_PATH}/xunfeng_db.pid
     echo "Initialized Database Success"

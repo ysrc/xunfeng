@@ -138,6 +138,7 @@ EOF
             if [ ! -f /usr/lib/x86_64-linux-gnu/libpcap.so.1 ]; then
                 $sh_c 'ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1'
             fi
+            PY_VERSION=$(/usr/bin/env python -V 2>&1 | awk '{print substr($2,0,4)}')
             ;;
 
         fedora|centos|redhat|oraclelinux|photon)
@@ -165,11 +166,10 @@ EOF
             if ! command_exists start-stop-daemon; then
                 install_start_stop_daemon
             fi
+            PY_VERSION=$(/usr/bin/env python -V 2>&1 | awk '{print substr($2,0,3)}')
             ;;
     esac
     echo "Checking Python Version..."
-    PY_VERSION=$(/usr/bin/env python -V 2>&1 | awk '{print substr($2,0,3)}')
-
     case "$PY_VERSION" in
         2.7 )
             echo "Python Version: `/usr/bin/env python -V`.... pass"

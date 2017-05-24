@@ -26,9 +26,13 @@ install_start_stop_daemon() {
     fi
     tar xf dpkg_1.17.10.tar.xz && cd dpkg-1.17.10/
     ./configure
-    make || echo "[!] Don't worry, just build for start-stop-daemon"
-    cp utils/start-stop-daemon /usr/sbin/
-    cd -
+    make || echo -e "\e[1;33m[!] Don't worry, just build for start-stop-daemon\e[0m"
+    if [ ! -f /usr/local/src/dpkg-1.17.10/utils/start-stop-daemon ]; then
+        cd utils/
+        make
+    fi
+    cp /usr/local/src/dpkg-1.17.10/utils/start-stop-daemon /usr/sbin/
+    cd ~
     rm -rf /usr/local/src/dpkg-1.17.10/
 }
 do_install(){
@@ -129,7 +133,7 @@ EOF
                 fi
             }
             apt_get_update
-            $sh_c 'apt-get install -y curl wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git whiptail supervisor'
+            $sh_c 'apt-get install -y -q curl wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git whiptail supervisor'
             $sh_c 'pip install -U pip'
             if [ ! -f /usr/lib/x86_64-linux-gnu/libpcap.so.1 ]; then
                 $sh_c 'ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1'
@@ -144,23 +148,40 @@ EOF
             if [ "$lsb_dist" = "fedora" ] && [ "$dist_version" -ge "22" ]; then
                 (
                     set -x
-                    $sh_c 'sleep 3; dnf -y install curl wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
+                    $sh_c 'sleep 3; dnf -y -q install curl wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
                 )
             elif [ "$lsb_dist" = "photon" ]; then
                 (
                     set -x
-                    $sh_c 'sleep 3; tdnf -y install curl  wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
+                    $sh_c 'sleep 3; tdnf -y -q install curl  wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
                 )
             else
                 (
                     set -x
-                    $sh_c 'sleep 3; yum -y install epel-release curl wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
+                    $sh_c 'sleep 3; yum -y -q install epel-release curl wget unzip gcc git libffi-devel python-devel openssl-devel libpcap-devel newt.x86_64 supervisor ncurses-devel ncurses make g++ gcc-c++ automake autoconf libtool'
                     $sh_c 'yum -y install python-pip'
                 )
             fi
             if ! command_exists start-stop-daemon; then
                 install_start_stop_daemon
             fi
+            ;;
+    esac
+    echo "Checking Python Version..."
+    PY_VERSION=$(/usr/bin/env python -V 2>&1 | awk '{print substr($2,0,3)}')
+
+    case "$PY_VERSION" in
+        2.7 )
+            echo "Python Version: `/usr/bin/env python -V`.... pass"
+            ;;
+        2.6 )
+            echo -e "\e[1;31mError: Python 2.7.x not found in your environment.\e[0m"
+            echo -e "\e[1;31mPython 2.6 is no longer supported by the Python core team, please upgrade your Python. \e[0m"
+            exit
+            ;;
+         *  )
+            echo "Error: Python 2.7.x not found in your environment."
+            exit
             ;;
     esac
 
@@ -179,6 +200,7 @@ EOF
     fi
     
     # install requirements
+    $sh_c 'pip install --upgrade pip'
     $sh_c 'pip install -r /opt/xunfeng/requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com'
     $sh_c 'chmod a+x /opt/xunfeng/masscan/linux_64/masscan'
     $sh_c 'cp /opt/xunfeng/install/files/xunfeng /etc/init.d/xunfeng'

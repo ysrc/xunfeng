@@ -94,9 +94,15 @@ initdb() {
     INITDB_ARGS="--bind_ip 127.0.0.1 --port 65521 --dbpath=${XUNFENG_DB_DATA_PATH}"
     start-stop-daemon --start --background --quiet --pidfile $XUNFENG_PID_PATH/xunfeng_db.pid --make-pidfile --chdir $XUNFENG_DB_PATH/bin/ --chuid $DAEMON_USER --exec xunfeng_db -- $INITDB_ARGS
 
-    while [[ ! -f "/var/run/xunfeng/xunfeng_db.pid" ]]; do
+    while [[ true ]]; do
+        echo "quit" > /tmp/xunfeng_initdb_tmp
+        $XUNFENG_DB_PATH/bin/mongo 127.0.0.1:65521 < /tmp/xunfeng_initdb_tmp | grep "bye"
+        if [[ $? == 0 ]]; then
+            break
+        fi
         sleep 5
-    done 
+    done
+
     cat > /tmp/xunfeng_auth_tmp <<-EOF
     use xunfeng
     db.createUser({user:'${XUNFENG_DB_USERNAME}',pwd:'${XUNFENG_DB_PASS}',roles:[{role:'dbOwner',db:'xunfeng'}]})
@@ -104,6 +110,7 @@ initdb() {
     exit
 EOF
     $XUNFENG_DB_PATH/bin/mongo 127.0.0.1:65521/xunfeng < /tmp/xunfeng_auth_tmp
+    rm -f /tmp/xunfeng_initdb_tmp
     rm -f /tmp/xunfeng_auth_tmp
     $XUNFENG_DB_PATH/bin/mongorestore -h 127.0.0.1 --port 65521 -d xunfeng ${XUNFENG_PATH}/db/
     dbpid=$(cat ${XUNFENG_PID_PATH}/xunfeng_db.pid)

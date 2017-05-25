@@ -53,6 +53,7 @@ do_stop() {
         rm -f $XUNFENG_PID
         rm -f /var/run/supervisor.sock
     }
+    killall supervisord
     echo "XunFeng stopped."
     return 0
 }

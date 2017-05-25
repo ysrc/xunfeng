@@ -100,6 +100,7 @@ initdb() {
         if [[ $? == 0 ]]; then
             break
         fi
+        echo "Wait xunfeng_db startup..."
         sleep 5
     done
 

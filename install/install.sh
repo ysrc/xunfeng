@@ -201,6 +201,7 @@ EOF
     
     # install requirements
     $sh_c 'pip install --upgrade pip'
+    $sh_c 'pip install --upgrade supervisor>=3.3'
     $sh_c 'pip install -r /opt/xunfeng/requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com'
     $sh_c 'chmod a+x /opt/xunfeng/masscan/linux_64/masscan'
     $sh_c 'cp /opt/xunfeng/install/files/xunfeng /etc/init.d/xunfeng'

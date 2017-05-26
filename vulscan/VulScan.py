@@ -121,7 +121,7 @@ class vulscan():
         elif an_type == 'md5':
             md5 = hashlib.md5()
             md5.update(res_html)
-            if md5.hexdigest() == analyzingdata: self.request_info = vul_tag
+            if md5.hexdigest() == analyzingdata: self.result_info = vul_tag
 
     def save_request(self):
         if self.result_info:

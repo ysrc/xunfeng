@@ -2,12 +2,12 @@
 set -e
 #
 # This script is meant for quick & easy install via:
-#   'curl -sSL https://raw.githubusercontent.com/Medicean/xunfeng/master/install/install.sh | sh'
+#   'curl -sSL https://raw.githubusercontent.com/ysrc/xunfeng/master/install/install.sh | sh'
 # or:
-#   'wget -qO- https://raw.githubusercontent.com/Medicean/xunfeng/master/install/install.sh | sh'
+#   'wget -qO- https://raw.githubusercontent.com/ysrc/xunfeng/master/install/install.sh | sh'
 #
 export MONGODB_URL="https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz"
-export XUNFENG_REPO="https://github.com/Medicean/xunfeng.git"
+export XUNFENG_REPO="https://github.com/ysrc/xunfeng.git"
 
 set_env() {
     # TZ=Asia/Shanghai
@@ -168,6 +168,9 @@ EOF
             fi
             PY_VERSION=$(/usr/bin/env python -V 2>&1 | awk '{print substr($2,0,3)}')
             ;;
+        *   )
+            echo "Either your platform is not easily detectable, is not supported by this installer script."
+        ;;
     esac
     echo "Checking Python Version..."
     case "$PY_VERSION" in

@@ -8,7 +8,7 @@ XUNFENG_DB=/var/lib/mongodb
 [ ! -d $XUNFENG_LOG ] && mkdir -p ${XUNFENG_LOG}
 [ ! -d $XUNFENG_DB ] && mkdir -p ${XUNFENG_DB}
 
-nohup mongod --port 65521 --dbpath=${XUNFENG_DB} --auth  > ${XUNFENG_LOG}/db.log &
+nohup mongod --bind_ip 0.0.0.0 --port 65521 --dbpath=${XUNFENG_DB} --auth  > ${XUNFENG_LOG}/db.log &
 nohup python ./Run.py > ${XUNFENG_LOG}/web.log &
 nohup python ./aider/Aider.py > ${XUNFENG_LOG}/aider.log &
 nohup python ./nascan/NAScan.py > ${XUNFENG_LOG}/scan.log &

@@ -16,10 +16,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN set -x \
     && apt-get update \
-    && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip
+    && apt-get install -y wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev python-pip git iptraf vim
+
+
+ENV TERM xterm
 
 # install mongodb
-
 ENV MONGODB_TGZ https://sec.ly.com/mirror/mongodb-linux-x86_64-3.4.0.tgz
 RUN set -x \
     && wget -O /tmp/mongodb.tgz $MONGODB_TGZ \

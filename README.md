@@ -21,7 +21,7 @@
 * [OSX 安装指南](./docs/install/OSX.md)
 * [Linux 安装指南](./docs/install/Linux.md)
 * [Docker 安装指南](./docs/install/Docker.md)
-
+* [Linux 一条命令安装](./docs/install/Linux_AutoInstall.md)
 
 ## 配置指南
 - 在配置-爬虫引擎-网络资产探测列表 设置内网IP段**（必须配置，否则无法正常使用,每个IP段最大限制为10个B段）**。

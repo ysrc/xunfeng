@@ -1,0 +1,89 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:       xunfeng
+# Required-Start:    $local_fs $remote_fs $network $syslog $named $docker
+# Required-Stop:     $local_fs $remote_fs $network $syslog $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts xunfeng
+# Description:       starts xunfeng using start-stop-daemon
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# . /lib/lsb/init-functions
+
+DAEMON_USER="root"
+DAEMON_GROUP="root"
+
+XUNFENG_PATH="/opt/xunfeng"
+XUNFENG_LOG_PATH="/var/log/xunfeng"
+XUNFENG_PID_PATH="/var/run/xunfeng"
+XUNFENG_DB_DATA_PATH="/var/lib/xunfeng"
+XUNFENG_PID="$XUNFENG_PID_PATH/xunfeng.pid"
+
+test -e $XUNFENG_PID_PATH || install -m 755 -o $DAEMON_USER -g $DAEMON_GROUP -d $XUNFENG_PID_PATH
+test -e $XUNFENG_LOG_PATH || install -m 755 -o $DAEMON_USER -g $DAEMON_GROUP -d $XUNFENG_LOG_PATH
+test -e $XUNFENG_DB_DATA_PATH || install -m 755 -o $DAEMON_USER -g $DAEMON_GROUP -d $XUNFENG_DB_DATA_PATH
+
+do_start() {
+    echo "Starting XunFeng..."
+    if [[ ! -f "$XUNFENG_PID" ]]; then
+        supervisord -c /etc/xunfeng.conf
+    fi
+    supervisorctl -c /etc/xunfeng.conf start xunfeng:*
+    return 0
+}
+
+do_stop() {
+    echo "Stopping XunFeng..."
+    while [[ true ]]; do
+        supervisorctl -c /etc/xunfeng.conf stop xunfeng:* | grep ERROR
+        if [[ $? != 0 ]]; then
+            break
+        fi
+        sleep 1
+    done
+    
+    [ -f "$XUNFENG_PID" ] && {
+        [ -d "/proc/`cat $XUNFENG_PID`" ] && {
+            kill -9 `cat $XUNFENG_PID` && pkill -P `cat $XUNFENG_PID`
+        }
+        rm -f $XUNFENG_PID
+        rm -f /var/run/supervisor.sock
+    }
+    killall supervisord
+    echo "XunFeng stopped."
+    return 0
+}
+
+do_restart(){
+    do_stop
+    sleep 1
+    do_start
+}
+
+do_status() {
+    (supervisorctl -c /etc/xunfeng.conf status |grep xunfeng: )|| return 1
+    return 0
+}
+
+case "$1" in
+    start)
+        do_start
+        ;;
+    stop)
+        do_stop
+        ;;
+    restart)
+        do_restart
+        ;;
+    status)
+        do_status
+        ;;
+    *)
+        echo "Usage: $NAME {start|stop|status|restart}" >&2
+        exit 3
+        ;;
+esac

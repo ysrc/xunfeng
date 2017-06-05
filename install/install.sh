@@ -205,7 +205,10 @@ EOF
     # install requirements
     $sh_c 'pip install --upgrade pip'
     $sh_c 'pip install --upgrade supervisor>=3.3'
+    $sh_c 'pip install meld3==1.0.0 -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com'
+    # $sh_c 'wget -qO /tmp/meld3-1.0.2.tar.gz https://pypi.python.org/packages/source/m/meld3/meld3-1.0.2.tar.gz && tar -zxf /tmp/meld3-1.0.2.tar.gz -C /tmp/ && cd /tmp/meld3-1.0.2/ && /usr/bin/env python setup.py install && cd - && rm -rf /tmp/meld3*'
     $sh_c 'pip install -r /opt/xunfeng/requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com'
+    
     $sh_c 'chmod a+x /opt/xunfeng/masscan/linux_64/masscan'
     $sh_c 'cp /opt/xunfeng/install/files/xunfeng /etc/init.d/xunfeng'
     $sh_c 'chmod +x /etc/init.d/xunfeng'

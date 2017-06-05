@@ -53,7 +53,13 @@ do_stop() {
         rm -f $XUNFENG_PID
         rm -f /var/run/supervisor.sock
     }
-    killall supervisord
+
+    killall supervisord 2>/dev/null || {
+        sdpid=$(ps -ef | grep supervisord | grep -v grep | awk '{print $2}')
+        if [ "$sdpid" -gt 0 ] 2>/dev/null; then
+            kill -9 $sdpid
+        fi
+    }
     echo "XunFeng stopped."
     return 0
 }

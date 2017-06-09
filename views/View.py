@@ -25,6 +25,15 @@ def Search():
     return render_template('search.html')
 
 
+# 删除所有
+@app.route('/deleteall', methods=['post'])
+@logincheck
+@anticsrf
+def Deleteall():
+    Mongo.coll['Task'].remove({})
+    return 'success'
+
+
 # 搜索结果页
 @app.route('/')
 @logincheck

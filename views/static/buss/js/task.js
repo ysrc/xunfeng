@@ -53,13 +53,17 @@ $('.deleteall').click(function () {
             $.post('/deleteall', function (e) {
                 if (e == 'success') {
                     swal("已删除", '', "success");
-
+                    $('.confirm').click(function () {
+                        location.href = "/task";
+                    })
                 }
                 else {
                     swal("删除失败", '', "error");
-
+                    $('.confirm').click(function () {
+                        location.href = "/task";
+                    })
                 }
-                location.reload()
+
             })
 
         });

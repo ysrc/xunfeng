@@ -12,6 +12,9 @@
                     <a type="button" class="btn btn-tag dropdown-toggle waves-effect waves-light"
                        href="/downloadxls" style="color: white">下载
                     </a>
+                    <a type="button" class="btn btn-danger dropdown-toggle waves-effect waves-light deleteall"
+                       style="color: white">删除全部
+                    </a>
                 </div>
                 <div style="margin-top: 15px;margin-bottom: 15px">
                     <span style="font-weight: bold;font-size: 20px;color:white">任务总数:{{ item.count() }}</span>
@@ -97,3 +100,4 @@
     <script src="static/plugin/sweetalert/sweetalert.min.js"></script>
     <script src="static/buss/js/task.js"></script>
 {% endblock %}
+

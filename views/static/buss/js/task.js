@@ -53,12 +53,13 @@ $('.deleteall').click(function () {
             $.post('/deleteall', function (e) {
                 if (e == 'success') {
                     swal("已删除", '', "success");
-                    location.reload();
+
                 }
                 else {
                     swal("删除失败", '', "error");
-                    location.reload();
+
                 }
+                location.reload()
             })
 
         });

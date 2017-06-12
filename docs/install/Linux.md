@@ -1,5 +1,14 @@
 # Linux 安装指南
-部署巡风要求root权限
+部署和调试巡风要求root权限，请用户切换到root账号进行操作
+Ubuntu 或 Debian 系统默认未开启root，请使用下列命令开启
+```
+$ sudo passwd root
+```
+输入你自己设置的root密码后
+```
+$ su root
+```
+即可切换到root账号
 
 ## 一、环境安装
 
@@ -76,7 +85,7 @@ gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc
 
 [参考地址](https://docs.mongodb.com/v3.0/tutorial/install-mongodb-on-ubuntu/)
 
-```bash
+```
 # apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 # apt-get update && apt-get install -y mongodb-org
 ```

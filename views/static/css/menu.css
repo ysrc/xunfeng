@@ -220,11 +220,11 @@ File: Menu
 */
 @media (min-width: 992px) {
   #topnav .navigation-menu > li.last-elements .submenu {
-    left: auto;
+    left: 20px;
     right: 0;
   }
   #topnav .navigation-menu > li.last-elements .submenu > li.has-submenu .submenu {
-    left: auto;
+    left: 20px;
     right: 100%;
     margin-left: 0;
     margin-right: 10px;

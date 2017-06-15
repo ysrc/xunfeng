@@ -50,9 +50,8 @@ $ sudo brew install mongodb
 ### 1. 启动数据库
 
 ```
-$ sudo service mongod stop
-$ sudo mkdir /opt/xunfeng/db
-$ sudo mongod --port 65521 --dbpath /opt/xunfeng/db &
+$ sudo mkdir /opt/xunfeng/db/
+$ sudo mongod --port 65521 --dbpath /opt/xunfeng/db/ &
 ```
 输入
 ```

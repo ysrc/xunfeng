@@ -2,11 +2,15 @@
 
 ## 一、环境安装
 
+安装brew(请自行搜索brew安装)
+
 下载巡风
 
 ```
 $ cd ~
+$ sudo brew install git
 $ git clone https://github.com/ysrc/xunfeng.git
+```
 
 ### 1、操作系统依赖
 

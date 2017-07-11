@@ -138,7 +138,6 @@ EOF
             if [ ! -f /usr/lib/x86_64-linux-gnu/libpcap.so.1 ]; then
                 $sh_c 'ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1'
             fi
-            PY_VERSION=$(/usr/bin/env python -V 2>&1 | awk '{print substr($2,0,4)}')
             ;;
 
         fedora|centos|redhat|oraclelinux|photon)
@@ -166,12 +165,13 @@ EOF
             if ! command_exists start-stop-daemon; then
                 install_start_stop_daemon
             fi
-            PY_VERSION=$(/usr/bin/env python -V 2>&1 | awk '{print substr($2,0,3)}')
             ;;
         *   )
             echo "Either your platform is not easily detectable, is not supported by this installer script."
+            exit
         ;;
     esac
+    PY_VERSION=$(expr "$(/usr/bin/env python -V 2>&1)" : '.*\([0-9]\.[0-9]\)\.[0-9]*')
     echo "Checking Python Version..."
     case "$PY_VERSION" in
         2.7 )

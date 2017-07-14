@@ -480,10 +480,10 @@ def PullUpdate():
     if j:
         try:
             remotelist = json.loads(j)
-            remotelist_temp = copy.deepcopy(remotelist)
+            #remotelist_temp = copy.deepcopy(remotelist)
             plugin = Mongo.coll['Plugin'].find({'source': 1})
             for p in plugin:
-                for remote in remotelist_temp:
+                for remote in remotelist:
                     if p['name'] == remote['name'] and remote['coverage'] == 0:
                         remotelist.remove(remote)
             locallist = Mongo.coll['Update'].aggregate([{'$project': {'_id': 0, 'unicode': 1}}])

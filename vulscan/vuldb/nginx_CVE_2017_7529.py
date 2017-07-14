@@ -62,6 +62,6 @@ def check(ip, port, timeout):
         #print cacheres.readlines()
         if cacheres.code == 206 and "Content-Range" in cacheres.read(2048):
             info = u"存在Range整形溢出漏洞（CVE-2017-7529）"
-            if "X-Proxy-Cache" in cacheres.headers:
+            if ": HIT" in str(cacheres.headers):
                 info += u",且开启了缓存功能,存在信息泄露风险"
             return info

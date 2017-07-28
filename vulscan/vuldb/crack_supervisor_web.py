@@ -13,7 +13,7 @@ def get_plugin_info():
         "type": "弱口令",
         "author": "unknown",
         "url": "https://github.com/Medicean/VulApps/blob/master/s/supervisor/1/",
-        "keyword": "banner:supervisor;port:9001",
+        "keyword": "port:9001",
         "source": 1
     }
     return plugin_info

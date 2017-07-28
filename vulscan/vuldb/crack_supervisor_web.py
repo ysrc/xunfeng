@@ -59,7 +59,7 @@ def check(ip, port, timeout):
                 resp = request(url, user=user, password=pass_)
                 if resp is None:
                     continue
-                else:
+                elif "<methodResponse>" in resp::
                     retinfo += "存在弱口令 %s:%s" % (user, pass_)
                     retinfo += ",并且%s" % checkversion(resp)
                     return retinfo

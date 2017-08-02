@@ -73,4 +73,4 @@ def check(ip, port, timeout):
                 if result == "\x07\x00\x00\x02\x00\x00\x00\x02\x00\x00\x00":
                     return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)
             except Exception, e:
-                if "Errno 10061" in str(e) or "timed out" in str(e): return
+                return

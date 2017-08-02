@@ -61,4 +61,4 @@ def check(ip, port, timeout):
                 if result == 3: break
                 if result == True: return u"存在弱口令，用户名：%s 密码：%s" % (user, pass_)
             except Exception, e:
-                pass
+                return

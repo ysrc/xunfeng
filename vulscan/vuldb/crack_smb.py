@@ -50,4 +50,4 @@ def check(ip,port,timeout):
                     if pass_ == 'anonymous':return u"存在匿名共享，请查看是否存在敏感文件。"
                     return u"存在弱口令，用户名：%s 密码：%s"%(user,pass_)
             except Exception,e:
-                if "Errno 10061" in str(e) or "timed out" in str(e): return
+                return

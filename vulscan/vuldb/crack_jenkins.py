@@ -19,7 +19,7 @@ def get_plugin_info():
 
 def get_user_list(url,timeout):
     user_list = []
-    opener = urllib2.build_opener(urllib2.ProxyHandler({'http':'http://127.0.0.1:8080'}),urllib2.HTTPCookieProcessor())
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
     try:
         req = opener.open(url + "/asynchPeople/", timeout=timeout)
         res_html = req.read()

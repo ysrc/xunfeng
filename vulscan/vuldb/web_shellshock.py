@@ -4,7 +4,6 @@ import re
 import urlparse
 import HTMLParser
 
-
 def get_plugin_info():
     plugin_info = {
         "name": "shellshock破壳",
@@ -51,7 +50,7 @@ def check(ip, port, timeout):
                 for flag in flag_list:
                     header = {'cookie': flag, 'User-Agent': flag, 'Referrer': flag}
                     try:
-                        request = urllib2.Request('http://' + url, headers=header)
+                        request = urllib2.Request(url, headers=header)
                         res_html = urllib2.urlopen(request).read()
                     except urllib2.HTTPError, e:
                         res_html = e.read()
@@ -59,3 +58,4 @@ def check(ip, port, timeout):
                         return u'shellshock命令执行漏洞'
     except Exception, e:
         pass
+

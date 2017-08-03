@@ -59,7 +59,7 @@ class vulscan():
                 self.result_info = PLUGIN_DB[plugin_filename].check(str(self.task_netloc[0]), int(self.task_netloc[1]),
                                                                     TIMEOUT)
             except:
-                return
+                pass
         self.save_request()  # 保存结果
 
     def get_plugin_info(self):

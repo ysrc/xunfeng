@@ -48,7 +48,7 @@ def check_unauth(url):
 
 
 def check(ip, port, timeout):
-    user_list = ['admin', 'manager', 'root']
+    user_list = ['user', 'admin', 'manager', 'root']
     url = "http://" + ip + ":" + str(port) + "/RPC2"
     retinfo = ""
     info, resp = check_unauth(url)

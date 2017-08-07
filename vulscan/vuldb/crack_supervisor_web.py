@@ -86,7 +86,7 @@ def checkversion(respdata):
         return info
     if vc(version, "3.0.1") == "<" and vc(version, "3.0.0") != "<":
         return info
-
+    return '不存在 CVE-2017-11610'
 
 def vc(v1, v2):
     d1 = re.split('\.', v1)

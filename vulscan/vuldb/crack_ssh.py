@@ -25,9 +25,9 @@ def check(ip, port, timeout):
             pass_ = str(pass_.replace('{user}', user))
             try:
                 ssh.connect(ip, port, user, pass_, timeout=timeout)
-                ssh.exec_command('whoami')
+                ssh.exec_command('whoami',timeout=timeout)
                 ssh.close()
                 if pass_ == '': pass_ = "null"
                 return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)
             except Exception, e:
-                if "Errno 61" in e or "timed out" in e: return
+                if "Unable to connect" in e or "timed out" in e: return

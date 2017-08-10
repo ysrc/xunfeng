@@ -78,6 +78,7 @@ def cruise(STATISTICS,MASSCAN_AC):
                     try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         sock.connect((ip, int(port)))
+                        sock.close()
                     except Exception, e:
                         time_ = datetime.datetime.now()
                         date_ = time_.strftime('%Y-%m-%d')

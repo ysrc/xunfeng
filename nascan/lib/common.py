@@ -91,4 +91,4 @@ def cruise(STATISTICS,MASSCAN_AC):
                         mongo.NA_HISTORY.insert(history_info)
             except:
                 pass
-        time.sleep(600)
+        time.sleep(3600)

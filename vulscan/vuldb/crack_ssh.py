@@ -1,6 +1,6 @@
 # coding:utf-8
 import paramiko
-
+paramiko.util.logging.getLogger('paramiko.transport').addHandler(paramiko.util.logging.NullHandler())
 
 def get_plugin_info():
     plugin_info = {
@@ -24,10 +24,11 @@ def check(ip, port, timeout):
         for pass_ in PASSWORD_DIC:
             pass_ = str(pass_.replace('{user}', user))
             try:
-                ssh.connect(ip, port, user, pass_, timeout=timeout)
+                ssh.connect(ip, port, user, pass_, timeout=timeout, allow_agent = False, look_for_keys = False)
                 ssh.exec_command('whoami',timeout=timeout)
-                ssh.close()
                 if pass_ == '': pass_ = "null"
                 return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)
             except Exception, e:
                 if "Unable to connect" in e or "timed out" in e: return
+            finally:
+                ssh.close()

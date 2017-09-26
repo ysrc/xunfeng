@@ -59,12 +59,10 @@ def check(host, port, timeout):
             print("[!] get shell url error {}".format(str(e)))
             return False
         else:
-            if resp.getcode() == 200:
-                result += u"存在任意文件上传漏洞"
-                if "7852" in resp.read():
-                    result += u" 并且存在任意代码执行风险"
-                result += u" 地址:{}".format(shell_url)
-                return result
+            if "7852" in resp.read():
+                result += u"存在任意代码执行风险"
+            result += u" 地址: {}".format(shell_url)
+            return result
 
 if __name__ == '__main__':
     print(check("127.0.0.1", 8080, 5))

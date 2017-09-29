@@ -79,6 +79,9 @@ $('#field-search').bind('keyup', function (event) {
 
 $('#savetask').click(function () {
     title = $('#field-name').val();
+    if (!title) {
+        swal("任务名不可为空！", "", "error");
+    }
     condition = getQueryString('q');
     plugin = $('#field-plugin').val().join(",");
     plan = $('#field-plan').val();

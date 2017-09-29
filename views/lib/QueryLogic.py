@@ -2,6 +2,14 @@
 import re
 
 
+def mgo_text_split(query_text):
+    ''' split text to support mongodb $text match on a phrase '''
+    sep = r'[`\-=~!@#$%^&*()_+\[\]{};\'\\:"|<,./<>?]'
+    word_lst = re.split(sep, query_text)
+    text_query = ' '.join('\"{}\"'.format(w) for w in word_lst)
+    return text_query
+
+
 # 搜索逻辑
 def querylogic(list):
     query = {}
@@ -18,7 +26,8 @@ def querylogic(list):
                     if match:
                         query['banner'] = {"$regex": _.split(':')[1], '$options': 'i'}
                     else:
-                        query['$text'] = {'$search': _.split(':')[1]}
+                        text_query = mgo_text_split(_.split(':')[1])
+                        query['$text'] = {'$search': text_query, '$caseSensitive':True}
                 elif _.split(':')[0] == 'ip':
                     ip = _.split(':')[1]
                     query['ip'] = {"$regex": ip}

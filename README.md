@@ -32,7 +32,7 @@
 - 其他配置根据自身需要进行修改。
 
 ## 插件编写
-漏洞插件支持2种类型，标示符与python脚本，可以通过官方推送渠道安装或者自行添加。
+漏洞插件支持2种类型，json标示与python脚本，可以通过官方推送渠道安装或者自行添加。
 
 **JSON标示符**
 
@@ -79,6 +79,7 @@ def check(ip, port, timeout): # 漏洞检测代码
 此外系统内嵌了辅助验证功能:
 
 > DNS：触发，nslookup randomstr IP，验证， http://ip:8088/randomstr ，返回YES即存在。
+
 > HTTP：触发，http://ip:8088/add/randomstr ，验证， http://ip:8088/check/randomstr ，返回YES即存在。
 
 使用例子:

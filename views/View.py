@@ -47,7 +47,7 @@ def Main():
         query = querylogic(result)
         cursor = Mongo.coll['Info'].find(query).sort('time', -1).limit(page_size).skip((page - 1) * page_size)
         return render_template('main.html', item=cursor, plugin=plugin, itemcount=cursor.count(),
-                               plugin_type=plugin_type)
+                               plugin_type=plugin_type, query=q)
     else:  # 自定义，无任何结果，用户手工添加
         return render_template('main.html', item=[], plugin=plugin, itemcount=0, plugin_type=plugin_type)
 
@@ -276,6 +276,35 @@ def DownloadXls():
         response.headers["Content-Disposition"] = "attachment; filename=all_data.xls;"
     response.headers["Content-Type"] = "application/x-xls"
     return response
+
+
+# 搜索结果报表下载接口
+@app.route('/searchxls', methods=['get'])
+@logincheck
+@anticsrf
+def search_result_xls():
+    query = request.args.get('query', '')
+    if query:
+        result = query.strip().split(';')
+        filter_ = querylogic(result)
+        cursor = Mongo.coll['Info'].find(filter_).sort('time', -1)
+        title_tup = ('IP', '端口号', '主机名', '服务类型')
+        xls = [title_tup, ]
+        for info in cursor:
+            item = (
+                info.get('ip'), info.get('port'),
+                info.get('hostname'), info.get('server')
+            )
+            xls.append(item)
+        file = write_data(xls, 'search_result')
+        resp = make_response(file.getvalue())
+        resp.headers["Content-Disposition"] = "attachment; filename=search_result.xls;"
+        resp.headers["Content-Type"] = "application/x-xls"
+        resp.headers["X-Content-Type-Options"] = "nosniff"
+        return resp
+    else:
+        redirect(url_for('NotFound'))
+
 
 
 # 插件列表页

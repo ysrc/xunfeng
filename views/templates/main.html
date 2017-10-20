@@ -10,6 +10,11 @@
         <div class="row" style="margin-bottom: 20px">
             <div class="col-sm-12">
                 <div class="btn-group pull-right m-t-15">
+                    {% if itemcount %}
+                    <a href="{{ url_for('search_result_xls') }}?query={{ query }}" type="button" class="btn btn-tag waves-effect waves-light"
+                     style="margin-right: 5px;color:white">下载搜索结果
+                    </a>
+                    {% endif %}
                     <button type="button" class="btn btn-tag waves-effect waves-light"
                             data-toggle="modal" data-target="#add-new-item" style="margin-right: 5px;color:white">新增目标
                     </button>

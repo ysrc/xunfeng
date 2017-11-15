@@ -61,8 +61,8 @@ def check(host, port, timeout):
         else:
             if "7852" in resp.read():
                 result += u"存在任意代码执行风险"
-            result += u" 地址: {}".format(shell_url)
-            return result
+                result += u" 地址: {}".format(shell_url)
+                return result
 
 if __name__ == '__main__':
     print(check("127.0.0.1", 8080, 5))

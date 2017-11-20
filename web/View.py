@@ -7,15 +7,47 @@ from urllib import unquote, urlopen, urlretrieve, quote, urlencode
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from flask import request, render_template, redirect, url_for, session, make_response
-from lib.CreateExcel import *
-from lib.Login import logincheck
-from lib.AntiCSRF import anticsrf
-from lib.QueryLogic import querylogic
+from utils.CreateExcel import *
+from utils.Login import logincheck
+from utils.AntiCSRF import anticsrf
+from utils.QueryLogic import querylogic
 from werkzeug.utils import secure_filename
 from . import app, Mongo, page_size, file_path
 import urllib2
 import copy
 
+
+# 登录
+@app.route('/login', methods=['get', 'post'])
+def Login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        account = request.form.get('account')
+        password = request.form.get('password')
+        if account == app.config.get('ACCOUNT') and password == app.config.get('PASSWORD'):
+            session['login'] = 'loginsuccess'
+            return redirect(url_for('Search'))
+        else:
+            return redirect(url_for('Login'))
+
+
+# 登出异步
+@app.route('/loginout')
+@logincheck
+def LoginOut():
+    session['login'] = ''
+    return redirect(url_for('Login'))
+
+
+@app.route('/404')
+def NotFound():
+    return render_template('404.html')
+
+
+@app.route('/500')
+def Error():
+    return render_template('500.html')
 
 
 # 搜索页
@@ -306,7 +338,6 @@ def search_result_xls():
         redirect(url_for('NotFound'))
 
 
-
 # 插件列表页
 @app.route('/plugin')
 @logincheck
@@ -345,7 +376,7 @@ def AddPlugin():
                 insert_result = Mongo.coll['Plugin'].insert(mark_json)
                 if insert_result:
                     result = 'success'
-                    file_name = file_name +'.py'
+                    file_name = file_name + '.py'
 
     else:
         name = request.form.get('name', '')
@@ -378,14 +409,14 @@ def AddPlugin():
         except:
             pass
     if isupload == 'true' and result == 'success':
-        code_tuple = open(file_path+file_name).read()
+        code_tuple = open(file_path + file_name).read()
         code = ''
         for _ in code_tuple:
             code += _
         params = {'code': code}
         req = urllib2.Request('https://sec.ly.com/xunfeng/pluginupload')
-        req.add_header('Content-Type','application/x-www-form-urlencoded')
-        rsp = urllib2.urlopen(req,urlencode(params))
+        req.add_header('Content-Type', 'application/x-www-form-urlencoded')
+        rsp = urllib2.urlopen(req, urlencode(params))
         print 'upload result:' + rsp.read()
     return result
 
@@ -413,9 +444,12 @@ def Analysis():
     ip = len(Mongo.coll['Info'].distinct('ip'))
     record = Mongo.coll['Info'].find().count()
     task = Mongo.coll['Task'].find().count()
-    vul = int(Mongo.coll['Plugin'].group([], {}, {'count': 0},'function(doc,prev){prev.count = prev.count + doc.count}')[0]['count'])
+    vul = int(
+        Mongo.coll['Plugin'].group([], {}, {'count': 0}, 'function(doc,prev){prev.count = prev.count + doc.count}')[0][
+            'count'])
     plugin = Mongo.coll['Plugin'].find().count()
-    vultype = Mongo.coll['Plugin'].group(['type'], {"count":{"$ne":0}}, {'count': 0},'function(doc,prev){prev.count = prev.count + doc.count}')
+    vultype = Mongo.coll['Plugin'].group(['type'], {"count": {"$ne": 0}}, {'count': 0},
+                                         'function(doc,prev){prev.count = prev.count + doc.count}')
     cur = Mongo.coll['Statistics'].find().sort('date', -1).limit(30)
     trend = []
     for i in cur:
@@ -509,7 +543,7 @@ def PullUpdate():
     if j:
         try:
             remotelist = json.loads(j)
-            #remotelist_temp = copy.deepcopy(remotelist)
+            # remotelist_temp = copy.deepcopy(remotelist)
             plugin = Mongo.coll['Plugin'].find({'source': 1})
             for p in plugin:
                 for remote in remotelist:
@@ -584,36 +618,3 @@ def installplugin():
         except:
             pass
     return rsp
-
-
-# 登录
-@app.route('/login', methods=['get', 'post'])
-def Login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    else:
-        account = request.form.get('account')
-        password = request.form.get('password')
-        if account == app.config.get('ACCOUNT') and password == app.config.get('PASSWORD'):
-            session['login'] = 'loginsuccess'
-            return redirect(url_for('Search'))
-        else:
-            return redirect(url_for('Login'))
-
-
-# 登出异步
-@app.route('/loginout')
-@logincheck
-def LoginOut():
-    session['login'] = ''
-    return redirect(url_for('Login'))
-
-
-@app.route('/404')
-def NotFound():
-    return render_template('404.html')
-
-
-@app.route('/500')
-def Error():
-    return render_template('500.html')

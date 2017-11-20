@@ -1,4 +1,4 @@
-from views.View import app
+from web.View import app
 
 if __name__ == '__main__':
     #app.debug = True

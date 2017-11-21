@@ -2,7 +2,7 @@ import sys
 from datetime import timedelta
 from flask import Flask
 from Config import ProductionConfig
-from views.lib import Conn
+from web.utils import Conn
 import os
 
 app = Flask(__name__)

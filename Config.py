@@ -5,7 +5,7 @@ class Config(object):
 
 class ProductionConfig(Config):
     DB = '127.0.0.1'
-    PORT = 65521
-    DBUSERNAME = 'scan'
-    DBPASSWORD = 'scanlol66'
+    PORT = 27017
+    DBUSERNAME = 'xunfeng'
+    DBPASSWORD = 'xunfeng'
     DBNAME = 'xunfeng'

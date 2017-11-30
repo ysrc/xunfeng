@@ -12,9 +12,9 @@ def anticsrf(f):
             if request.referrer and request.referrer.replace('http://', '').split('/')[0] == request.host:
                 return f(*args, **kwargs)
             else:
-                return redirect(url_for('NotFound'))
+                return redirect('/400')
         except Exception, e:
             print e
-            return redirect(url_for('Error'))
+            return redirect('/500')
 
     return wrapper

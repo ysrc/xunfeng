@@ -39,7 +39,6 @@ if __name__=="__main__":
     thread.start_new_thread(web_server,())
     while True:
         try:
-            time.sleep(1)
             recv,addr = dns.recvfrom(1024)
             if recv not in query_history:query_history.append(recv)
             print datetime.datetime.now().strftime('%m-%d %H:%M:%S') + " " +str(addr[0]) +' Dns Query: ' + recv

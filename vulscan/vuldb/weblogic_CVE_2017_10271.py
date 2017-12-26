@@ -8,7 +8,7 @@ from time import sleep
 
 def get_plugin_info():
     plugin_info = {
-            "name": "Oracle CVE-2017-10271",
+            "name": "WebLogic WLS RCE CVE-2017-10271",
             "info": "Oracle WebLogic Server WLS安全组件中的缺陷导致远程命令执行",
             "level": "高危",
             "type": "命令执行",

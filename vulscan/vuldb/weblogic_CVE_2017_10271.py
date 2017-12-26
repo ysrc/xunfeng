@@ -82,7 +82,6 @@ def check(ip, port, timeout):
                     pass
                 sleep(2)
                 check_result = urllib2.urlopen("http://%s:8088/%s" %(server_ip, test_str), timeout=timeout).read()
-                print check_result
                 if "YES" in check_result:
                     return "Exist CVE-2017-10271"
         else:

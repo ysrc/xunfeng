@@ -14,7 +14,7 @@ def get_plugin_info():
             "type": "命令执行",
             "author": ".@sinosig",
             "url": "https://www.oracle.com/technetwork/topics/security/cpuoct2017-3236626.html",
-            "keyword": "http:web",
+            "keyword": "tag:weblogic",
     }
     return plugin_info
 

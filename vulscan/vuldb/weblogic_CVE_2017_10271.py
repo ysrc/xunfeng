@@ -15,6 +15,7 @@ def get_plugin_info():
             "author": ".@sinosig",
             "url": "https://www.oracle.com/technetwork/topics/security/cpuoct2017-3236626.html",
             "keyword": "tag:weblogic",
+            "source": 1
     }
     return plugin_info
 

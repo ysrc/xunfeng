@@ -53,6 +53,9 @@ class start:
             if "/" in ip: ip = cidr.CIDR(ip)
             if not ip:continue
             ip_list = self.get_ip_list(ip)
+            for white_ip in self.white_list:
+                if white_ip in ip_list:
+                    ip_list.remove(white_ip)
             if self.mode == 1:
                 self.masscan_path = self.config_ini['Masscan'].split('|')[2]
                 self.masscan_rate = self.config_ini['Masscan'].split('|')[1]

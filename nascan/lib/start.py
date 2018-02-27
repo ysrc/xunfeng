@@ -44,6 +44,7 @@ class start:
         self.scan_list = self.config_ini['Scan_list'].split('\n')
         self.mode = int(self.config_ini['Masscan'].split('|')[0])
         self.icmp = int(self.config_ini['Port_list'].split('|')[0])
+        self.white_list = self.config_ini.get('White_list', '').split('\n')
 
     def run(self):
         global AC_PORT_LIST

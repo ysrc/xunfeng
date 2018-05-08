@@ -134,7 +134,6 @@ EOF
             }
             apt_get_update
             $sh_c 'apt-get install -y -q curl wget unzip gcc libssl-dev libffi-dev python-dev libpcap-dev git whiptail supervisor'
-            $sh_c 'pip install -U pip'
             if [ ! -f /usr/lib/x86_64-linux-gnu/libpcap.so.1 ]; then
                 $sh_c 'ln -s /usr/lib/x86_64-linux-gnu/libpcap.so /usr/lib/x86_64-linux-gnu/libpcap.so.1'
             fi

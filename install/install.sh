@@ -190,7 +190,6 @@ EOF
     $sh_c 'curl https://bootstrap.pypa.io/get-pip.py|python2.7'
     $sh_c 'pip install -U pip'
 	    
-
     if [ ! -d /opt/xunfeng ]; then
         # clone repo
         $sh_c 'git clone ${XUNFENG_REPO} /opt/xunfeng'

@@ -10,7 +10,7 @@ def get_plugin_info():
         "type": "rddos",
         "author": "bwd",
         "url": "",
-        "keyword": "server:memcache-rddos",
+        "keyword": "server:memcache",
         "source": 1
     }
     return plugin_info

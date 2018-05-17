@@ -188,7 +188,7 @@ EOF
 
     # install pip
     $sh_c 'curl https://bootstrap.pypa.io/get-pip.py|python2.7'
-    $sh_c 'pip install -U pip'
+    $sh_c 'pip install -U pip -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com'
 	    
     if [ ! -d /opt/xunfeng ]; then
         # clone repo

@@ -2,21 +2,23 @@
 # coding=utf-8
 """ File: vulscan/vuldb/testing.py """
 
-import importlib.util
+import imp
 import sys
 import os
+import random
+from string import digits, ascii_lowercase
 
 
 def get_base_path():
     return os.path.dirname(os.path.realpath(__file__))
 
 
-def import_file(path, name=None):
-    name = name or os.path.splitext(os.path.basename(path))[0]
-    spec = importlib.util.spec_from_file_location(name, path)
-    module_ = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module_)
-    return module_
+def get_random_string(length=32, case_pool=digits+ascii_lowercase):
+    return ''.join([random.choice(case_pool) for _ in range(length)])
+
+
+def import_file(path):
+    return imp.load_source(get_random_string(), path)
 
 
 def main():
@@ -38,7 +40,7 @@ def main():
             continue
         filepath = os.path.join(base_path, filename)
         _module = import_file(filepath)
-        res = _module.check(ip_addr, port, default_timeout)
+        res = _module.check(ip_addr, int(port), default_timeout)
         if not res:
             res = 'not exist'
         name = _module.get_plugin_info().get('name')

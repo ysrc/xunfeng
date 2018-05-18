@@ -44,7 +44,8 @@ def main():
         if not res:
             res = 'not exist'
         name = _module.get_plugin_info().get('name')
-        print('[*] {}: {}'.format(str(name), str(res)))
+        print(name)
+        print(res)
 
 
 if __name__ == '__main__':

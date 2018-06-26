@@ -8,6 +8,7 @@ import os
 import random
 from string import digits, ascii_lowercase
 
+PASSWORD_DIC = []  # set password list for plugin
 
 def get_base_path():
     return os.path.dirname(os.path.realpath(__file__))
@@ -40,6 +41,7 @@ def main():
             continue
         filepath = os.path.join(base_path, filename)
         _module = import_file(filepath)
+        setattr(_module, 'PASSWORD_DIC', PASSWORD_DIC)
         res = _module.check(ip_addr, int(port), default_timeout)
         if not res:
             res = 'not exist'

@@ -29,6 +29,6 @@ def check(ip, port, timeout):
                 if pass_ == '': pass_ = "null"
                 return u"存在弱口令，账号：%s，密码：%s" % (user, pass_)
             except Exception, e:
-                if "Unable to connect" in e or "timed out" in e: return
+                if "Unable to connect" in e or "timed out" in e or "Bad authentication type" in e: return
             finally:
                 ssh.close()

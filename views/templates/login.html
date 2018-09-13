@@ -34,6 +34,7 @@
         </div>
         <div class="panel-body">
             <form class="form-horizontal m-t-20" action="login" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
                 <div class="form-group ">
                     <div class="col-xs-12">

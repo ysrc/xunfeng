@@ -6,8 +6,8 @@ def run(ip_list,path,rate):
         ip_file = open('target.log','w')
         ip_file.write("\n".join(ip_list))
         ip_file.close()
-        path = str(path).translate(None, ';|&')
-        rate = str(rate).translate(None, ';|&')
+        path = str(path).translate(None, ';|&`\n')
+        rate = str(rate).translate(None, ';|&`\n')
         if not os.path.exists(path):return
         os.system("%s -p1-65535 -iL target.log -oL tmp.log --randomize-hosts --rate=%s"%(path,rate))
         result_file = open('tmp.log', 'r')

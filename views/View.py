@@ -611,4 +611,4 @@ def Error():
 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):
-    redirect(url_for('Error'))
+    return redirect(url_for('Error'))

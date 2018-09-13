@@ -7,12 +7,13 @@ from urllib import unquote, urlopen, urlretrieve, quote, urlencode
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from flask import request, render_template, redirect, url_for, session, make_response
+from flask_wtf.csrf import CSRFError
 from lib.CreateExcel import *
 from lib.Login import logincheck
 from lib.AntiCSRF import anticsrf
 from lib.QueryLogic import querylogic
 from werkzeug.utils import secure_filename
-from . import app, Mongo, page_size, file_path
+from . import app, Mongo, page_size, file_path, csrf
 import urllib2
 import copy
 
@@ -28,7 +29,6 @@ def Search():
 # 删除所有
 @app.route('/deleteall', methods=['post'])
 @logincheck
-@anticsrf
 def Deleteall():
     Mongo.coll['Task'].remove({})
     return 'success'
@@ -78,7 +78,6 @@ def Getplugin():
 # 新增任务异步
 @app.route('/addtask', methods=['get', 'post'])
 @logincheck
-@anticsrf
 def Addtask():
     title = request.form.get('title', '')
     plugin = request.form.get('plugin', '')
@@ -126,7 +125,6 @@ def Task():
 # 复测任务异步
 @app.route('/taskrecheck')
 @logincheck
-@anticsrf
 def Recheck():
     tid = request.args.get('taskid', '')
     task = Mongo.coll['Task'].find_one({'_id': ObjectId(tid)})
@@ -196,7 +194,6 @@ def TaskDetail():
 # 删除任务异步
 @app.route('/deletetask', methods=['get', 'post'])
 @logincheck
-@anticsrf
 def DeleteTask():
     oid = request.form.get('oid', '')
     if oid:
@@ -211,7 +208,6 @@ def DeleteTask():
 # 下载excel报表异步
 @app.route('/downloadxls', methods=['get', 'post'])
 @logincheck
-@anticsrf
 def DownloadXls():
     tid = request.args.get('taskid', '')
     taskdate = request.args.get('taskdate', '')
@@ -281,7 +277,6 @@ def DownloadXls():
 # 搜索结果报表下载接口
 @app.route('/searchxls', methods=['get'])
 @logincheck
-@anticsrf
 def search_result_xls():
     query = request.args.get('query', '')
     if query:
@@ -319,7 +314,7 @@ def Plugin():
 # 新增插件异步
 @app.route('/addplugin', methods=['get', 'post'])
 @logincheck
-@anticsrf
+@csrf.exempt
 def AddPlugin():
     result = 'fail'
     f = request.files['file']
@@ -393,7 +388,6 @@ def AddPlugin():
 # 删除插件异步
 @app.route('/deleteplugin', methods=['get', 'post'])
 @logincheck
-@anticsrf
 def DeletePlugin():
     oid = request.form.get('oid', '')
     if oid:
@@ -467,7 +461,6 @@ def Config():
 # 配置更新异步
 @app.route('/updateconfig', methods=['get', 'post'])
 @logincheck
-@anticsrf
 def UpdateConfig():
     rsp = 'fail'
     name = request.form.get('name', 'default')
@@ -501,7 +494,6 @@ def UpdateConfig():
 # 拉取线上最新插件异步
 @app.route('/pullupdate')
 @logincheck
-@anticsrf
 def PullUpdate():
     rsp = 'err'
     f = urlopen('https://sec.ly.com/xunfeng/getlist')
@@ -532,7 +524,6 @@ def PullUpdate():
 # 检查本地已知的线上插件列表异步
 @app.route('/checkupdate')
 @logincheck
-@anticsrf
 def CheckUpdate():
     json = []
     notinstall = Mongo.coll['Update'].find({'isInstall': 0}).sort('unicode', -1)
@@ -545,7 +536,6 @@ def CheckUpdate():
 # 安装／下载插件异步
 @app.route('/installplugin')
 @logincheck
-@anticsrf
 def installplugin():
     rsp = 'fail'
     unicode = request.args.get('unicode', '')
@@ -617,3 +607,8 @@ def NotFound():
 @app.route('/500')
 def Error():
     return render_template('500.html')
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    return redirect(url_for('Error'))

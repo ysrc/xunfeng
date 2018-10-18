@@ -102,6 +102,7 @@ class scan:
                         dis_sock.send(mode)
                         time.sleep(0.3)
                         dis_recv = dis_sock.recv(1024)
+                        dis_sock.close()
                         matchObj = re.search(reg, dis_recv, re.I | re.M)
                         if matchObj:
                             self.server = name
@@ -178,6 +179,7 @@ class scan:
             _s.sendto(query_data, (ip, dport))
             x = _s.recvfrom(1024)
             tmp = x[0][57:]
+            _s.close()
             hostname = tmp.split("\x00", 2)[0].strip()
             hostname = hostname.split()[0]
             return hostname

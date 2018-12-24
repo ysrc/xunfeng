@@ -142,7 +142,7 @@ def check(ip,port,timeout):
 
 ## 流程演示视频
 
-[![](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/intro.png)](https://sec-pic-ly.b0.upaiyun.com/xunfeng/xunfeng.mp4)
+[![](https://ysrc.github.io/static/img/intro.png)](https://ysrc.github.io/static/video/xunfeng.mp4)
 
 
 ## 文件结构

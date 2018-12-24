@@ -14,7 +14,8 @@
 
 ## 安装指南
 
-[![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) [![MyGet](https://sec-pic-ly.b0.upaiyun.com/xunfeng/static/MongoVersion.svg?a=1)](https://www.mongodb.com/download-center?jmp=nav)
+[![Python 2.7](https://img.shields.io/badge/python-2.7-yellow.svg)](https://www.python.org/) 
+[![Mongodb 3.4.0](https://img.shields.io/badge/mongodb-3.4.0-blue.svg)](https://www.mongodb.com/download-center?jmp=nav)
 
 国内镜像 https://code.aliyun.com/ysrc/xunfeng.git
 
@@ -36,7 +37,7 @@
 
 **JSON标示符**
 
-![](https://sec-pic-ly.b0.upaiyun.com/img/161220/261479B35BD86E479D6E40DAA990E700749CA50E.png)
+![](https://ysrc.github.io/static/img/xunfeng-json-plugin.png)
 
 **Python脚本**
 

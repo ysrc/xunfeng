@@ -1,0 +1,18 @@
+{
+	"name": "Hadoop YARN ResourceManager 未授权访问/RCE",
+	"info": "Hadoop YARN ResourceManager 未授权访问，可查看集群相关信息，通过提交任务功能可在服务上执行任意命令，导致服务器被入侵控制。",
+	"level": "高危",
+	"type": "未授权访问",
+	"author": "wolf",
+	"url": "https://github.com/vulhub/vulhub/tree/master/hadoop/unauthorized-yarn",
+	"keyword": "port:8088",
+	"source": 1,
+	"plugin": {
+		"url": "/ws/v1/cluster/apps/new-application",
+		"tag": "未授权访问, exp:https://github.com/vulhub/vulhub/blob/master/hadoop/unauthorized-yarn/exploit.py",
+		"analyzing": "keyword",
+		"analyzingdata": "<javaClassName>javax.ws.rs.WebApplicationException",
+		"data": "",
+		"method": "GET"
+	}
+}

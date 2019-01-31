@@ -1,0 +1,18 @@
+{
+	"name": "Weblogic SSRF",
+	"info": "Weblogic中存在一个SSRF漏洞，利用该漏洞可以发送任意HTTP请求，进而攻击内网中redis、fastcgi等脆弱组件。",
+	"level": "高危",
+	"type": "SSRF",
+	"author": "wolf",
+	"url": "https://github.com/vulhub/vulhub/tree/master/weblogic/ssrf",
+	"keyword": "tag:weblogic",
+	"source": 1,
+	"plugin": {
+		"url": "/uddiexplorer/SearchPublicRegistries.jsp?rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search&operator=http://127.0.0.1:46666",
+		"tag": "存在SSRF漏洞",
+		"analyzing": "keyword",
+		"analyzingdata": "could not connect over HTTP to server",
+		"data": "",
+		"method": "GET"
+	}
+}

@@ -16,7 +16,7 @@ $ docker pull ysrc/xunfeng
 ### 2. 创建容器
 
 ```bash
-$ docker run -d -p 8000:80 -v /opt/data:/data ysrc/xunfeng:latest
+$ docker run -d -p 80:8000 -v /opt/data:/data ysrc/xunfeng:latest
 ```
 
 把物理机的 `/opt/data` 挂载到容器的 `/data` 目录下, 访问: `http://127.0.0.1:8000/` 正常访问则代表安装成功

@@ -188,7 +188,7 @@ _Ubuntu 14.04_
 
 ### 3. 修改配置
 
-修改系统数据库配置脚本 `Config.py`:
+修改系统数据库配置脚本 `config.py`:
 
 ```python
 class Config(object):
@@ -208,10 +208,10 @@ class ProductionConfig(Config):
 ```
 ### 4. 运行系统
 
-根据实际情况修改(端口和目录需对应好) `Conifg.py` 和 `Run.sh` 文件后, 执行:
+根据实际情况修改(端口和目录需对应好) `conifg.py` 和 `run.sh` 文件后, 执行:
 
 ```
-# sh Run.sh
+# sh run.sh
 ```
 
 

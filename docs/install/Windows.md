@@ -57,7 +57,7 @@ $ mongorestore.exe -h 127.0.0.1 --port 65521 -d xunfeng db
 
 ### 3. 修改配置
 
-修改系统数据库配置脚本 `Config.py`:
+修改系统数据库配置脚本 `config.py`:
 
 ```
 class Config(object):
@@ -78,10 +78,10 @@ class ProductionConfig(Config):
 
 ### 4. 运行系统
 
-根据实际情况修改 `Conifg.py` 和 `Run.bat` 文件后, 执行:
+根据实际情况修改 `conifg.py` 和 `run.bat` 文件后, 执行:
 
 ```
-> Run.bat
+> run.bat
 ```
 
 _要用MASSCAN的话需要安装WinPcap_

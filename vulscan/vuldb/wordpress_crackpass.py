@@ -49,6 +49,7 @@ def check(ip, port, timeout):
     flag_list = ['<name>isAdmin</name>', '<name>url</name>']
     user_list = get_user(url, timeout)
     error_i = 0
+    pass_list = PASSWORD_DIC
     for user_str in user_list:
         pass_list.append(user_str)
         try:
@@ -63,7 +64,7 @@ def check(ip, port, timeout):
             pass_list.append(domain_sp[len(domain_sp) - 2])
         except:
             pass
-        for pass_str in PASSWORD_DIC:
+        for pass_str in pass_list:
             try:
                 login_path = '/xmlrpc.php'
                 PostStr = "<?xml version='1.0' encoding='iso-8859-1'?><methodCall>  <methodName>wp.getUsersBlogs</methodName>  <params>   <param><value>%s</value></param>   <param><value>%s</value></param>  </params></methodCall>" % (

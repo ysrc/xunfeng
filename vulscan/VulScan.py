@@ -10,10 +10,13 @@ import json
 import re
 import uuid
 import os
+from kunpeng import kunpeng
+
 
 sys.path.append(sys.path[0] + '/vuldb')
 sys.path.append(sys.path[0] + "/../")
-from Config import ProductionConfig
+
+from config import ProductionConfig
 
 db_conn = pymongo.MongoClient(ProductionConfig.DB, ProductionConfig.PORT)
 na_db = getattr(db_conn, ProductionConfig.DBNAME)
@@ -23,6 +26,7 @@ na_result = na_db.Result
 na_plugin = na_db.Plugin
 na_config = na_db.Config
 na_heart = na_db.Heartbeat
+na_update = na_db.Update
 lock = thread.allocate()
 PASSWORD_DIC = []
 THREAD_COUNT = 50
@@ -30,6 +34,8 @@ TIMEOUT = 10
 PLUGIN_DB = {}
 TASK_DATE_DIC = {}
 WHITE_LIST = []
+kp = kunpeng()
+
 
 class vulscan():
     def __init__(self, task_id, task_netloc, task_plugin):
@@ -42,12 +48,20 @@ class vulscan():
     def start(self):
         self.get_plugin_info()
         if '.json' in self.plugin_info['filename']:  # 标示符检测模式
-            try:
-                self.load_json_plugin()  # 读取漏洞标示
-                self.set_request()  # 标示符转换为请求
-                self.poc_check()  # 检测
-            except Exception, e:
-                return
+            self.load_json_plugin()  # 读取漏洞标示
+            self.set_request()  # 标示符转换为请求
+            self.poc_check()  # 检测
+        elif 'KP-' in self.plugin_info['filename']:
+            kp.set_config(TIMEOUT, PASSWORD_DIC)
+            if self.task_netloc[1] != 80:
+                self.result_info = kp.check('service', '{}:{}'.format(
+                    self.task_netloc[0], self.task_netloc[1]), self.plugin_info['filename'])
+            if not self.result_info:
+                scheme = 'http'
+                if self.task_netloc[1] == 443:
+                    scheme = 'https'
+                self.result_info = kp.check('web', '{}://{}:{}'.format(
+                    scheme, self.task_netloc[0], self.task_netloc[1]), self.plugin_info['filename'])
         else:  # 脚本检测模式
             plugin_filename = self.plugin_info['filename']
             self.log(str(self.task_netloc) + "call " + self.task_plugin)
@@ -55,11 +69,8 @@ class vulscan():
                 plugin_res = __import__(plugin_filename)
                 setattr(plugin_res, "PASSWORD_DIC", PASSWORD_DIC)  # 给插件声明密码字典
                 PLUGIN_DB[plugin_filename] = plugin_res
-            try:
-                self.result_info = PLUGIN_DB[plugin_filename].check(str(self.task_netloc[0]), int(self.task_netloc[1]),
-                                                                    TIMEOUT)
-            except:
-                return
+            self.result_info = PLUGIN_DB[plugin_filename].check(
+                str(self.task_netloc[0]), int(self.task_netloc[1]), TIMEOUT)
         self.save_request()  # 保存结果
 
     def get_plugin_info(self):
@@ -67,11 +78,14 @@ class vulscan():
         self.plugin_info = info
 
     def load_json_plugin(self):
-        json_plugin = open(sys.path[0] + '/vuldb/' + self.plugin_info['filename']).read()
+        json_plugin = open(sys.path[0] + '/vuldb/' +
+                           self.plugin_info['filename']).read()
         self.plugin_info['plugin'] = json.loads(json_plugin)['plugin']
 
     def set_request(self):
-        url = 'http://' + self.task_netloc[0] + ":" + str(self.task_netloc[1]) + self.plugin_info['plugin']['url']
+        url = 'http://' + \
+            self.task_netloc[0] + ":" + \
+            str(self.task_netloc[1]) + self.plugin_info['plugin']['url']
         if self.plugin_info['plugin']['method'] == 'GET':
             request = urllib2.Request(url)
         else:
@@ -81,14 +95,17 @@ class vulscan():
     def get_code(self, header, html):
         try:
             m = re.search(r'<meta.*?charset=(.*?)"(>| |/)', html, flags=re.I)
-            if m: return m.group(1).replace('"', '')
+            if m:
+                return m.group(1).replace('"', '')
         except:
             pass
         try:
             if 'Content-Type' in header:
                 Content_Type = header['Content-Type']
-                m = re.search(r'.*?charset=(.*?)(;|$)', Content_Type, flags=re.I)
-                if m: return m.group(1)
+                m = re.search(r'.*?charset=(.*?)(;|$)',
+                              Content_Type, flags=re.I)
+                if m:
+                    return m.group(1)
         except:
             pass
 
@@ -115,31 +132,33 @@ class vulscan():
         analyzingdata = self.plugin_info['plugin']['analyzingdata']
         if an_type == 'keyword':
             # print poc['analyzingdata'].encode("utf-8")
-            if analyzingdata.encode("utf-8") in res_html: self.result_info = vul_tag
+            if analyzingdata.encode("utf-8") in res_html:
+                self.result_info = vul_tag
         elif an_type == 'regex':
-            if re.search(analyzingdata, res_html, re.I): self.result_info = vul_tag
+            if re.search(analyzingdata, res_html, re.I):
+                self.result_info = vul_tag
         elif an_type == 'md5':
             md5 = hashlib.md5()
             md5.update(res_html)
-            if md5.hexdigest() == analyzingdata: self.result_info = vul_tag
+            if md5.hexdigest() == analyzingdata:
+                self.result_info = vul_tag
 
     def save_request(self):
         if self.result_info:
-            try:
-                time_ = datetime.datetime.now()
-                self.log(str(self.task_netloc) + " " + self.result_info)
-                v_count = na_result.find(
-                    {"ip": self.task_netloc[0], "port": self.task_netloc[1], "info": self.result_info}).count()
-                if not v_count: na_plugin.update({"name": self.task_plugin}, {"$inc": {'count': 1}})
-                vulinfo = {"vul_name": self.plugin_info['name'], "vul_level": self.plugin_info['level'],
-                           "vul_type": self.plugin_info['type']}
-                w_vul = {"task_id": self.task_id, "ip": self.task_netloc[0], "port": self.task_netloc[1],
-                         "vul_info": vulinfo, "info": self.result_info, "time": time_,
-                         "task_date": TASK_DATE_DIC[str(self.task_id)]}
-                na_result.insert(w_vul)
-                # self.wx_send(w_vul)  # 自行定义漏洞提醒
-            except Exception, e:
-                pass
+            time_ = datetime.datetime.now()
+            self.log(str(self.task_netloc) + " " + self.result_info)
+            v_count = na_result.find(
+                {"ip": self.task_netloc[0], "port": self.task_netloc[1], "info": self.result_info}).count()
+            if not v_count:
+                na_plugin.update({"name": self.task_plugin},
+                                 {"$inc": {'count': 1}})
+            vulinfo = {"vul_name": self.plugin_info['name'], "vul_level": self.plugin_info['level'],
+                       "vul_type": self.plugin_info['type']}
+            w_vul = {"task_id": self.task_id, "ip": self.task_netloc[0], "port": self.task_netloc[1],
+                     "vul_info": vulinfo, "info": self.result_info, "time": time_,
+                     "task_date": TASK_DATE_DIC[str(self.task_id)]}
+            na_result.insert(w_vul)
+            # self.wx_send(w_vul)  # 自行定义漏洞提醒
 
     def log(self, info):
         lock.acquire()
@@ -153,7 +172,8 @@ class vulscan():
 
 def queue_get():
     global TASK_DATE_DIC
-    task_req = na_task.find_and_modify(query={"status": 0, "plan": 0}, update={"$set": {"status": 1}}, sort={'time': 1})
+    task_req = na_task.find_and_modify(query={"status": 0, "plan": 0}, update={
+                                       "$set": {"status": 1}}, sort={'time': 1})
     if task_req:
         TASK_DATE_DIC[str(task_req['_id'])] = datetime.datetime.now()
         return task_req['_id'], task_req['plan'], task_req['target'], task_req['plugin']
@@ -163,10 +183,14 @@ def queue_get():
             for task_req in task_req_row:
                 if (datetime.datetime.now() - task_req['time']).days / int(task_req['plan']) >= int(task_req['status']):
                     if task_req['isupdate'] == 1:
-                        task_req['target'] = update_target(json.loads(task_req['query']))
-                        na_task.update({"_id": task_req['_id']}, {"$set": {"target": task_req['target']}})
-                    na_task.update({"_id": task_req['_id']}, {"$inc": {"status": 1}})
-                    TASK_DATE_DIC[str(task_req['_id'])] = datetime.datetime.now()
+                        task_req['target'] = update_target(
+                            json.loads(task_req['query']))
+                        na_task.update({"_id": task_req['_id']}, {
+                                       "$set": {"target": task_req['target']}})
+                    na_task.update({"_id": task_req['_id']}, {
+                                   "$inc": {"status": 1}})
+                    TASK_DATE_DIC[str(task_req['_id'])
+                                  ] = datetime.datetime.now()
                     return task_req['_id'], task_req['plan'], task_req['target'], task_req['plugin']
         return '', '', '', ''
 
@@ -191,10 +215,13 @@ def monitor():
             load = 1
         else:
             ac_count = thread._count()
-            load = float(ac_count - 4) / THREAD_COUNT
-        if load > 1: load = 1
-        if load < 0: load = 0
-        na_heart.update({"name": "load"}, {"$set": {"value": load, "up_time": datetime.datetime.now()}})
+            load = float(ac_count - 6) / THREAD_COUNT
+        if load > 1:
+            load = 1
+        if load < 0:
+            load = 0
+        na_heart.update({"name": "load"}, {
+                        "$set": {"value": load, "up_time": datetime.datetime.now()}})
         PASSWORD_DIC, THREAD_COUNT, TIMEOUT, WHITE_LIST = get_config()
         if load > 0:
             time.sleep(8)
@@ -219,11 +246,12 @@ def get_config():
 
 
 def init():
-    if na_plugin.find().count() >= 1: return
+    time_ = datetime.datetime.now()
+    if na_plugin.find().count() >= 1:
+        return
     script_plugin = []
     json_plugin = []
     file_list = os.listdir(sys.path[0] + '/vuldb')
-    time_ = datetime.datetime.now()
     for filename in file_list:
         try:
             if filename.split('.')[1] == 'py':
@@ -253,26 +281,89 @@ def init():
             na_plugin.insert(plugin_info)
         except:
             pass
+    for plugin in kp.get_plugin_list():
+        level_list = ['严重','高危','中危','低危','提示']
+        plugin_info = {
+            '_id': plugin['references']['kpid'],
+            'name': 'Kunpeng -' + plugin['name'],
+            'info': plugin['remarks'] + ' ' + plugin['references']['cve'],
+            'level': level_list[int(plugin['level'])],
+            'type': plugin['type'],
+            'author': plugin['author'],
+            'url': plugin['references']['url'],
+            'source': 1,
+            'keyword': '',
+            'add_time': time_,
+            'filename': plugin['references']['kpid'],
+            'count': 0
+        }
+        na_plugin.insert(plugin_info)
+
+
+def kp_check():
+    while True:
+        try:
+            new_release = kp.check_version()
+            print new_release
+            if new_release:
+                info = new_release['body']
+                if '###' in new_release['body']:
+                    info = new_release['body'].split('###')[1]
+                row = {
+                    'info': info,
+                    'isInstall': 0,
+                    'name': new_release['name'],
+                    'author': new_release['author']['login'],
+                    'pushtime': new_release['published_at'],
+                    'location': "",
+                    'unicode': new_release['tag_name'],
+                    'coverage': 0,
+                    'source': 'kunpeng'
+                }
+                na_update.insert(row)
+        except Exception as e:
+            print e
+        time.sleep(60 * 30)
+
+
+def kp_update():
+    while True:
+        try:
+            row = na_update.find_one_and_delete(
+                {'source': 'kunpeng', 'isInstall': 1})
+            if row:
+                kp.update_version(row['unicode'])
+        except Exception as e:
+            print e
+        time.sleep(10)
 
 
 if __name__ == '__main__':
     init()
     PASSWORD_DIC, THREAD_COUNT, TIMEOUT, WHITE_LIST = get_config()
     thread.start_new_thread(monitor, ())
+    thread.start_new_thread(kp_check, ())
+    thread.start_new_thread(kp_update, ())
     while True:
-        task_id, task_plan, task_target, task_plugin = queue_get()
-        if task_id == '':
-            time.sleep(10)
-            continue
-        if PLUGIN_DB:
-            del sys.modules[PLUGIN_DB.keys()[0]] # 清理插件缓存
-            PLUGIN_DB.clear()
-        for task_netloc in task_target:
-            while True:
-                if int(thread._count()) < THREAD_COUNT:
-                    if task_netloc[0] in WHITE_LIST: break
-                    thread.start_new_thread(vulscan, (task_id, task_netloc, task_plugin))
-                    break
-                else:
-                    time.sleep(2)
-        if task_plan == 0: na_task.update({"_id": task_id}, {"$set": {"status": 2}})
+        try:
+            task_id, task_plan, task_target, task_plugin = queue_get()
+            if task_id == '':
+                time.sleep(10)
+                continue
+            if PLUGIN_DB:
+                del sys.modules[PLUGIN_DB.keys()[0]]  # 清理插件缓存
+                PLUGIN_DB.clear()
+            for task_netloc in task_target:
+                while True:
+                    if int(thread._count()) < THREAD_COUNT:
+                        if task_netloc[0] in WHITE_LIST:
+                            break
+                        thread.start_new_thread(
+                            vulscan, (task_id, task_netloc, task_plugin))
+                        break
+                    else:
+                        time.sleep(2)
+            if task_plan == 0:
+                na_task.update({"_id": task_id}, {"$set": {"status": 2}})
+        except Exception as e:
+            print e

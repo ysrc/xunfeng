@@ -44,4 +44,3 @@ if __name__=="__main__":
             print datetime.datetime.now().strftime('%m-%d %H:%M:%S') + " " +str(addr[0]) +' Dns Query: ' + recv
         except Exception,e:
             print e
-            continue

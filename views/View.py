@@ -540,6 +540,9 @@ def installplugin():
     rsp = 'fail'
     unicode = request.args.get('unicode', '')
     item = Mongo.coll['Update'].find_one({'unicode': unicode})
+    if item.get('source','') == 'kunpeng':
+        Mongo.coll['Update'].update_one({'unicode': unicode}, {'$set': {'isInstall': 1}})
+        return 'success'
     json_string = {'add_time': datetime.now(), 'count': 0, 'source': 1}
     file_name = secure_filename(item['location'].split('/')[-1])
     if os.path.exists(file_path + file_name):

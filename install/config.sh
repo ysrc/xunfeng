@@ -66,7 +66,7 @@ writeconfig_confirm() {
 }
 
 writeconfig() {
-    CONFIG_FILE_PATH="/opt/xunfeng/Config.py"
+    CONFIG_FILE_PATH="/opt/xunfeng/config.py"
     cat /dev/null > $CONFIG_FILE_PATH
 
     echo "class Config(object):" >> ${CONFIG_FILE_PATH}

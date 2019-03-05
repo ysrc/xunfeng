@@ -148,20 +148,19 @@ def check(ip,port,timeout):
 
 ## 文件结构
 
-    │  Config.py  # 配置文件
+    │  config.py  # 配置文件
     │  README.md  # 说明文档
-    │  Run.bat  # Windows启动服务
-    │  Run.py  # webserver
-    │  Run.sh    # Linux启动服务，重新启动前需把进程先结束掉
+    │  run.bat  # Windows启动服务
+    │  run.sh    # Linux启动服务，重新启动前需把进程先结束掉
     │
     ├─aider
-    │      Aider.py  # 辅助验证脚本
+    │      aider.py  # 辅助验证脚本
     │
     ├─db  # 初始数据库结构
     │
     ├─masscan  # 内置编译好的Masscan程序（CentOS win64适用），需要chmod+x给执行权限（root），若无法使用请自行编译安装。
     ├─nascan
-    │  │  NAScan.py # 网络资产信息抓取引擎
+    │  │  nascan.py # 网络资产信息抓取
     │  │
     │  ├─lib
     │  │      common.py 其他方法
@@ -175,7 +174,8 @@ def check(ip,port,timeout):
     │          masscan.py  # 调用Masscan脚本
     │
     ├─views
-    │  │  View.py  # web请求处理
+    │  │  web.py  # web启动
+    │  │  view.py  # web请求处理
     │  │
     │  ├─lib
     │  │      Conn.py  # 数据库公共类
@@ -188,7 +188,7 @@ def check(ip,port,timeout):
     │  └─templates #模板文件目录
     │
     └─vulscan
-        │  VulScan.py  # 漏洞检测引擎
+        │  vulscan.py  # 漏洞检测进程
         │
         └─vuldb # 漏洞库目录
 

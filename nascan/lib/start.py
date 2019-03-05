@@ -25,7 +25,8 @@ class ThreadNum(threading.Thread):
                 if self.mode:
                     port_list = AC_PORT_LIST[task_host]
                 else:
-                    port_list = self.config_ini['Port_list'].split('|')[1].split('\n')
+                    port_list = self.config_ini['Port_list'].split('|')[
+                        1].split('\n')
                 _s = scan.scan(task_host, port_list)
                 _s.config_ini = self.config_ini  # 提供配置信息
                 _s.statistics = self.statistics  # 提供统计信息
@@ -50,27 +51,35 @@ class start:
         global AC_PORT_LIST
         all_ip_list = []
         for ip in self.scan_list:
-            if "/" in ip: ip = cidr.CIDR(ip)
-            if not ip:continue
+            if "/" in ip:
+                ip = cidr.CIDR(ip)
+            if not ip:
+                continue
             ip_list = self.get_ip_list(ip)
             for white_ip in self.white_list:
                 if white_ip in ip_list:
                     ip_list.remove(white_ip)
             if self.mode == 1:
-                self.masscan_path = self.config_ini['Masscan'].split('|')[2]
-                self.masscan_rate = self.config_ini['Masscan'].split('|')[1]
+                masscan_path = self.config_ini['Masscan'].split('|')[2]
+                masscan_rate = self.config_ini['Masscan'].split('|')[1]
                 ip_list = self.get_ac_ip(ip_list)
                 self.masscan_ac[0] = 1
-                AC_PORT_LIST = self.masscan(ip_list)  # 如果安装了Masscan即使用Masscan进行全端口扫描
-                if not AC_PORT_LIST: continue
+                # 如果安装了Masscan即使用Masscan进行全端口扫描
+                AC_PORT_LIST = self.masscan(
+                    ip_list, masscan_path, masscan_rate)
+                if not AC_PORT_LIST:
+                    continue
                 self.masscan_ac[0] = 0
-                for ip_str in AC_PORT_LIST.keys(): self.queue.put(ip_str)  # 加入队列
+                for ip_str in AC_PORT_LIST.keys():
+                    self.queue.put(ip_str)  # 加入队列
                 self.scan_start()  # 开始扫描
             else:
                 all_ip_list.extend(ip_list)
         if self.mode == 0:
-            if self.icmp: all_ip_list = self.get_ac_ip(all_ip_list)
-            for ip_str in all_ip_list: self.queue.put(ip_str)  # 加入队列
+            if self.icmp:
+                all_ip_list = self.get_ac_ip(all_ip_list)
+            for ip_str in all_ip_list:
+                self.queue.put(ip_str)  # 加入队列
             self.scan_start()  # TCP探测模式开始扫描
 
     def scan_start(self):
@@ -83,12 +92,13 @@ class start:
             t.start()
         self.queue.join()
 
-    def masscan(self, ip):
+    def masscan(self, ip, masscan_path, masscan_rate):
         try:
-            if len(ip) == 0: return
+            if len(ip) == 0:
+                return
             sys.path.append(sys.path[0] + "/plugin")
             m_scan = __import__("masscan")
-            result = m_scan.run(ip, self.masscan_path, self.masscan_rate)
+            result = m_scan.run(ip, masscan_path, masscan_rate)
             return result
         except Exception, e:
             print e
@@ -96,8 +106,10 @@ class start:
 
     def get_ip_list(self, ip):
         ip_list_tmp = []
-        iptonum = lambda x: sum([256 ** j * int(i) for j, i in enumerate(x.split('.')[::-1])])
-        numtoip = lambda x: '.'.join([str(x / (256 ** i) % 256) for i in range(3, -1, -1)])
+        def iptonum(x): return sum([256 ** j * int(i)
+                                    for j, i in enumerate(x.split('.')[::-1])])
+        def numtoip(x): return '.'.join(
+            [str(x / (256 ** i) % 256) for i in range(3, -1, -1)])
         if '-' in ip:
             ip_range = ip.split('-')
             ip_start = long(iptonum(ip_range[0]))
@@ -118,7 +130,8 @@ class start:
                         ip_list_tmp.append(ip)
             elif net == 3:
                 for c in range(1, 255):
-                    ip = "%s.%s.%s.%d" % (ip_split[0], ip_split[1], ip_split[2], c)
+                    ip = "%s.%s.%s.%d" % (
+                        ip_split[0], ip_split[1], ip_split[2], c)
                     ip_list_tmp.append(ip)
             elif net == 4:
                 ip_list_tmp.append(ip)

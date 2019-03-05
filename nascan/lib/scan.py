@@ -16,6 +16,8 @@ except AttributeError:
     pass
 else:
     ssl._create_default_https_context = _create_unverified_https_context
+
+
 class scan:
     def __init__(self, task_host, port_list):
         self.ip = task_host
@@ -29,7 +31,8 @@ class scan:
             self.banner = ''
             self.port = int(_port)
             self.scan_port()  # 端口扫描
-            if not self.banner:continue
+            if not self.banner:
+                continue
             self.server_discern()  # 服务识别
             if self.server == '':
                 web_info = self.try_web()  # 尝试web访问
@@ -39,6 +42,7 @@ class scan:
                     mongo.NA_INFO.update({'ip': self.ip, 'port': self.port},
                                          {"$set": {'banner': self.banner, 'server': 'web', 'webinfo': web_info,
                                                    'time': time_}})
+
     def scan_port(self):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,8 +65,10 @@ class scan:
         date_ = time_.strftime('%Y-%m-%d')
         try:
             banner = unicode(self.banner, errors='replace')
-            if self.banner == 'NULL': banner = ''
-            mongo.NA_INFO.insert({"ip": self.ip, "port": self.port, "hostname": hostname, "banner": banner, "time": time_})
+            if self.banner == 'NULL':
+                banner = ''
+            mongo.NA_INFO.insert({"ip": self.ip, "port": self.port,
+                                  "hostname": hostname, "banner": banner, "time": time_})
             self.statistics[date_]['add'] += 1
         except:
             if banner:
@@ -76,8 +82,9 @@ class scan:
                     history_info['del_time'] = time_
                     history_info['type'] = 'update'
                     mongo.NA_HISTORY.insert(history_info)
+
     def server_discern(self):
-        for mark_info in self.config_ini['Discern_server']: # 快速识别
+        for mark_info in self.config_ini['Discern_server']:  # 快速识别
             try:
                 name, default_port, mode, reg = mark_info
                 if mode == 'default':
@@ -87,15 +94,17 @@ class scan:
                     matchObj = re.search(reg, self.banner, re.I | re.M)
                     if matchObj:
                         self.server = name
-                if self.server:break
+                if self.server:
+                    break
             except:
                 continue
-        if not self.server and self.port not in [80,443,8080]:
+        if not self.server and self.port not in [80, 443, 8080]:
             for mark_info in self.config_ini['Discern_server']:  # 发包识别
                 try:
                     name, default_port, mode, reg = mark_info
-                    if mode not in ['default','banner']:
-                        dis_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    if mode not in ['default', 'banner']:
+                        dis_sock = socket.socket(
+                            socket.AF_INET, socket.SOCK_STREAM)
                         dis_sock.connect((self.ip, self.port))
                         mode = mode.decode('string_escape')
                         reg = reg.decode('string_escape')
@@ -111,15 +120,18 @@ class scan:
                     pass
         if self.server:
             log.write("server", self.ip, self.port, self.server)
-            mongo.NA_INFO.update({"ip": self.ip, "port": self.port}, {"$set": {"server": self.server}})
+            mongo.NA_INFO.update({"ip": self.ip, "port": self.port}, {
+                                 "$set": {"server": self.server}})
 
     def try_web(self):
         title_str, html = '', ''
         try:
             if self.port == 443:
-                info = urllib2.urlopen("https://%s:%s" % (self.ip, self.port), timeout=self.timeout)
+                info = urllib2.urlopen("https://%s:%s" %
+                                       (self.ip, self.port), timeout=self.timeout)
             else:
-                info = urllib2.urlopen("http://%s:%s" % (self.ip, self.port), timeout=self.timeout)
+                info = urllib2.urlopen("http://%s:%s" %
+                                       (self.ip, self.port), timeout=self.timeout)
             html = info.read()
             header = info.headers
         except urllib2.HTTPError, e:
@@ -127,8 +139,10 @@ class scan:
             header = e.headers
         except:
             return
-        if not header: return
-        if 'Content-Encoding' in header and 'gzip' in header['Content-Encoding']:  # 解压gzip
+        if not header:
+            return
+        # 解压gzip
+        if 'Content-Encoding' in header and 'gzip' in header['Content-Encoding']:
             html_data = StringIO.StringIO(html)
             gz = gzip.GzipFile(fileobj=html_data)
             html = gz.read()
@@ -136,15 +150,19 @@ class scan:
             html_code = self.get_code(header, html).strip()
             if html_code and len(html_code) < 12:
                 html = html.decode(html_code).encode('utf-8')
-        except: pass
+        except:
+            pass
         try:
             title = re.search(r'<title>(.*?)</title>', html, flags=re.I | re.M)
-            if title: title_str = title.group(1)
-        except: pass
+            if title:
+                title_str = title.group(1)
+        except:
+            pass
         try:
             web_banner = str(header) + "\r\n\r\n" + html
             self.banner = web_banner
-            history_info = mongo.NA_INFO.find_one({"ip": self.ip, "port": self.port})
+            history_info = mongo.NA_INFO.find_one(
+                {"ip": self.ip, "port": self.port})
             if 'server' not in history_info:
                 tag = self.get_tag()
                 web_info = {'title': title_str, 'tag': tag}
@@ -158,12 +176,13 @@ class scan:
                     web_info = {'title': title_str, 'tag': tag}
                     date_ = datetime.datetime.now().strftime('%Y-%m-%d')
                     self.statistics[date_]['update'] += 1
-                    log.write('info', None, 0, '%s:%s update web info'%(self.ip, self.port))
+                    log.write('info', None, 0, '%s:%s update web info' %
+                              (self.ip, self.port))
                     return web_info
         except:
             return
 
-    def ip2hostname(self,ip):
+    def ip2hostname(self, ip):
         try:
             hostname = socket.gethostbyaddr(ip)[0]
             return hostname
@@ -189,21 +208,25 @@ class scan:
     def get_code(self, header, html):
         try:
             m = re.search(r'<meta.*?charset=(.*?)"(>| |/)', html, flags=re.I)
-            if m: return m.group(1).replace('"', '')
+            if m:
+                return m.group(1).replace('"', '')
         except:
             pass
         try:
             if 'Content-Type' in header:
                 Content_Type = header['Content-Type']
-                m = re.search(r'.*?charset=(.*?)(;|$)', Content_Type, flags=re.I)
-                if m: return m.group(1)
+                m = re.search(r'.*?charset=(.*?)(;|$)',
+                              Content_Type, flags=re.I)
+                if m:
+                    return m.group(1)
         except:
             pass
 
     def get_tag(self):
         try:
             url = self.ip + ':' + str(self.port)
-            tag = map(self.discern, ['Discern_cms', 'Discern_con', 'Discern_lang'], [url, url, url])
+            tag = map(self.discern, [
+                      'Discern_cms', 'Discern_con', 'Discern_lang'], [url, url, url])
             return filter(None, tag)
         except Exception, e:
             return
@@ -226,7 +249,8 @@ class scan:
         for mark_info in self.config_ini[dis_type]:
             if mark_info[1] == 'header':
                 try:
-                    if not header: return
+                    if not header:
+                        return
                     if re.search(mark_info[3], header[mark_info[2]], re.I):
                         return mark_info[0]
                 except Exception, e:
@@ -234,7 +258,8 @@ class scan:
             elif mark_info[1] == 'file':
                 if mark_info[2] == 'index':
                     try:
-                        if not html: return
+                        if not html:
+                            return
                         if re.search(mark_info[3], html, re.I):
                             return mark_info[0]
                     except Exception, e:

@@ -15,9 +15,9 @@ if [[ $? != 0 ]]; then
     mongo 127.0.0.1:65521/xunfeng < ${XUNFENG_BASE}/dockerconf/mongoauth
 fi
 
-nohup python ${XUNFENG_BASE}/Run.py > ${XUNFENG_LOG}/web.log &
-nohup python ${XUNFENG_BASE}/aider/Aider.py > ${XUNFENG_LOG}/aider.log &
-nohup python ${XUNFENG_BASE}/nascan/NAScan.py > ${XUNFENG_LOG}/scan.log &
-nohup python ${XUNFENG_BASE}/vulscan/VulScan.py > ${XUNFENG_LOG}/vul.log &
+nohup python ${XUNFENG_BASE}/web.py > ${XUNFENG_LOG}/web.log &
+nohup python ${XUNFENG_BASE}/aider/aider.py > ${XUNFENG_LOG}/aider.log &
+nohup python ${XUNFENG_BASE}/nascan/nascan.py > ${XUNFENG_LOG}/scan.log &
+nohup python ${XUNFENG_BASE}/vulscan/vulscan.py > ${XUNFENG_LOG}/vul.log &
 
 /usr/bin/tail -f /dev/null

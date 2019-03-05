@@ -2,7 +2,7 @@ import sys
 from datetime import timedelta
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
-from Config import ProductionConfig
+from config import ProductionConfig
 from views.lib import Conn
 import os
 

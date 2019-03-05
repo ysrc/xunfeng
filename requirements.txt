@@ -3,7 +3,6 @@ Flask
 Flask-WTF
 pymongo
 xlwt
-paramiko==1.15.3
 packaging
 appdirs
 gunicorn

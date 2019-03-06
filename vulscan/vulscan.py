@@ -52,6 +52,7 @@ class vulscan():
             self.set_request()  # 标示符转换为请求
             self.poc_check()  # 检测
         elif 'KP-' in self.plugin_info['filename']:
+            self.log(str(self.task_netloc) + 'call kunpeng - ' + self.plugin_info['filename'])
             kp.set_config(TIMEOUT, PASSWORD_DIC)
             if self.task_netloc[1] != 80:
                 self.result_info = kp.check('service', '{}:{}'.format(
@@ -64,7 +65,7 @@ class vulscan():
                     scheme, self.task_netloc[0], self.task_netloc[1]), self.plugin_info['filename'])
         else:  # 脚本检测模式
             plugin_filename = self.plugin_info['filename']
-            self.log(str(self.task_netloc) + "call " + self.task_plugin)
+            self.log(str(self.task_netloc) + 'call ' + self.task_plugin)
             if task_plugin not in PLUGIN_DB:
                 plugin_res = __import__(plugin_filename)
                 setattr(plugin_res, "PASSWORD_DIC", PASSWORD_DIC)  # 给插件声明密码字典

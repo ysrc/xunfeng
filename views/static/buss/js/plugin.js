@@ -58,7 +58,8 @@ $('#add').click(function () {
             tag: tag,
             keyword: condition,
             pluginurl: pluginurl,
-            isupload: isupload
+            isupload: isupload,
+            upload_csrf_token: csrf_token
         },
         dataType: "json",
         fileElementId: "field-upload",

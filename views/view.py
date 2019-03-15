@@ -314,13 +314,13 @@ def Plugin():
 # 新增插件异步
 @app.route('/addplugin', methods=['get', 'post'])
 @logincheck
-@csrf.exempt
 def AddPlugin():
     result = 'fail'
-    f = request.files['file']
     isupload = request.form.get('isupload', 'false')
+    methodurl = request.form.get('methodurl', '')
     file_name = ''
-    if f:
+    if methodurl == '':
+        f = request.files['file']
         fname = secure_filename(f.filename)
         if fname.split('.')[-1] == 'py':
             path = file_path + fname

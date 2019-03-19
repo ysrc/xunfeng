@@ -245,6 +245,25 @@ def get_config():
     except Exception, e:
         print e
 
+def install_kunpeng_plugin():
+    time_ = datetime.datetime.now()
+    for plugin in kp.get_plugin_list():
+        level_list = ['严重','高危','中危','低危','提示']
+        plugin_info = {
+            '_id': plugin['references']['kpid'],
+            'name': 'Kunpeng -' + plugin['name'],
+            'info': plugin['remarks'] + ' ' + plugin['references']['cve'],
+            'level': level_list[int(plugin['level'])],
+            'type': plugin['type'],
+            'author': plugin['author'],
+            'url': plugin['references']['url'],
+            'source': 1,
+            'keyword': '',
+            'add_time': time_,
+            'filename': plugin['references']['kpid'],
+            'count': 0
+        }
+        na_plugin.insert(plugin_info)
 
 def init():
     time_ = datetime.datetime.now()
@@ -252,6 +271,7 @@ def init():
         return
     script_plugin = []
     json_plugin = []
+    print 'init plugins'
     file_list = os.listdir(sys.path[0] + '/vuldb')
     for filename in file_list:
         try:
@@ -282,23 +302,7 @@ def init():
             na_plugin.insert(plugin_info)
         except:
             pass
-    for plugin in kp.get_plugin_list():
-        level_list = ['严重','高危','中危','低危','提示']
-        plugin_info = {
-            '_id': plugin['references']['kpid'],
-            'name': 'Kunpeng -' + plugin['name'],
-            'info': plugin['remarks'] + ' ' + plugin['references']['cve'],
-            'level': level_list[int(plugin['level'])],
-            'type': plugin['type'],
-            'author': plugin['author'],
-            'url': plugin['references']['url'],
-            'source': 1,
-            'keyword': '',
-            'add_time': time_,
-            'filename': plugin['references']['kpid'],
-            'count': 0
-        }
-        na_plugin.insert(plugin_info)
+    install_kunpeng_plugin()
 
 
 def kp_check():
@@ -322,6 +326,7 @@ def kp_check():
                     'source': 'kunpeng'
                 }
                 na_update.insert(row)
+                time.sleep(60 * 60 * 48)
         except Exception as e:
             print e
         time.sleep(60 * 30)
@@ -334,6 +339,8 @@ def kp_update():
                 {'source': 'kunpeng', 'isInstall': 1})
             if row:
                 kp.update_version(row['unicode'])
+                na_plugin.delete_many({'_id':re.compile('^KP')})
+                install_kunpeng_plugin()
         except Exception as e:
             print e
         time.sleep(10)

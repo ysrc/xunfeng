@@ -6,3 +6,4 @@ xlwt
 packaging
 appdirs
 gunicorn
+cryptography

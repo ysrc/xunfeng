@@ -248,7 +248,7 @@ def get_config():
 def install_kunpeng_plugin():
     time_ = datetime.datetime.now()
     for plugin in kp.get_plugin_list():
-        level_list = ['严重','高危','中危','低危','提示']
+        level_list = ['紧急','高危','中危','低危','提示']
         plugin_info = {
             '_id': plugin['references']['kpid'],
             'name': 'Kunpeng -' + plugin['name'],

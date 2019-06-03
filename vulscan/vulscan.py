@@ -366,8 +366,11 @@ if __name__ == '__main__':
                     if int(thread._count()) < THREAD_COUNT:
                         if task_netloc[0] in WHITE_LIST:
                             break
-                        thread.start_new_thread(
-                            vulscan, (task_id, task_netloc, task_plugin))
+                        try:
+                            thread.start_new_thread(
+                                vulscan, (task_id, task_netloc, task_plugin))
+                        except Exception as e:
+                            print e
                         break
                     else:
                         time.sleep(2)

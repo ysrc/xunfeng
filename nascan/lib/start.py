@@ -62,7 +62,9 @@ class start:
             if self.mode == 1:
                 masscan_path = self.config_ini['Masscan'].split('|')[2]
                 masscan_rate = self.config_ini['Masscan'].split('|')[1]
-                ip_list = self.get_ac_ip(ip_list)
+                # 如果用户在前台关闭了ICMP存活探测则进行全IP段扫描
+                if self.icmp:
+                    ip_list = self.get_ac_ip(ip_list)
                 self.masscan_ac[0] = 1
                 # 如果安装了Masscan即使用Masscan进行全端口扫描
                 AC_PORT_LIST = self.masscan(

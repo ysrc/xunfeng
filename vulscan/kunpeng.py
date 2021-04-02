@@ -36,11 +36,16 @@ class kunpeng:
         if release['tag_name'] != self.get_version():
             print 'new version', release['tag_name']
             self._down_release(release['tag_name'])
+            self.update_version(release['tag_name'])
+            return release
+        else:
+            print 'no newer version'
             return release
 
     def update_version(self, version):
         self.close()
-        os.remove(self.pwd + '/' + self._get_lib_path())
+        if self._get_lib_path():
+            os.remove(self.pwd + '/' + self._get_lib_path())
         save_path = self.pwd + \
             '/kunpeng_{}_v{}.zip'.format(self.system, version)
         z_file = zipfile.ZipFile(save_path, 'r')
@@ -58,9 +63,10 @@ class kunpeng:
         if self.system == 'windows':
             _ctypes.FreeLibrary(self.kunpeng._handle)
         else:
-            handle = self.kunpeng._handle
-            del self.kunpeng
-            _ctypes.dlclose(handle)
+            if self.kunpeng:
+                handle = self.kunpeng._handle
+                del self.kunpeng
+                _ctypes.dlclose(handle)
 
     def _down_release(self, version):
         print 'kunpeng update ', version
@@ -84,13 +90,19 @@ class kunpeng:
         return release
 
     def get_version(self):
-        return self.kunpeng.GetVersion()
+        if self.kunpeng:
+            return self.kunpeng.GetVersion()
+        else:
+            return "000000"
 
     def _load_kunpeng(self):
         lib_path = self._get_lib_path()
         # 加载动态连接库
-        self.kunpeng = cdll.LoadLibrary(
-            self.pwd + '/' + lib_path)
+        if lib_path:
+            self.kunpeng = cdll.LoadLibrary(self.pwd + '/' + lib_path)
+        else:
+            print "kunpeng.so not exist"
+            self.check_version()
 
         # 定义出入参变量类型
         self.kunpeng.GetPlugins.restype = c_char_p
@@ -130,6 +142,6 @@ if __name__ == '__main__':
     kp = kunpeng()
     print(kp.pwd)
     print(kp._get_lib_path())
-    # new_release = kp.check_version()
-    # if new_release:
-    kp.update_version('20190225')
+    new_release = kp.check_version()
+    #if new_release:
+    #kp.update_version('20190527')

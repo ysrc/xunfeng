@@ -5,6 +5,6 @@ pymongo
 xlwt
 packaging
 appdirs
-gunicorn==19.9.0
+gunicorn==22.0.0
 pycparser==2.18
 cryptography
